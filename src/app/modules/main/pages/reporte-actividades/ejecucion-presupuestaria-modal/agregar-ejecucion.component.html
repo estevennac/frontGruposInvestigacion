@@ -1,0 +1,91 @@
+<div class="cont">
+  <div class="container-fluid">
+    <div class="card">
+      <header>
+        <h2 mat-dialog-title>Agregar Ejecución Presupuestaria</h2>
+      </header>
+      <div mat-dialog-content>
+        <form [formGroup]="ejecucionForm">
+          <div class="grid-item">
+            <h2>Ítem</h2>
+            <mat-form-field>
+              <mat-label>Ingresar Ítem</mat-label>
+              <input matInput placeholder="Ítem" formControlName="item" />
+            </mat-form-field>
+          </div>
+          <div class="grid-item">
+            <h2>Valor Asignado</h2>
+            <mat-form-field>
+              <mat-label>Ingresar Valor Asignado</mat-label>
+              <input
+                matInput
+                type="text"
+                placeholder="Valor Asignado"
+                formControlName="valorAsignado"
+                min="0"
+                oninput="this.value = this.value.replace(/[^0-9.,]/g, '');" />
+            </mat-form-field>
+          </div>
+          <div class="grid-item">
+            <h2>Valor Comprometido</h2>
+            <mat-form-field>
+              <mat-label>Ingresar Valor Comprometido</mat-label>
+              <input
+                matInput
+                type="text"
+                placeholder="Valor Comprometido"
+                formControlName="valorComprometido"
+                min="0"
+                oninput="this.value = this.value.replace(/[^0-9.,]/g, '');" />
+            </mat-form-field>
+          </div>
+          <div class="grid-item">
+            <h2>Valor Acumulado</h2>
+            <mat-form-field>
+              <mat-label>Ingresar Valor Acumulado</mat-label>
+              <input
+                matInput
+                type="text"
+                placeholder="Valor Acumulado"
+                formControlName="valorAcumulado"
+                min="0"
+                oninput="this.value = this.value.replace(/[^0-9.,]/g, '');" />
+            </mat-form-field>
+          </div>
+          <div class="grid-item">
+            <h2>Bienes Adquiridos</h2>
+            <mat-form-field>
+              <mat-label>Ingresar Bienes Adquiridos</mat-label>
+              <input
+                matInput
+                placeholder="Bienes Adquiridos"
+                formControlName="bienesAdquiridos" />
+            </mat-form-field>
+          </div>
+        </form>
+      </div>
+      <div mat-dialog-actions>
+        <div class="action-buttons">
+          <button
+            class="edit"
+            mat-mini-fab
+            color="primary"
+            aria-label="Guardar"
+            mat-button
+            (click)="save()">
+            <i class="fa fa-save" aria-hidden="true"></i>
+          </button>
+          <button
+            class="delete"
+            mat-mini-fab
+            color="warn"
+            aria-label="Cancelar"
+            mat-button
+            (click)="cancel()">
+            <i class="fas fa-times-circle" aria-hidden="true"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

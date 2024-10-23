@@ -1,0 +1,27 @@
+<div class="cont">
+  <div class="container-fluid">
+    <header style="display: flex;">
+      <button type="button" mat-mini-fab style="border: none;background-color: rgb(24, 130, 223);margin-right: 5px;"
+        (click)="goBack()">
+        <i class="fas fa-arrow-left"></i></button>
+      <h1>Editar Plan Nacional</h1>
+    </header>
+
+  <div class="form-container">
+    <form [formGroup]="nationalPlanForm">
+     
+        <label for="numeroPolitica">Nombre:</label>
+        <input type="text" id="numeroPolitica" name="numeroPolitica" class="form-control" formControlName="numeroPolitica" required>
+        <label for="descripcion">Descripción:</label>
+        <textarea id="descripcion" name="descripcion" class="form-control" formControlName="descripcion" required></textarea>
+
+      <button type="button" (click)="updatePlan()" class="btn btn-primary" mat-mini-fab>
+        <i class="fas fa-save"></i>
+        </button>
+    </form>
+    <div *ngIf="showSuccessMessage" class="success-message">
+      Plan Nacional actualizado correctamente.
+    </div>   </div>   
+  </div>
+  </div>
+  

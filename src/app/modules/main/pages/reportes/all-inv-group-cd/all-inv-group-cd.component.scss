@@ -1,0 +1,70 @@
+
+h2 {
+    text-transform: uppercase;
+    text-align: center;
+  }
+  
+  a {
+    text-decoration: none;
+    text-transform: uppercase;
+    color: #000;
+  }
+  .grid-container {
+    margin-top: 50px;
+    display: grid;
+    grid-template-columns: 1fr 3fr 2fr; 
+    gap: 1rem; 
+  }
+  
+  
+  .container {
+    width: 90%;
+    margin: 0 auto;
+    background-color: #F4FAFE;
+  }
+  
+  header {
+    background-color: #2e8041;
+    color: #fff;
+    padding: 13px;
+    text-transform: uppercase;
+  }
+  
+  main {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .grupos {
+    margin-bottom: 40px;
+    text-align: center;
+    
+  }
+  
+  .grupos ul {
+    list-style: none;
+    padding: 0;
+    
+  }
+  
+  .grupos ul li {
+    margin-bottom: 10px;
+  }
+  
+  .acciones {
+    text-align: center;
+  }
+  
+  .boton {
+    background-color: #2e8041;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    border-radius: 18px;
+    height: 85%;
+    width: 70%;
+    font-size: 90%;
+    text-transform: uppercase;
+  }
+  

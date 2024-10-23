@@ -1,0 +1,50 @@
+<header>
+  <h1>Todos los grupos de investigación</h1>
+</header>
+
+<div>
+  <ngx-charts-advanced-pie-chart
+    [view]="view"
+    [scheme]="colorScheme"
+    [results]="single"
+    [gradient]="gradient"
+    (select)="onSelect($event)"
+    (activate)="onActivate($event)"
+    (deactivate)="onDeactivate($event)"
+  >
+  </ngx-charts-advanced-pie-chart>
+
+  <div class="chart-info">
+    <main>
+     
+      <section class="grupos">
+        <ul>
+         
+          <li>
+            <div class="grid-container header-row">
+              <span>N.</span>
+              <span>GRUPOS</span>
+              <span>Journal</span>
+              <span>Congresos</span>
+              <span>Libros</span>
+              <span>Proyectos</span>
+            </div>
+          </li>
+     
+          <li *ngFor="let grupo of grupos; let i = index">
+            <div class="grid-container">
+              <span>{{ i + 1 }}. </span>
+              <span>{{ grupo.nombreGrupoInv }}</span>
+              
+              <span>0</span>
+              <span>1</span>
+              <span>2</span>
+              <span>3</span>
+              <button class="boton" (click)="submitForm()">Info. del grupo</button>
+            </div>
+          </li>
+        </ul>
+      </section>
+    </main>
+  </div>
+  

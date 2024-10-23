@@ -1,0 +1,84 @@
+<div class="cont">
+  <div class="container-fluid">
+    <div class="card">
+      <header>
+        <h1>Agregar Objetivos Estratégicos</h1>
+      </header>
+
+      <div class="container-fluid">
+        <div mat-dialog-content>
+          <form [formGroup]="objStrategiesForm">
+            <div class="grid-item">
+              <h2>Objetivo</h2>
+              <mat-form-field>
+                <mat-label>Ingresar Objetivo</mat-label>
+                <input matInput formControlName="objetivo" />
+              </mat-form-field>
+            </div>
+
+            <div class="grid-item">
+              <h2>Estrategia</h2>
+              <mat-form-field>
+                <mat-label>Ingresar Estrategia</mat-label>
+                <input matInput formControlName="estrategia" />
+              </mat-form-field>
+            </div>
+
+            <div class="grid-item">
+              <h2>Verificable</h2>
+              <mat-form-field>
+                <mat-label>Ingresar Verificable</mat-label>
+                <input matInput formControlName="verificable" />
+              </mat-form-field>
+            </div>
+
+            <div class="gri-item">
+              <h2>Porcentaje Cumplimiento (%)</h2>
+              <mat-form-field>
+                <mat-label>Porcentaje de cumplimiento</mat-label>
+                <input
+                  matInput
+                  type="text"
+                  formControlName="cumplimiento"
+                  oninput="this.value = this.value.replace(/[^0-9.,]/g, '');" />
+              </mat-form-field>
+              <div
+                *ngIf="
+                  objStrategiesForm
+                    .get('cumplimiento')
+                    .hasError('rangoInvalido') &&
+                  (objStrategiesForm.get('cumplimiento').dirty ||
+                    objStrategiesForm.get('cumplimiento').touched)
+                ">
+                Ingresar un porcentaje válido entre 0 y 100
+              </div>
+            </div>
+          </form>
+        </div>
+        <div mat-dialog-actions>
+          <div class="action-buttons">
+            <button
+              class="edit"
+              mat-mini-fab
+              color="primary"
+              aria-label="Guardar"
+              mat-button
+              (click)="save()">
+              <i class="fa fa-save" aria-hidden="true"></i>
+            </button>
+
+            <button
+              class="delete"
+              mat-mini-fab
+              color="warn"
+              aria-label="Borrar"
+              mat-button
+              (click)="cancel()">
+              <i class="fas fa-times-circle" aria-hidden="true"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,160 @@
+<mat-spinner *ngIf="loadingData" diameter="50" color="primary"></mat-spinner>
+<div class="cont">
+    <div class="container-fluid">
+        <div class="card">
+            <header>
+                <h1>Ficha de Registro de Grupo</h1>
+            </header>
+            <form [formGroup]="ficha" (ngSubmit)="createFicha()"
+                class="container">
+                <mat-stepper [linear]="isLinear" #stepper>
+                    <mat-step [stepControl]="ficha1">
+                        <ng-template matStepLabel>Información del Grupo de Investigación</ng-template>
+                        <div class="grid-container" formGroupName="ficha1">
+                            <div class="grid-column">
+                                <div class="grid-item">
+                                    <h2>NOMBRE DEL GRUPO DE INVESTIGACIÓN</h2>
+                                    <div class="combo" *ngIf="grupos">{{ grupos.nombreGrupoInv }}</div>
+                                </div>
+                                <div class="grid-item">
+                                    <h2>FECHA DE CREACIÓN</h2>
+                                    <div class="combo" *ngIf="grupos">{{ grupos.fechaCreacionUsuario }}</div>
+                                </div>
+                                <div class="grid-item">
+                                    <h2>NOMBRE DEL COORDINADOR DEL GRUPO</h2>
+                                    <div class="combo" *ngIf="coordinadores">{{ coordinadores.nombre }} {{ coordinadores.apellido }}</div>
+                                </div>
+                            </div>
+                            <div class="grid-column">
+                                <div class="grid-item full-height">
+                                    <h2>NOMBRE DE LOS INTEGRANTES</h2>
+                                    <div class="combo" *ngFor="let m of miembros">{{ m.nombre }} {{ m.apellido }}</div>
+                                </div>
+                            </div>
+                            
+                        </div>
+                        <div style="text-align: center;">
+                            <button mat-raised-button color="primary" class="btn-next" type="button" *ngIf="miembros" style="left: 0px;" matStepperNext>Siguiente</button>
+                        </div>
+                    </mat-step>
+                    
+                    
+                    <mat-step [stepControl]="ficha2">
+                        <ng-template matStepLabel>Verificación de Documentación
+                            Pertinente</ng-template>
+
+                            <div class="dos-filas-columna" formGroupName="ficha2">
+                                <div class="reso">
+                                    <h2>Número de resolución</h2>
+                                        <input matInput id="resolucion" type="number" formControlName="resolucion"  placeholder="Ingrese el numero de Resolucion">
+                                </div>
+                                <div class="checks">
+                           
+                                    <div class="combo-box">
+                                        <mat-checkbox class="example-margin" formControlName="creacionFormCheck">Formulario de creación de Grupo de Investigación</mat-checkbox>
+                                    </div>
+                                    <div class="combo-box">
+                                        <mat-checkbox class="example-margin" formControlName="planDesarrolloCheck">Plan de desarrollo del Grupo de Investigación</mat-checkbox>
+                                    </div>
+                                    <div class="combo-box">
+                                        <mat-checkbox class="example-margin" formControlName="sumarioCheck">Resumen del grupo (máximo 800 caracteres):<br> Antecedentes, objetivos, impacto científico, social,<br> beneficiarios, resultados esperados.</mat-checkbox>
+                                    </div>
+                                    <div class="combo-box">
+                                        <mat-checkbox class="example-margin" formControlName="certificadoCategoriaCheck">Certificado de categoría del docente</mat-checkbox>
+                                    </div>
+                                    <div class="combo-box">
+                                        <mat-checkbox class="example-margin" formControlName="curriculum">Hojas de vida de los participantes</mat-checkbox>
+                                    </div>
+                                    <div class="combo-box">
+                                        <mat-checkbox class="example-margin" formControlName="minimoProfesoresCheck">Mínimo tres docentes</mat-checkbox>
+                                    </div>
+                                    <div class="combo-box">
+                                        <mat-checkbox class="example-margin" formControlName="meritosCientificosCheck">Méritos científicos</mat-checkbox>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            
+                        <div style="display: flex; justify-content: space-between;">
+                            <button
+                                mat-raised-button class="btn-next" color="primary" type="button"
+                                *ngIf="miembros" style="left: 0px;"
+                                matStepperPrevious>
+                                Regresar
+                            </button>
+                            <button
+                            mat-raised-button class="btn-next" color="primary" type="button"
+                            *ngIf="miembros" style="left: 0px;"
+                            matStepperNext>
+                            Siguiente
+                            </button>
+                        </div>
+       
+
+                       
+                    </mat-step>
+
+
+
+                    <mat-step [stepControl]="ficha3">
+                        <ng-template matStepLabel>Registro de Avances</ng-template>
+                        <div class="button-container">
+                            <button class="btn-agregar" type="button" (click)="openDialog()">Agregar Avance</button>
+                        </div>
+
+                        <div class="grid-containe" formGroupName="ficha3">
+                            
+                           <div class="table-logros" *ngIf="selectedAvances.length > 0">
+
+                            <header>
+                                <h1>Logros del Grupo de
+                                    Investigación:</h1>
+
+                            </header>
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Fecha del Logro</th>
+                                        <th>Logro</th>
+                                        <th>Descripción</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr
+                                        *ngFor="let a of selectedAvances; let i = index;">
+                                        <td>{{ a.fechaLogro|date }}</td>
+                                        <td>{{ a.logro }}
+
+                                        </td>
+                                        <td>{{ a.descripcion }}
+
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            </div>
+                        </div>
+                            <div  style="display: flex; justify-content: space-between; margin-top: 35px;">
+                                <button
+                                    mat-raised-button class="btn-next" color="primary"
+                                    type="button" *ngIf="miembros"
+                                    style="left: 0px;" matStepperPrevious>
+                                    Anterior
+                                </button>
+                                <button 
+                                class="btn-next"
+                                color="primary" type="submit" *ngIf="miembros"
+                                style="left: 0px;">
+                                Enviar
+                                </button>
+                        </div>
+                               
+
+                   
+
+                    </mat-step>
+                </mat-stepper>
+            </form>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,38 @@
+<div class="cont">
+    <div class="container-fluid">
+        <form [formGroup]="avanceForm" (ngSubmit)="enviarAvance()" class="container">
+            <header class="header">
+                <h1 class="title">Añadir Avances</h1>
+            </header>
+            <div class="grid-contain">
+                <div class="grid-item">
+                    <mat-form-field>
+                        <mat-label>Escoja la fecha</mat-label>
+                        <input matInput [matDatepicker]="picker" formControlName="fechaLogro">
+                        <mat-hint>MM/DD/YYYY</mat-hint>
+                        <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-datepicker #picker></mat-datepicker>
+                      </mat-form-field>
+                </div>
+                <div class="grid-item" >
+                    <mat-form-field appearance="fill">
+                        <mat-label>Ingrese el Logro</mat-label>
+                        <textarea matInput formControlName="logro" rows="2"></textarea>
+                    </mat-form-field>
+                </div>
+                <div class="grid-item" >
+                    <mat-form-field appearance="fill">
+                        <mat-label>Ingrese una descripcion del Logro</mat-label>
+                        <textarea matInput formControlName="descripcion" rows="4"></textarea>
+                    </mat-form-field>
+                </div>
+        
+            </div>
+
+        </form>
+        <!-- Botones del diálogo -->
+        <div mat-dialog-actions>
+            <button class="btn-avance" (click)="enviarAvance" [mat-dialog-close]="{ avances: this.avanceForm.value}" >Añadir</button>
+        </div>
+    </div>
+</div>

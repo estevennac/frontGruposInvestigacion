@@ -1,0 +1,73 @@
+<!-- checklist-reg.component.html -->
+<div class="cont">
+<div class="container-fluid">
+<div class="card">
+  <header>
+    <h1>Checklist de requisitos</h1>
+</header>
+<main>
+
+<form [formGroup]="checklistForm" class="checklist-form">
+  
+  <table class="table" *ngIf="data" >
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Requisito</th>
+        <th>Cumple</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>1</td>
+        <td>Memorando de solicitud</td>
+        <td>
+          
+          <input type="checkbox" formControlName="peticionMemorando" >
+        </td>
+      </tr>
+      <tr>
+        <td>2</td>
+        <td>Formulario de Creación de grupo de investigación</td>
+        <td>
+          <input type="checkbox" formControlName="formularioGrInv" >
+        </td>
+      </tr>
+      <tr>
+        <td>3</td>
+        <td>Plan de desarrollo de grupo</td>
+        <td>
+          <input type="checkbox" formControlName="planDevGr" >
+        </td>
+      </tr>
+      <tr>
+        <td>4</td>
+        <td>Plan económico financiero (si aplica)</td>
+        <td>
+          <input type="checkbox" formControlName="planEconomico">
+        </td>
+      </tr>
+      <tr>
+        <td>5</td>
+        <td>Hojas de Vida de los integrantes</td>
+        <td>
+          <input type="checkbox" formControlName="hojaVida">
+        </td>
+      </tr>
+      <tr>
+        <td>6</td>
+        <td>Certificado de Talento Humano con la titularidad y el tiempo dedicación de los integrantes</td>
+        <td>
+          <input type="checkbox" formControlName="certificado" >
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <div class="button-container">
+    <button class="check" mat-mini-fab color="primary" aria-label="Example icon button with a delete icon"(click)="createChecklistForm()">
+      <i class="fa fa-check" aria-hidden="true"></i>
+    </button>
+    +
+  </div>
+</form></main>
+</div></div></div>

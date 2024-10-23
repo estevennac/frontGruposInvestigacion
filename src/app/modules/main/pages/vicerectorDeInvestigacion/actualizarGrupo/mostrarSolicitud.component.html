@@ -1,0 +1,123 @@
+
+<div class="container-fluid">
+  <div class="card">
+    <header>
+      <h1>Solicitudes Pendientes de Validación</h1>
+    </header>
+    <div style="width: 100%;display: flex;justify-self: center;justify-items: center;justify-content: center; align-items: center;" *ngIf="loadingData">
+      <mat-spinner  diameter="150" color="primary" class="overlay-spinner" ></mat-spinner>
+  
+  </div>
+    <main *ngIf="!loadingData">
+      <mat-stepper #stepper>
+        <mat-step>
+          <ng-template matStepLabel>Solicitud de Vinculación</ng-template>
+            <div class="encabezado">
+              <div class="box"> <img
+                  src="../../../../../../assets/img/espe/logo-espe.png"
+                  alt="Imagen"></div>
+              <div class="box">UNIVERSIDAD DE LAS FUERZAS ARMADAS – ESPE<br /><br />
+
+                VICERRECTORADO DE INVESTIGACIÓN, INNOVACIÓN Y TRANSFERENCIA
+                TECNOLÓGICA <br />
+                SOLICITUD DE CREACIÓN DE VINCULACIÓN O DESVINCULACIÓN DE INVESTIGADORES <br />
+              </div>
+              <div class="box">
+                Fecha:
+                <div *ngIf="link">
+
+                  {{link.fechaCreacion | date}}
+                </div>
+              </div>
+            </div>
+
+            <table *ngIf="link || invGroup || coordinador" class="table"
+              style="text-align: left;border: solid 0.5px #dce0e2 ;width: 90%;margin-left: 5%; border-radius: 30px;">
+              <thead>
+
+              </thead>
+              <tbody>
+                <tr *ngIf="invGroup">
+                  <td style="border:solid 0.5px #dce0e2 ;"> 1</td>
+                  <td style="border:solid 0.5px #dce0e2 ;">Nombre del Grupo</td>
+                  <td style="border:solid 0.5px #dce0e2 ;">{{ invGroup.nombreGrupoInv
+                    }}</td>
+                </tr>
+                <tr *ngIf="coordinador" style="border:solid 0.5px #dce0e2 ;">
+                  <td style="width: 5%; border:solid 0.5px #dce0e2 ;">2</td>
+                  <td style="width: 30%;border:solid 0.5px #dce0e2 ;">Nombre del
+                    Coordinador del Grupo</td>
+                  <td style="width: 65%; border:solid 0.5px #dce0e2  ;">{{
+                    coordinador.nombre }} </td>
+                </tr>
+                <tr>
+
+                  <td style="border:solid 0.5px #dce0e2 ;">3</td>
+                  <td style="border:solid 0.5px #dce0e2 ;">Acción</td>
+                  <td style="border: solid 0.5px #dce0e2;">
+                    <div *ngIf="link.tipo==='vinc'">Vinculación</div>
+                    <div *ngIf="link.tipo==='desv'">Desvinculación</div>
+                  </td>
+
+                </tr>
+                
+                <tr *ngIf="miembroVincular">
+                  <td style="border:solid 0.5px #dce0e2 ;">4</td>
+                  <td style="border:solid 0.5px #dce0e2 ;">Nombre del Investigador</td>
+                  <td style="border:solid 0.5px #dce0e2 ;">{{
+                    miembroVincular.nombre }} </td>
+                </tr>
+                <tr *ngIf="miembroVincular">
+                  <td style="border:solid 0.5px #dce0e2 ;">5</td>
+                  <td style="border:solid 0.5px #dce0e2 ;">Cédula de Identidad</td>
+                  <td style="border:solid 0.5px #dce0e2 ;">{{
+                    miembroVincular.cedula }}</td>
+                </tr>
+                <tr >
+                  <td style="border:solid 0.5px #dce0e2 ;">6</td>
+                  <td style="border:solid 0.5px #dce0e2 ;">Justificación</td>
+                  <td style="border:solid 0.5px #dce0e2 ;">{{
+                    link.justificacion }}</td>
+                </tr>
+                <tr >
+                  <td style="border:solid 0.5px #dce0e2 ;">7</td>
+                  <td style="border:solid 0.5px #dce0e2 ;">Observaciones</td>
+                  <td style="border:solid 0.5px #dce0e2 ;">{{
+                    link.observaciones }}</td>
+                </tr>
+              </tbody>
+            </table>
+            <div *ngIf="!link && !invGroup && !coordinador">
+              <p>No se encontraron detalles disponibles.</p>
+            </div>
+
+            <div style="width: 100%;display: flex;
+            justify-content: right;
+            align-items: right;" *ngIf="link || invGroup || coordinador">
+              <button
+                mat-raised-button class="btn-next" color="primary" type="button"
+                style="left: 0px;"
+                matStepperNext>
+                Siguiente
+              </button>
+            </div>
+            
+      </mat-step>
+
+      <mat-step>
+        <ng-template matStepLabel>Anexo</ng-template>
+        <iframe [src]="pdfUrlSafe" width="100%" height="600px"></iframe>
+        <div style="width: 100%; display: flex; justify-content: flex-end; align-items: center;" *ngIf="link || invGroup || coordinador">
+          <button mat-raised-button class="btn-back" color="primary" type="button" style="margin-right: 10px;" matStepperPrevious>
+            Regresar
+          </button>
+          <button class="check" mat-mini-fab color="primary" aria-label="Example icon button with a delete icon" (click)="validarSolicitud()">
+            <i class="fa fa-check" aria-hidden="true"></i>
+          </button>
+        </div>
+      </mat-step>
+    </mat-stepper>
+    </main>
+  </div>
+</div>
+

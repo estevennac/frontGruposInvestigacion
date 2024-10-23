@@ -1,0 +1,5 @@
+<img
+  *ngIf="globalUser$ | async as globalUser"
+  [src]="globalUser.urlFoto"
+  alt="user-image"
+  class="avatar h-9 w-9 align-middle" />

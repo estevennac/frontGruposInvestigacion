@@ -1,0 +1,9 @@
+<div class="container">
+    <label class="label" for="idInput">Ingrese su ID Institucional:</label>
+    <input class="input" type="text" id="idInput" (input)="onIdInput($event)" />
+    <button class="button" (click)="verifyDocuments()">Verificar Documentos</button>
+
+    <div class="response-container">
+        <p class="response">{{ apiResponse }}</p>
+    </div>
+</div>

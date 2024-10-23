@@ -1,0 +1,66 @@
+<div class="cont">
+  <div class="container-fluid">
+    <form [formGroup]="miembro" (ngSubmit)="buscarMiembro()" class="container">
+      <header class="header">
+        <h1 >Gestión Roles</h1>
+      </header>
+      <div class="grid-container">
+        <div class="grid-item">
+          <mat-form-field appearance="fill">
+            <mat-label>Ingrese el usuario del miembro a buscar</mat-label>
+            <input matInput formControlName="usuario">
+          </mat-form-field>
+        </div>
+        <div class="grid-item">
+          <button mat-raised-button color="primary" class="btn-verde" (click)="buscarMiembro()">
+            <i class="fas fa-search"></i> 
+          </button>
+        </div>
+        <div class="grid-item" *ngIf="userId === null">
+          <p>Usuario no registrado en la base de datos.</p>
+          <button mat-raised-button color="primary" class="btn-cerrar" (click)="redirigirARegistro()">
+            Registrar
+          </button>
+        </div>
+        <div class="grid-item" *ngIf="userId !== null && user && checkboxRoles">
+          <div class="info">
+       
+            <h2>{{user.nombres}}</h2>
+            <h3>{{user.tipo}}</h3>
+            <div class="grid-item" *ngIf="userId !== null && user">
+              <div class="info">
+                <div class="rounded-image-container">
+                  <img [src]="user.urlFoto" alt="Imagen del usuario" class="rounded-image">
+                </div>
+              </div>
+            </div>
+            <h3>{{user.ubicacion}}</h3>
+            <h3>{{user.correoInstitucional}} - {{user.correoPersonal}}</h3>
+            <h3>{{user.id}} - {{user.cedula}}</h3>
+            <button mat-button class="btn-cerrar" (click)="limpiarUsuario()">Cerrar</button>
+          </div>
+        </div>
+        <div class="grid-item table-container" *ngIf="userId !== null && user && checkboxRoles">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Rol</th>
+                <th>Seleccionar</th> 
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let rol of checkboxRoles.checks">
+                <td>{{ rol.nombreRol }}</td>
+                <td>
+                  <input type="checkbox" [value]="rol.idRol" [checked]="rol.check" (change)="toggleRole($event, rol)">
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+       
+        
+      </div>
+    </form>
+  </div>
+</div>

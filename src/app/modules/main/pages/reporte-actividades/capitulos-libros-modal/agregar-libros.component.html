@@ -1,0 +1,77 @@
+<div class="cont">
+  <div class="container-fluid">
+    <div class="card">
+      <header>
+        <h2 mat-dialog-title>Agregar Capítulos de Libros</h2>
+      </header>
+      <div mat-dialog-content>
+        <form [formGroup]="librosForm">
+          <div class="grid-item">
+            <h2>Número</h2>
+            <mat-form-field>
+              <mat-label>Ingresar Número</mat-label>
+              <input
+                matInput
+                type="number"
+                placeholder="Número"
+                formControlName="numero"
+                pattern="[0-9]*"
+                onkeypress="return (event.charCode >= 48 && event.charCode <= 57)"
+                min="0" />
+            </mat-form-field>
+          </div>
+          <div class="grid-item">
+            <h2>Título</h2>
+            <mat-form-field>
+              <mat-label>Ingresar Título</mat-label>
+              <input matInput placeholder="Título" formControlName="titulo" />
+            </mat-form-field>
+          </div>
+          <div class="grid-item">
+            <h2>Libro</h2>
+            <mat-form-field>
+              <mat-label>Ingresar Libro</mat-label>
+              <input matInput placeholder="Libro" formControlName="libro" />
+            </mat-form-field>
+          </div>
+          <div class="grid-item">
+            <h2>Autor</h2>
+            <mat-form-field>
+              <mat-label>Ingresar Autor</mat-label>
+              <input matInput placeholder="Autor" formControlName="autor" />
+            </mat-form-field>
+          </div>
+          <div class="grid-item">
+            <h2>Índice</h2>
+            <mat-form-field>
+              <mat-label>Ingresar Índice</mat-label>
+              <input matInput placeholder="Índice" formControlName="indice" />
+            </mat-form-field>
+          </div>
+        </form>
+      </div>
+      <div mat-dialog-actions>
+        <div class="action-buttons">
+          <button
+            class="edit"
+            mat-mini-fab
+            color="primary"
+            aria-label="Guardar"
+            mat-button
+            (click)="save()">
+            <i class="fa fa-save" aria-hidden="true"></i>
+          </button>
+          <button
+            class="delete"
+            mat-mini-fab
+            color="warn"
+            aria-label="Cancelar"
+            mat-button
+            (click)="cancel()">
+            <i class="fas fa-times-circle" aria-hidden="true"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

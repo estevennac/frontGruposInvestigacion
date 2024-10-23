@@ -1,0 +1,61 @@
+<div
+  [class.container]="isVerticalLayout$ | async"
+  class="toolbar w-full px-gutter flex items-center">
+  <button
+    (click)="openSidenav()"
+    [class.hidden]="!mobileQuery"
+    mat-icon-button
+    type="button">
+    <mat-icon svgIcon="mat:menu"></mat-icon>
+  </button>
+
+  <a
+    *ngIf="isVerticalLayout$ | async"
+    [routerLink]="['/']"
+    class="ltr:mr-4 rtl:ml-4 block flex items-center">
+    <img alt="Logo" class="w-8 select-none" src="assets/img/demo/logo.svg" />
+    <h1
+      [class.hidden]="!mobileQuery"
+      class="title ltr:pl-4 rtl:pr-4 m-0 select-none">
+      ESPE Sílabo
+    </h1>
+  </a>
+
+  <!-- <img class="w-36" src="assets/img/espe/silabo.png" alt="espe-silabo-logo" /> -->
+
+  <div
+    *ngIf="(isVerticalLayout$ | async) && isNavbarInToolbar$ | async"
+    [class.hidden]="mobileQuery"
+    class="px-gutter flex-none flex items-center">
+    <vex-navigation-item
+      *ngFor="let item of navigationItems"
+      [item]="item"></vex-navigation-item>
+  </div>
+
+  <h1 class="flex-1" id="title">GESTIÓN DE GRUPOS DE INVESTIGACIÓN</h1>
+
+  <div class="-mx-1 flex items-center" id>
+  <!--   <div class="px-1">
+      <button (click)="openSearch()" mat-icon-button type="button">
+        <mat-icon color="primary" svgIcon="mat:search"></mat-icon>
+      </button>
+    </div>
+-->
+    <div class="px-1">
+      <vex-toolbar-notifications></vex-toolbar-notifications>
+    </div>
+
+
+   
+
+    <div *ngIf="userVisible$ | async" class="px-1">
+      <vex-toolbar-user></vex-toolbar-user>
+    </div>
+
+    
+  </div>
+</div>
+
+<vex-navigation
+  *ngIf="(isVerticalLayout$ | async) && isNavbarBelowToolbar$ | async"
+  [class.hidden]="mobileQuery"></vex-navigation>

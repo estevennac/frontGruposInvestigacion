@@ -1,0 +1,47 @@
+<div class="cont">
+  <div class="container-fluid">
+    <div class="card">
+      <header>
+        <h1>Lista de Líneas de Planes Nacionales</h1>
+      </header>
+      <button type="button" mat-mini-fab color="success" (click)="goBack()" style="margin: 20px;">
+        <i class="fas fa-arrow-left"></i>
+      </button>
+      <button class="create" (click)="createPlan()">
+        <i class="fas fa-plus"></i> Agregar
+      </button>
+
+      <table>
+        <thead style="position: sticky; top: 0;">
+          <tr>
+            <th>ID</th>
+            <th>Número</th>
+            <th>Descripción</th>
+            <th>Estado</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Filas de la tabla -->
+          <tr *ngFor="let np of nationalPlan">
+            <td>{{ np.idPlanNacional }}</td>
+            <td>{{ np.numeroPolitica }}</td>
+            <td>{{ np.descripcion }}</td>
+            <td>{{ np.estado ? 'Activo' : 'Inactivo' }}</td>
+            <td>
+              <button class="edit" mat-mini-fab (click)="editPlan(np.idPlanNacional)">
+                <i class="fas fa-edit"></i>
+              </button>
+              <button *ngIf="np.estado" class="delete" mat-mini-fab (click)="deletePlan(np.idPlanNacional)">
+                <i class="fas fa-trash-alt"></i>
+              </button>
+              <button *ngIf="!np.estado" class="activar" mat-mini-fab (click)="activatePlan(np.idPlanNacional)">
+                <i class="fas fa-check"></i>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

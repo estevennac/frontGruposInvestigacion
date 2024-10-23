@@ -1,0 +1,100 @@
+<div class="cont">
+  <div class="container-fluid">
+    <div class="card">
+      <header>
+        <h2 mat-dialog-title>Agregar Congresos</h2>
+      </header>
+      <div mat-dialog-content>
+        <form [formGroup]="congresoForm">
+          <div class="grid-item">
+            <h2>Número</h2>
+            <mat-form-field>
+              <mat-label>Ingresar Número</mat-label>
+              <input
+                matInput
+                type="number"
+                placeholder="Número"
+                formControlName="numero"
+                pattern="[0-9]*"
+                onkeypress="return (event.charCode >= 48 && event.charCode <= 57)"
+                min="0" />
+            </mat-form-field>
+          </div>
+          <div class="grid-item">
+            <h2>Título</h2>
+            <mat-form-field>
+              <mat-label>Ingresar Título</mat-label>
+              <input matInput placeholder="Título" formControlName="titulo" />
+            </mat-form-field>
+          </div>
+          <div class="grid-item">
+            <h2>Autor/es</h2>
+            <mat-form-field>
+              <mat-label>Ingresar Autor/es</mat-label>
+              <input
+                matInput
+                placeholder="Autor/es"
+                formControlName="autores" />
+            </mat-form-field>
+          </div>
+          <div class="grid-item">
+            <h2>Congreso</h2>
+            <mat-form-field>
+              <mat-label>Ingresar Congreso</mat-label>
+              <input
+                matInput
+                placeholder="Congreso"
+                formControlName="congreso" />
+            </mat-form-field>
+          </div>
+          <div class="grid-item">
+            <h2>Índice</h2>
+            <mat-form-field>
+              <mat-label>Ingresar Índice</mat-label>
+              <input matInput placeholder="Índice" formControlName="indice" />
+            </mat-form-field>
+          </div>
+          <div class="grid-item">
+            <h2>Quartil IFJCRSJR</h2>
+            <mat-form-field>
+              <mat-label>Ingresar Quartil IFJCRSJR</mat-label>
+              <input
+                matInput
+                placeholder="Quartil IFJCRSJR"
+                formControlName="ifJcrSjr" />
+            </mat-form-field>
+          </div>
+          <div class="grid-item">
+            <h2>Quartil</h2>
+            <mat-form-field>
+              <mat-label>Ingresar Quartil</mat-label>
+              <input matInput placeholder="Quartil" formControlName="cuartil" />
+            </mat-form-field>
+          </div>
+        </form>
+      </div>
+      <div mat-dialog-actions>
+        <div class="action-buttons">
+          <button
+            class="edit"
+            mat-mini-fab
+            color="primary"
+            aria-label="Guardar"
+            mat-button
+            (click)="save()">
+            <i class="fa fa-save" aria-hidden="true"></i>
+          </button>
+          <button
+            class="delete"
+            mat-mini-fab
+            color="warn"
+            aria-label="Cancelar"
+            mat-button
+            (click)="cancel()">
+            <i class="fas fa-times-circle" aria-hidden="true"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

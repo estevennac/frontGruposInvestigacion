@@ -1,0 +1,46 @@
+<div class="cont">
+    <div class="container-fluid">
+      <div class="back-button-container">
+        <header style="display: flex;">
+          <h1>{{ isEditing ? 'Editar Linea de Investigación' : 'Crear Nueva Linea de Investigación' }}</h1>
+        </header>
+      </div>
+  
+      <!-- Spinner de carga -->
+      <div *ngIf="isLoading" class="loading-spinner-overlay">
+        <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
+      </div>
+  
+      <!-- Formulario -->
+      <div class="form-container" *ngIf="!isLoading">
+        <form [formGroup]="lineForm" (ngSubmit)="saveLine()">
+          <!-- Campo de nombre de la línea -->
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Nombre de la Linea de Investigación</mat-label>
+            <input matInput type="text" formControlName="nombreLinea" required>
+            <mat-error *ngIf="lineForm.get('nombreLinea').invalid && lineForm.get('nombreLinea').touched">
+              El nombre de la Linea de Investigación es obligatorio.
+            </mat-error>
+          </mat-form-field>
+  
+          <!-- Campo de selección de áreas -->
+          <mat-form-field appearance="fill">
+            <mat-label>Áreas de Investigación</mat-label>
+            <mat-select formControlName="idArea" required>
+              <mat-option *ngFor="let area of areas" [value]="area.idArea">
+                {{ area.nombreArea }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+  
+          <!-- Botón de guardar -->
+          <div class="button-container">
+            <button mat-raised-button color="primary" type="submit" [disabled]="!lineForm.valid">
+              {{ isEditing ? 'Actualizar' : 'Guardar' }}
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  

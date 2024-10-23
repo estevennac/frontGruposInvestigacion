@@ -1,0 +1,50 @@
+<div class="cont">
+  <div class="container-fluid">
+    <form [formGroup]="miembro" (ngSubmit)="buscarMiembro()" class="container">
+      <header class="header">
+        <h1>Registrar Usuario</h1>
+      </header>
+      <div class="grid-container">
+        <div class="grid-item">
+          <mat-form-field appearance="fill">
+            <mat-label>Ingrese el usuario a registrar</mat-label>
+            <input matInput formControlName="usuario">
+          </mat-form-field>
+        </div>
+        <div class="grid-item">
+          <button mat-raised-button color="primary" class="btn-verde" (click)="buscarMiembro()">
+            <i class="fas fa-search"></i> 
+          </button>
+        </div>
+        <div class="grid-item" *ngIf="userId === null">
+          <div class="info">
+            <h2>{{user.nombres}}</h2>
+            <h3>{{user.tipo}}</h3>
+            <h3>{{user.ubicacion}}</h3>
+            <h3>{{user.correoInstitucional}} - {{user.correoPersonal}}</h3>
+            <h3>{{user.id}} - {{user.cedula}}</h3>
+       
+            <button mat-button class="btn-agregar" (click)="crearUsuario(user)">Añadir</button>
+            <button mat-button class="btn-cerrar"  (click)="limpiarUsuario()">Cerrar</button>
+          </div>
+        </div>
+        <div class="grid-item" *ngIf="userId === null">
+          <div class="info">
+            <img [src]="user.urlFoto" alt="Imagen del usuario" class="rounded-image">
+          </div>
+        </div>
+        <div class="grid-item" *ngIf="userId > 0">
+          <div class="info">
+            <h2>Este usuario ya está registrado en la base de datos</h2>
+          </div>
+        </div>
+      </div>
+    </form>
+
+    <div *ngIf="usuarioAgregado && userId === null">
+      <div class="info">
+        <h2>Usuario añadido correctamente</h2>
+      </div>
+    </div>
+  </div>
+</div>

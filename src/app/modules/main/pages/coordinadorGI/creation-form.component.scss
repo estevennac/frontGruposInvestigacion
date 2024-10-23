@@ -1,0 +1,230 @@
+@import "~@angular/material/prebuilt-themes/indigo-pink.css";
+
+.cont{
+  padding: 8px;
+}
+.container-fluid{
+  padding: 17px;
+  background-color: #fff;
+  margin: 10px;
+  border: solid 1px #e9e9e9;
+  border-radius: 5px;
+}
+header {
+  background-color: #2e8041;
+  color: #fff;
+  padding: 13px;
+}
+.grid-container {
+  margin-top: 15px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+.grid-contenedor {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr; /* Tres columnas iguales */
+  gap: 16px; /* Espacio entre los elementos */
+  align-items: start; /* Alinea los elementos al inicio */
+}
+.grid-cp{
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr; /* Tres columnas iguales */
+  gap: 16px; /* Espacio entre los elementos */
+  align-items: start;
+  border: 1px solid #ccc;;
+}
+
+
+
+
+
+
+.table-header {
+  font-weight: bold;
+  background-color: #f0f0f0;
+  padding: 10px;
+}
+
+.table-row {
+  border-bottom: 1px solid #ccc; /* Bordes entre filas */
+}
+
+.grid-item_cont {
+  padding: 10px;
+}
+
+.head {
+  text-align: center;
+  font-weight: bold;
+}
+
+.mat-form-field {
+  width: 100%; /* Asegura que los campos ocupen todo el ancho */
+}
+
+
+.grid-item div {
+  text-align: right;
+  margin-top: 5px;
+
+}
+
+.error-message {
+  color: red;
+}
+.mat-form-field {
+  width: 100%; 
+  
+}
+
+.mat-form-field-wrapper {
+  display: flex;
+  align-items: center;
+  //height: auto; 
+  height: 250%;
+}
+.info{
+ 
+  text-align: center !important;
+  align-items: center !important;
+}
+.rounded-image {
+ text-align: center;
+  border-radius: 50%;
+  width: 250px; 
+  object-fit: cover;
+  height: 250px;
+}
+
+.btn-verde {
+  background-color: #2e8041 ;
+  color: white; 
+  border-radius: 50%;
+  height: 40px ;
+  width: 25px  ;
+}
+
+.btn-verde:hover {
+  background-color: darkgreen; 
+}
+table{
+  width: 100%;
+  border-collapse: collapse;
+}
+th, td {
+  border: 1px solid #dddddd;
+  text-align: center;
+  padding: 8px;
+}
+th {
+  background-color: #f2f2f2;
+}
+.btn-add{
+  margin: 15px;
+ 
+}
+div button{
+  margin: 20px;
+  
+}
+
+button.custom-button {
+  padding: 1px 50px;
+
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+}
+
+button.custom-button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+.presentacionGrupo{
+  text-align: center;
+}
+.grid-items {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.grid-items input[type="file"] {
+  border: none; 
+  margin-top: 5px;
+  width: 300px;
+  cursor: pointer; 
+
+
+}
+
+.grid-items input[type="file"]::-webkit-file-upload-button {
+  background-color: #2e8041; 
+  color: white; 
+  padding: 8px;
+  border-radius: 4px;
+  border: none;
+}
+
+
+.grid-item input[type="file"]:focus {
+  outline: none;
+  border-color: #2e8041; /* Cambia el color del borde al enfocar */
+}
+
+
+.fila {
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  gap: 20px;
+  justify-items: center;
+  text-align: center;
+  margin-top: 35px;
+}
+
+.btn-cerrar {
+  background-color: rgb(185, 58, 58); 
+  color: white; 
+  width: 150px;
+  margin-top: 15px;
+
+}
+.btn-cerrar2 {
+  padding: 5px;
+  background-color: rgb(185, 58, 58); 
+  color: white; 
+  width: 100px;
+  margin-top: 15px;
+}
+.btn-agregar {
+  background-color: rgb(180, 180, 180); 
+  color: white; 
+  width: 150px;
+  margin-top: 15px;
+  margin-right: 25px;
+}
+
+.creacion-grupo-investigacion {
+  text-align: center;
+}
+
+.grid-item-input {
+  border: none; /* Quita el borde por defecto */
+  padding: 5px;
+  border-radius: 5px;
+  margin-top: 5px;
+
+  cursor: pointer; 
+}
+
+.grid-item-input:focus {
+  outline: none;
+  border-color: #2e8041; 
+}
+
+
+.grid-item mat-label {
+  font-size: 16px; 
+}

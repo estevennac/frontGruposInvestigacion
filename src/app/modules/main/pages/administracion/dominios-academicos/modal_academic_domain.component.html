@@ -1,0 +1,34 @@
+<div class="cont">
+    <div class="container-fluid">
+        <div class="back-button-container">
+            <header style="display: flex;">
+                <h1>{{ isEditing ? 'Editar Dominio Académico' : 'Crear Nuevo Dominio Académico' }}</h1>
+            </header>
+        </div>
+
+        <!-- Spinner de carga -->
+        <div *ngIf="isLoading" class="loading-spinner-overlay">
+            <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
+        </div>
+
+        <!-- Formulario -->
+        <div class="form-container" *ngIf="!isLoading">
+            <form [formGroup]="dominioAcademico" (ngSubmit)="saveAcademicDomain()">
+                <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>Nombre del Dominio Académico</mat-label>
+                    <input matInput type="text" formControlName="nombreDominioAcademico" required>
+                    <mat-error *ngIf="dominioAcademico.get('nombreDominioAcademico').invalid && dominioAcademico.get('nombreDominioAcademico').touched">
+                        El nombre del dominio académico es obligatorio.
+                    </mat-error>
+                </mat-form-field>
+
+                <!-- Botón de guardar -->
+                <div class="button-container">
+                    <button mat-raised-button color="primary" type="submit" [disabled]="!dominioAcademico.valid">
+                        {{ isEditing ? 'Actualizar' : 'Guardar' }}
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

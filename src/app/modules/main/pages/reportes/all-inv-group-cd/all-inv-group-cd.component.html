@@ -1,0 +1,20 @@
+<div class="container">
+    <header>
+      <h1>Todos los grupos de investigación</h1>
+    </header>
+    <main>
+      <h2>Todos los grupos de investigación</h2>
+      <section class="grupos">
+        <ul>
+          <li *ngFor="let grupo of grupos; let i = index">
+            <div class="grid-container">
+              <span>{{ i + 1 }}. </span>
+              <a (click)="validarSolicitud(grupo.nombreGrupoInv)">{{ grupo.nombreGrupoInv }}</a>
+              <button class="boton" (click)="submitForm()">Información del grupo</button>
+            </div>
+          </li>
+        </ul>
+      </section>
+    </main>
+</div>
+  

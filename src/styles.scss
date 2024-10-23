@@ -1,0 +1,134 @@
+@import '~simplebar/dist/simplebar.css';
+@import '~highlight.js/styles/androidstudio.css';
+// Vex Core
+@import './@vex/styles/core';
+@import './@vex/styles/partials/styles/style-light';
+
+
+/*
+  You can override any CSS Variable or style here
+  Example:
+
+  :root {
+   --sidenav-background: #333333;
+  }
+
+  All possible variables can be found in @vex/styles/core or by simply inspecting the element you want to change
+  in Chrome/Firefox DevTools
+*/
+
+/**
+  Uncomment the below code and adjust the values to fit your colors, the application will automatically adjust
+ */
+:root {
+  --red: #c8423a;
+  --white: #ffffff;
+  --gray: #a9afbb;
+  --green: #3e6f41;
+
+  --color-primary: 27, 104, 165;
+  --color-primary-contrast: 255, 255, 255;
+
+  --color-secondary: 108, 117, 125;
+  --color-secondary-contrast: 255, 255, 255;
+
+  --color-success: 62, 111, 65;
+  --color-success-contrast: 255, 255, 255;
+
+  --color-info: 0, 188, 212;
+  --color-info-contrast: 255, 255, 255;
+
+  --color-warning: 205, 168, 27;
+  --color-warning-contrast: 255, 255, 255;
+
+  --color-danger: 244, 67, 54;
+  --color-danger-contrast: 255, 255, 255;
+
+  --color-light: 248, 249, 250;
+  --color-light-contrast: 255, 255, 255;
+
+  --color-dark: 52, 58, 64;
+  --color-dark-contrast: 255, 255, 255;
+
+  // --color-primary: blue;
+  // --color-primary-contrast: white;
+
+  // --color-accent: yellow;
+  // --color-accent-contrast: black;
+
+  // --color-warn: yellow;
+  // --color-warn-contrast: black;
+}
+
+.vex-style-light {
+  --sidenav-item-icon-color: var(--gray);
+  --sidenav-item-icon-color-active: var(--white);
+  --sidenav-item-background-active: var(--red);
+  --sidenav-item-color-active: var(--white);
+
+  .sidenav {
+    border: none;
+
+    vex-sidenav-item {
+      .item {
+        width: unset;
+        border-radius: 4px;
+        @apply mx-2;
+
+        &.active {
+          @apply shadow;
+        }
+      }
+
+      .item-level-0 > .item {
+        @apply my-1;
+      }
+
+      .item-level-1 .item.active {
+        @apply shadow-none font-medium;
+
+        .item-label {
+          @apply text-black;
+        }
+      }
+
+      .item-level-1 .item:hover .item-label {
+        @apply text-black;
+      }
+    }
+  }
+
+  .sidenav-collapsed .sidenav vex-sidenav-item .item {
+    @apply mx-0;
+  }
+
+  .text-wrap {
+    word-wrap: break-word;
+    white-space: initial;
+  }
+}
+
+.sidenav-background {
+  position: relative;
+  z-index: 1;
+}
+
+.sidenav-background:before {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-image: url('/assets/img/espe/sidebar.jpg');
+  opacity: 0.1;
+}
+
+.text-link {
+  color: var(--blue);
+}
+.bottom-sheet-max-width {
+  min-width: 90vw !important;
+  margin-top: 80px;
+}

@@ -1,0 +1,18 @@
+<div class="footer" fxLayout="row">
+  <div fxFlex="auto" fxLayout="row" fxLayoutAlign="start center" vexContainer>
+    <div class="ltr:ml-4 rtl:mr-4" fxHide fxShow.gt-sm fxShow.sm fxShow.xs>
+      <img class="w-6" src="assets/img/espe/espe.ico" alt="Espe Icon" />
+    </div>
+    <div class="ltr:ml-4 rtl:mr-4 pr-4 border-r" fxHide fxShow.gt-sm fxShow.sm>
+      <span class="text-secondary"
+        >Universidad de las Fuerzas Armadas ESPE {{ year }}</span
+      >
+    </div>
+    <div class="ltr:ml-4 rtl:mr-4 pr-4 border-r" fxHide fxShow.gt-sm fxShow.xs>
+      <span class="text-secondary">Versión: {{ projectVersion }}</span>
+    </div>
+    <div class="ltr:ml-4 rtl:mr-4" fxHide fxShow.gt-sm>
+      <span class="text-secondary">&copy; Todos los derechos reservados.</span>
+    </div>
+  </div>
+</div>

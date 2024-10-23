@@ -1,0 +1,45 @@
+<div class="cont">
+  <div class="container-fluid">
+    <div class="card">
+      <header>
+        <h1>Lista de Dominios Académicos</h1>
+    </header>
+
+    <button type="button" mat-mini-fab  color="successful" (click)="goBack()" style="margin: 20px;">
+      <i class="fas fa-arrow-left" ></i></button> 
+      <button class="create" (click)="openDialog()">
+        <i class="fas fa-plus"></i> Agregar
+      </button>
+
+    <table>
+      <thead style="position: sticky; top: 0;">
+        <tr>
+          <th>ID</th>
+          <th>Nombre</th>
+          <th>Estado</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Filas de la tabla -->
+        <tr *ngFor="let acadDom of academicDomain">
+          <td>{{ acadDom.idDomimioAcademico }}</td>
+          <td>{{ acadDom.nombreDominioAcademico }}</td>
+          <td> {{acadDom.estado ? 'Activo' : 'Inactivo'}}</td>
+
+          <td>
+            <button class="edit" mat-mini-fab  (click)="editAcademicDomain(acadDom.idDomimioAcademico)">
+              <i class="fas fa-edit"></i> 
+            </button>
+            <button  *ngIf="acadDom.estado" class="delete" mat-mini-fab  (click)="deleteAcademicDomain(acadDom.idDomimioAcademico)">
+              <i class="fas fa-trash-alt"></i> 
+            </button>
+            <button *ngIf="!acadDom.estado" class="activar"  mat-mini-fab (click)="activateAcademicDomain(acadDom.idDomimioAcademico)">
+              <i class="fas fa-check"></i> 
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

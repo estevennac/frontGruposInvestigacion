@@ -1,0 +1,34 @@
+<div class="container-fluid">
+  <div class="card">
+  <header>
+    <h1>Emitir Criterio de solicitud.</h1>
+  </header>
+  <div class="container-fluid">
+    <div class="card">
+      <p>Mediante memorando emitir el criterio de la Solicitud de Creación del Grupo de Investigación</p>
+    </div>
+  <main>
+    <form (submit)="onSubmit()">
+      <div class="drag-drop" (drop)="onDrop($event)" (dragover)="onDragOver($event)">
+        <p>Arrastra y suelta el documento aquí o haz clic para seleccionarlo.</p>
+        <div class="custom-file-input">
+          <label for="fileInput">Seleccionar archivo</label>
+          <input id="fileInput" type="file" (change)="onFileSelected($event)" accept=".pdf" />
+        </div>
+      </div>
+      <button class="boton" type="submit" [disabled]="!selectedFile">Aprobar Propuesta</button>
+      <button class="boton" (click)="rechazar()" [disabled]="!selectedFile">Rechazar Propuesta</button>
+      <div *ngIf="selectedFile" class="file-info">
+        <span>{{ selectedFile.name }} </span>
+        <i class="{{ getFileIcon(selectedFile.type) }}"></i>
+        <p *ngIf="fileUploaded" class="success-message">El anexo se ha cargado con éxito.</p>
+      </div>
+    </form>
+
+    <section class="acciones">
+      <button class="boton" (click)="goBack()">REGRESAR</button>
+    </section>
+    
+  </main>
+</div>
+</div>

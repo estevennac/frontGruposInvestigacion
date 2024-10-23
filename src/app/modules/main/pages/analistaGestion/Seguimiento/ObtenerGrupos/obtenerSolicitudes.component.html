@@ -1,0 +1,41 @@
+<div class="container-fluid">
+    <div class="card">
+        <header>
+            <h1>Solicitar Informes</h1>
+        </header>
+        <main>
+            <div *ngIf="noGruposPendientes" class="no-data-message">
+                No existen Grupos Pendientes de solicitar informes
+            </div>
+            <div style="width: 100%;display: flex;justify-self: center;justify-items: center;justify-content: center; align-items: center;" *ngIf="loadingData">
+                <mat-spinner  diameter="150" color="primary" class="overlay-spinner" ></mat-spinner>
+            </div>
+            <div class="table-container" *ngIf="!noGruposPendientes && !loadingData">
+                <table class="solicitudes-table">
+                    <thead>
+                        <tr>
+                            <th style="width: 10%;">#</th>
+                            <th style="width: 35%;">Nombre de Grupo</th>
+                            <th style="width: 30%;">Nombre del Coordinador</th>
+                            <th style="width: 25%;">Fecha de Creación</th>
+                            <th>Solicitar</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let grupo of gruposFiltrados; let i = index">
+                            <td>{{i+1}}</td>
+                            <td>{{ getNombreGrupo(grupo.idGrupoInv) }}</td>
+                            <td>{{getNombreCoordinador(grupo.idUser)}}</td>
+                            <td>{{ grupo.fechaCreacionUsuario | date }}</td>
+                            <td>
+                                <button class="edit" mat-mini-fab color="primary" aria-label="Example icon button with a delete icon" (click)="validar(grupo.idGrupoInv)">
+                                    <i class="fa fa-folder-open" aria-hidden="true"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+</div>

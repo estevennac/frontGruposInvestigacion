@@ -1,0 +1,46 @@
+<div class="cont">
+  <div class="container-fluid">
+    <div class="card">
+      <header>
+        <h1>Lista de Marcos Legales</h1>
+
+    </header>
+    <button type="button" mat-mini-fab  color="successful" (click)="goBack()" style="margin: 20px;">
+      <i class="fas fa-arrow-left" ></i></button> 
+      <button class="create" (click)="openDialog()" >
+        <i class="fas fa-plus"></i> Agregar
+      </button>
+  
+    <table>
+      <thead style="position: sticky; top: 0;">
+        <tr>
+          <th>ID</th>
+          <th>Nombre</th>
+          <th>Estado</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Filas de la tabla -->
+        <tr *ngFor="let lf of legalFramework">
+          <td>{{ lf.idMarcoLegal }}</td>
+          <td>{{ lf.nombre }}</td>
+          <td> {{lf.estado ? 'Activo' : 'Inactivo'}}</td>
+
+          <td>
+            <button class="edit" mat-mini-fab (click)="editLegal(lf.idMarcoLegal )">
+              <i class="fas fa-edit"></i> 
+            </button>
+            <button *ngIf="lf.estado " class="delete" mat-mini-fab (click)="deleteLegal(lf.idMarcoLegal )">
+              <i class="fas fa-trash-alt"></i> 
+            </button>
+            <button *ngIf="!lf.estado " class="activar" mat-mini-fab (click)="activeLegal(lf.idMarcoLegal )">
+              <i class="fas fa-check"></i> 
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+</div>

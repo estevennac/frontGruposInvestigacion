@@ -1,0 +1,162 @@
+<div class="cont">
+  <div class="container-fluid">
+    <div class="card">
+      <header>
+        <h2 mat-dialog-title>Editar Proyecto de Investigación</h2>
+      </header>
+      <div mat-dialog-content>
+        <form [formGroup]="projectsForm">
+          <div class="grid-item">
+            <h2>Titulo</h2>
+            <mat-form-field>
+              <mat-label>Ingresar Título</mat-label>
+              <input matInput placeholder="Título" formControlName="titulo" />
+            </mat-form-field>
+          </div>
+
+          <div class="grid-item">
+            <h2>Entidad Financiera</h2>
+            <mat-form-field>
+              <mat-label>Ingresar Entidad Financiera</mat-label>
+              <input
+                matInput
+                placeholder="Entidad Financiera"
+                formControlName="entidadFinanciera" />
+            </mat-form-field>
+          </div>
+
+          <div class="grid-item">
+            <h2>Institución Colaboradora</h2>
+            <mat-form-field>
+              <mat-label>Ingresar Institución Colaboradora</mat-label>
+              <input
+                matInput
+                placeholder="Institución Colaboradora"
+                formControlName="institucionColaboradora" />
+            </mat-form-field>
+          </div>
+
+          <table>
+            <tr>
+              <td>
+                <div class="grid-item">
+                  <h2>Horas</h2>
+                  <mat-form-field>
+                    <mat-label>Ingresar Horas</mat-label>
+                    <input
+                      matInput
+                      type="number"
+                      placeholder="Horas"
+                      formControlName="horas" />
+                  </mat-form-field>
+                </div>
+              </td>
+              <td>
+                <div class="grid-item">
+                  <h2>Minutos</h2>
+                  <mat-form-field>
+                    <mat-label>Ingresar Minutos</mat-label>
+                    <input
+                      matInput
+                      type="number"
+                      placeholder="Minutos"
+                      formControlName="minutos" />
+                  </mat-form-field>
+                </div>
+              </td>
+            </tr>
+
+            <tr>
+              <td>
+                <div class="grid-item">
+                  <h2>Presupuesto</h2>
+                  <mat-form-field>
+                    <mat-label>Ingresar Presupuesto</mat-label>
+                    <input
+                      matInput
+                      type="number"
+                      placeholder="Presupuesto"
+                      formControlName="presupuesto" />
+                  </mat-form-field>
+                </div>
+              </td>
+
+              <td>
+                <div class="grid-item">
+                  <h2>Responsable</h2>
+                  <mat-form-field>
+                    <mat-label>Ingresar Responsable</mat-label>
+                    <input
+                      matInput
+                      placeholder="Responsable"
+                      formControlName="responsable" />
+                  </mat-form-field>
+                </div>
+              </td>
+            </tr>
+          </table>
+
+          <div class="grid-item">
+            <h2>Participantes</h2>
+            <mat-form-field>
+              <mat-label>Ingresar Participantes</mat-label>
+              <input
+                matInput
+                placeholder="Participantes"
+                formControlName="participantes" />
+            </mat-form-field>
+          </div>
+
+          <table>
+            <tr>
+              <td>
+                <div class="grid-item">
+                  <h2>Tipo</h2>
+                  <mat-form-field>
+                    <mat-label>Ingresar Tipo</mat-label>
+                    <input matInput placeholder="Tipo" formControlName="tipo" />
+                  </mat-form-field>
+                </div>
+              </td>
+              <td>
+                <div class="grid-item">
+                  <h2>Estado</h2>
+                  <mat-form-field>
+                    <mat-label>Ingresar Estado</mat-label>
+                    <input
+                      matInput
+                      placeholder="Estado"
+                      formControlName="estado" />
+                  </mat-form-field>
+                </div>
+              </td>
+            </tr>
+          </table>
+        </form>
+      </div>
+      <div mat-dialog-actions>
+        <div class="action-buttons">
+          <button
+            class="edit"
+            mat-mini-fab
+            color="primary"
+            aria-label="Guardar"
+            mat-button
+            (click)="guardarCambios()">
+            <i class="fa fa-save" aria-hidden="true"></i>
+          </button>
+
+          <button
+            class="delete"
+            mat-mini-fab
+            color="warn"
+            aria-label="Borrar"
+            mat-button
+            (click)="cerrar()">
+            <i class="fas fa-times-circle" aria-hidden="true"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

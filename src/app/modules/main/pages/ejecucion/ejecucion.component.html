@@ -1,0 +1,204 @@
+<div class="cont">
+  <div class="container-fluid">
+    <div class="card">
+      <div class="header">
+        <h1>LISTA DE GRUPOS DE INVESTIGACIÓN</h1>
+      </div>
+    </div>
+
+    <div class="container-fluid">
+      <form [formGroup]="grupoForm" class="container">
+        <div>
+          <div class="grid-item">
+            <label
+              *ngIf="
+                !grupoForm.get('nombreGrupoInv').value ||
+                !grupoForm.get('nombreGrupoInv').touched
+              "
+              for="selectGrupo"
+              >Seleccionar Grupo:</label
+            >
+            <select
+              id="selectGrupo"
+              (change)="handleGrupoSelectionChange($event)">
+              <option
+                *ngFor="let grupo of grupos"
+                [value]="grupo.nombreGrupoInv">
+                {{ grupo.nombreGrupoInv }}
+              </option>
+            </select>
+          </div>
+
+          <div class="container-fluid">
+            <div class="encabezado">
+              <div class="box">
+                <img
+                  src="../../../../../../assets/img/espe/logo-espe.png"
+                  alt="Imagen" />
+              </div>
+              <div class="box">
+                <strong>UNIVERSIDAD DE LAS FUERZAS ARMADAS – ESPE</strong
+                ><br /><br />
+                <strong
+                  >VICERRECTORADO DE INVESTIGACIÓN, INNOVACIÓN Y TRANSFERENCIA
+                  TECNOLÓGICA</strong
+                ><br />
+                <strong>FICHA GRUPO DE INVESTIGACIÓN</strong><br />
+              </div>
+
+              <div class="box">
+                <strong>Fecha de Creación:</strong><br /><br />
+                <div *ngIf="grupoForm">
+                  {{
+                    grupoForm.get('fechaCreacionUsuario').value
+                      | date : 'dd/MM/yyyy'
+                  }}
+                </div>
+              </div>
+            </div>
+
+            <table
+              class="table"
+              style="
+                text-align: left;
+                border: solid 0.5px #dce0e2;
+                width: 100%;
+                margin-left: 0%;
+                margin-top: 5%;
+                border-radius: 30px;
+              ">
+              <thead></thead>
+              <tbody>
+                <tr style="border: solid 0.5px #dce0e2">
+                  <td style="width: 5%; border: solid 0.5px #dce0e2">1</td>
+                  <td style="width: 30%; border: solid 0.5px #dce0e2">
+                    Nombre del Coordinador del Grupo
+                  </td>
+                  <td style="width: 65%; border: solid 0.5px #dce0e2">
+                    {{ coordinadorGrupo }}
+                  </td>
+                </tr>
+
+                <tr>
+                  <td style="border: solid 0.5px #dce0e2">2</td>
+                  <td style="border: solid 0.5px #dce0e2">
+                    Nombre del Grupo (en español)
+                  </td>
+                  <td style="border: solid 0.5px #dce0e2">
+                    <input
+                      formControlName="nombreGrupoInv"
+                      readonly
+                      class="st" />
+                  </td>
+                </tr>
+
+                <tr>
+                  <td style="border: solid 0.5px #dce0e2">3</td>
+                  <td style="border: solid 0.5px #dce0e2">
+                    Nombre del Grupo (en otro Idioma)
+                  </td>
+                  <td style="border: solid 0.5px #dce0e2">
+                    <input
+                      formControlName="nombreOlGrupoInv"
+                      readonly
+                      class="st" />
+                  </td>
+                </tr>
+
+                <tr>
+                  <td style="border: solid 0.5px #dce0e2">4</td>
+                  <td style="border: solid 0.5px #dce0e2">
+                    Acrónimo(Optativo)
+                  </td>
+                  <td style="border: solid 0.5px #dce0e2">
+                    <input formControlName="acronimoGrupoinv" readonly />
+                  </td>
+                </tr>
+
+                <tr>
+                  <td style="border: solid 0.5px #dce0e2">5</td>
+                  <td style="border: solid 0.5px #dce0e2">
+                    Áreas de Investigación
+                  </td>
+                  <td
+                    style="border: solid 0.5px #dce0e2"
+                    style="border: solid 0.5px #dce0e2">
+                    <ul>
+                      <li *ngFor="let area of areas">
+                        <input
+                          type="text"
+                          [value]="area?.nombreArea"
+                          [readonly]="true"
+                          [disabled]="true" />
+                      </li>
+                    </ul>
+                  </td>
+                </tr>
+
+                <tr>
+                  <td style="border: solid 0.5px #dce0e2">6</td>
+                  <td style="border: solid 0.5px #dce0e2">
+                    Dominios Académicos
+                  </td>
+                  <td
+                    style="border: solid 0.5px #dce0e2"
+                    style="border: solid 0.5px #dce0e2">
+                    <ul>
+                      <li *ngFor="let dominio of dominiosAcademicos">
+                        <input
+                          type="text"
+                          [value]="dominio.nombreDominioAcademico"
+                          [readonly]="true"
+                          [disabled]="true" />
+                      </li>
+                    </ul>
+                  </td>
+                </tr>
+
+                <tr>
+                  <td style="border: solid 0.5px #dce0e2">7</td>
+                  <td style="border: solid 0.5px #dce0e2">
+                    Líneas de Investigación
+                  </td>
+                  <td
+                    style="border: solid 0.5px #dce0e2"
+                    style="border: solid 0.5px #dce0e2">
+                    <ul>
+                      <li *ngFor="let lin of lineas">
+                        <input
+                          type="text"
+                          [value]="lin?.nombreLinea"
+                          [readonly]="true"
+                          [disabled]="true" />
+                      </li>
+                    </ul>
+                  </td>
+                </tr>
+
+                <tr>
+                  <td style="border: solid 0.5px #dce0e2">8</td>
+                  <td style="border: solid 0.5px #dce0e2">
+                    Miembros del grupo de Investigación
+                  </td>
+                  <td
+                    style="border: solid 0.5px #dce0e2"
+                    style="border: solid 0.5px #dce0e2">
+                    <ul>
+                      <li *ngFor="let integrante of integrantesGrupo">
+                        <input
+                          type="text"
+                          [value]="integrante"
+                          [readonly]="true"
+                          [disabled]="true" />
+                      </li>
+                    </ul>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

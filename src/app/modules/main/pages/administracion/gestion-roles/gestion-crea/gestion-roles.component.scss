@@ -1,0 +1,89 @@
+
+.cont {
+  padding: 8px;
+}
+
+.container-fluid {
+  padding: 17px;
+  background-color: #fff;
+  margin: 10px;
+  border: solid 1px #e9e9e9;
+  border-radius: 5px;
+}
+
+header {
+  background-color: #2e8041;
+  color: #fff;
+  padding: 13px;
+}
+
+.grid-container {
+  margin-top: 15px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+
+.grid-item div {
+  text-align: right;
+  margin-top: 0px;
+}
+
+.error-message {
+  color: red;
+}
+
+.mat-form-field {
+  width: 100%;
+}
+
+.mat-form-field-wrapper {
+  display: flex;
+  align-items: center;
+  height: 250%;
+}
+
+.info {
+  text-align: center !important;
+  align-items: center !important;
+}
+
+.rounded-image-container {
+  display: flex;
+  justify-content: center;
+}
+
+.rounded-image {
+  border-radius: 50%;
+  width: 250px;
+  height: 250px;
+  object-fit: cover;
+}
+
+
+.btn-verde {
+  background-color: rgb(56, 56, 187);
+  color: white;
+  border-radius: 50%;
+  height: 40px;
+  width: 25px;
+}
+
+.btn-verde:hover {
+  background-color: darkgreen;
+}
+
+.btn-cerrar {
+  background-color: rgb(185, 58, 58); 
+  color: white; 
+  width: 150px;
+  margin-top: 15px;
+
+}
+.btn-agregar {
+  background-color: rgb(180, 180, 180); 
+  color: white; 
+  width: 150px;
+  margin-top: 15px;
+  margin-right: 25px;
+}

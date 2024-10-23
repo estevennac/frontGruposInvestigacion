@@ -1,0 +1,35 @@
+body {
+  margin: 0;
+  padding: 0;
+}
+
+.form {
+  width: 500px;
+  margin: 0 auto;
+}
+
+.header {
+  background-color: #f0f0f0;
+  padding: 10px;
+}
+
+.body {
+  padding: 10px;
+}
+
+table {
+  width: 100%;
+  background-color: #F4FAFE;
+}
+
+th, td {
+  padding: 5px;
+}
+
+.button {
+  background-color: #2e8041;
+  color: #fff;
+  padding: 10px;
+  border: none;
+  cursor: pointer;
+}

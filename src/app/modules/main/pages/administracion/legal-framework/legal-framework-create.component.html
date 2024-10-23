@@ -1,0 +1,36 @@
+<div class="cont">
+  <div class="container-fluid">
+    <header style="display: flex;">
+      <button type="button" mat-mini-fab style="border: none;background-color: rgb(24, 130, 223);margin-right: 5px;"
+        (click)="goBack()">
+        <i class="fas fa-arrow-left"></i></button>
+      <h1>Crear Nuevo Marco Legal</h1>
+    </header>
+
+   
+    <div class="form-container">
+
+      <form [formGroup]="legalFrameworkForm" (submit)="createLegal()">
+        <div class="label-container" >
+          <label for="nombre" class="label">Nombre:</label>
+        </div>
+        <input type="text" id="nombre" formControlName="nombre" required />
+        <div *ngIf="legalFrameworkForm.controls['nombre'].invalid && legalFrameworkForm.controls['nombre'].touched">
+          <div class="error-message">El nombre del marco Legal es obligatorio.</div>
+        </div>
+        <button type="submit" mat-mini-fab>
+          <i class="fas fa-save"></i>
+        </button>
+        <!-- Mostrar mensaje de error -->
+        <div *ngIf="showErrorMessage" class="error-message">
+          Por favor complete los campos obligatorios.
+        </div>
+      </form>
+      
+      <!-- Mensaje de éxito -->
+      <div *ngIf="showSuccessMessage" class="success-message">
+        Marco Legal creado correctamente.
+      </div>
+    </div>
+  </div>
+</div>

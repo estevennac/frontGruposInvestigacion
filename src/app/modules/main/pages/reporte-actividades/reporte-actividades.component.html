@@ -1,0 +1,815 @@
+<div class="cont">
+  <div class="container-fluid">
+    <div class="card">
+      <header>
+        <h1>Informe de Actividades del Grupo de Investigación</h1>
+      </header>
+    </div>
+    <div class="container-fluid">
+      <mat-horizontal-stepper [linear]="true" [selectedIndex]="currentStep">
+        <mat-step
+          [stepControl]="reporteForm"
+          class="centrado-y-mayusculas"
+          [completed]="reporteForm.valid && reporteForm.touched">
+          <ng-template matStepLabel>Reporte</ng-template>
+
+          <form [formGroup]="reporteForm">
+            <div class="grid-item">
+              <h2>Antecedente</h2>
+              <mat-form-field appearance="fill">
+                <mat-label>Ingresar Antecedente:</mat-label>
+                <textarea
+                  matInput
+                  class="form-control large-textarea"
+                  formControlName="antecedentes"></textarea>
+              </mat-form-field>
+            </div>
+
+            <div class="grid-item">
+              <button
+                type="button"
+                mat-raised-button
+                color="primary"
+                class="btn btn-primary float-right"
+                matStepperNext>
+                Siguiente
+              </button>
+            </div>
+          </form>
+        </mat-step>
+
+        <mat-step
+          label="Objetivos"
+          #stepForm
+          class="centrado-y-mayusculas"
+          [completed]="objStrategiesForms.length > 0">
+          <ng-container *ngFor="let form of objStrategiesForms">
+            <form [formGroup]="form"></form>
+          </ng-container>
+          <div class="grid-item"></div>
+          <br />
+
+          <button
+            type="button"
+            mat-raised-button
+            color="primary"
+            (click)="openAgregarObjetivosModal()">
+            Agregar
+          </button>
+
+          <div class="btn btn-primary float-right">
+            <button
+              type="button"
+              mat-raised-button
+              color="primary"
+              matStepperPrevious>
+              Regresar
+            </button>
+            |
+            <button
+              type="button"
+              mat-raised-button
+              color="primary"
+              matStepperNext
+              [disabled]="!objStrategiesForms.length">
+              Siguiente
+            </button>
+          </div>
+          <div class="table-container">
+            <table>
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Objetivo</th>
+                  <th>Estrategia</th>
+                  <th>Verificable</th>
+                  <th>Cumplimiento</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let form of objStrategiesForms; let i = index">
+                  <td>{{ i + 1 }}</td>
+                  <td>{{ form.get('objetivo').value }}</td>
+                  <td>{{ form.get('estrategia').value }}</td>
+                  <td>{{ form.get('verificable').value }}</td>
+                  <td>{{ form.get('cumplimiento').value }}</td>
+                  <td>
+                    <div class="action-buttons">
+                      <button
+                        class="edit"
+                        mat-mini-fab
+                        color="primary"
+                        aria-label="Actualizar"
+                        mat-icon-button
+                        (click)="actualizarObjetivoEstrategico(i)">
+                        <i class="fa fa-edit" aria-hidden="true"></i>
+                      </button>
+
+                      <button
+                        class="delete"
+                        mat-mini-fab
+                        color="warn"
+                        aria-label="Borrar"
+                        mat-icon-button
+                        (click)="borrarObjetivoEstrategico(i)">
+                        <i class="fa fa-trash" aria-hidden="true"></i>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </mat-step>
+
+        <mat-step label="Eventos" #stepForm [completed]="eventsForm.length > 0">
+          <ng-container *ngFor="let form of eventsForm">
+            <form [formGroup]="form"></form>
+          </ng-container>
+          <br />
+          <button
+            type="button"
+            mat-raised-button
+            color="primary"
+            (click)="openAgregarEventosModal()">
+            Agregar
+          </button>
+          <div class="btn btn-primary float-right">
+            <button
+              type="button"
+              mat-raised-button
+              color="primary"
+              matStepperPrevious>
+              Regresar
+            </button>
+            |
+            <button
+              type="button"
+              mat-raised-button
+              color="primary"
+              matStepperNext
+              [disabled]="!eventsForm.length">
+              Siguiente
+            </button>
+          </div>
+          <div class="table-container">
+            <table>
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Nombre</th>
+                  <th>Ciudad</th>
+                  <th>Pais</th>
+                  <th>Fecha</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let form of eventsForm; let i = index">
+                  <td>{{ i + 1 }}</td>
+                  <td>{{ form.get('nombre').value }}</td>
+                  <td>{{ form.get('ciudad').value }}</td>
+                  <td>{{ form.get('pais').value }}</td>
+                  <td>{{ form.get('fecha').value }}</td>
+                  <td>
+                    <div class="action-buttons">
+                      <button
+                        class="edit"
+                        mat-mini-fab
+                        color="primary"
+                        aria-label="Actualizar"
+                        mat-icon-button
+                        (click)="actualizarEvento(i)">
+                        <i class="fa fa-edit" aria-hidden="true"></i>
+                      </button>
+
+                      <button
+                        class="delete"
+                        mat-mini-fab
+                        color="warn"
+                        aria-label="Borrar"
+                        mat-icon-button
+                        (click)="borrarEvento(i)">
+                        <i class="fa fa-trash" aria-hidden="true"></i>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </mat-step>
+
+        <mat-step
+          label="Proyectos"
+          #stepForm
+          [completed]="projectsForms.length > 0">
+          <ng-container *ngFor="let form of projectsForms">
+            <form [formGroup]="form"></form>
+          </ng-container>
+          <br />
+          <button
+            type="button"
+            mat-raised-button
+            color="primary"
+            (click)="openAgregarProyectosModal()">
+            Agregar
+          </button>
+          <div class="btn btn-primary float-right">
+            <button
+              type="button"
+              mat-raised-button
+              color="primary"
+              matStepperPrevious>
+              Regresar
+            </button>
+            |
+            <button
+              type="button"
+              mat-raised-button
+              color="primary"
+              matStepperNext
+              [disabled]="!projectsForms.length">
+              Siguiente
+            </button>
+          </div>
+          <div class="table-container">
+            <table>
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Titulo</th>
+                  <th>Entidad Financiera</th>
+                  <th>Institucion Colaboradora</th>
+                  <th>Horas</th>
+                  <th>Minutos</th>
+                  <th>Presupuesto</th>
+                  <th>Responsable</th>
+                  <th>Participantes</th>
+                  <th>Tipo</th>
+                  <th>Estado</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let form of projectsForms; let i = index">
+                  <td>{{ i + 1 }}</td>
+                  <td>{{ form.get('titulo').value }}</td>
+                  <td>{{ form.get('entidadFinanciera').value }}</td>
+                  <td>{{ form.get('institucionColaboradora').value }}</td>
+                  <td>{{ form.get('horas').value }}</td>
+                  <td>{{ form.get('minutos').value }}</td>
+                  <td>{{ form.get('presupuesto').value }}</td>
+                  <td>{{ form.get('responsable').value }}</td>
+                  <td>{{ form.get('participantes').value }}</td>
+                  <td>{{ form.get('tipo').value }}</td>
+                  <td>{{ form.get('estado').value }}</td>
+                  <td>
+                    <div class="action-buttons">
+                      <button
+                        class="edit"
+                        mat-mini-fab
+                        color="primary"
+                        aria-label="Actualizar"
+                        mat-icon-button
+                        (click)="actualizarProyecto(i)">
+                        <i class="fa fa-edit" aria-hidden="true"></i>
+                      </button>
+
+                      <button
+                        class="delete"
+                        mat-mini-fab
+                        color="warn"
+                        aria-label="Borrar"
+                        mat-icon-button
+                        (click)="borrarProyecto(i)">
+                        <i class="fa fa-trash" aria-hidden="true"></i>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </mat-step>
+        <mat-step label="Posgrado" #stepForm>
+          <ng-container *ngFor="let form of posgradosForms">
+            <form [formGroup]="form"></form>
+          </ng-container>
+          <br />
+          <button
+            type="button"
+            mat-raised-button
+            color="primary"
+            (click)="openAgregarPosgradoModal()">
+            Agregar (Opcional)
+          </button>
+          <div class="btn btn-primary float-right">
+            <button
+              type="button"
+              mat-raised-button
+              color="primary"
+              matStepperPrevious>
+              Regresar
+            </button>
+            |
+            <button
+              type="button"
+              mat-raised-button
+              color="primary"
+              matStepperNext>
+              Siguiente
+            </button>
+          </div>
+          <div class="table-container">
+            <table>
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Nombre</th>
+                  <th>Tesista/s</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let form of posgradosForms; let i = index">
+                  <td>{{ i + 1 }}</td>
+                  <td>{{ form.get('nombre').value }}</td>
+                  <td>{{ form.get('tesistas').value }}</td>
+                  <td>
+                    <div class="action-buttons">
+                      <button
+                        class="edit"
+                        mat-mini-fab
+                        color="primary"
+                        aria-label="Actualizar"
+                        mat-icon-button
+                        (click)="actualizarPosgrado(i)">
+                        <i class="fa fa-edit" aria-hidden="true"></i>
+                      </button>
+
+                      <button
+                        class="delete"
+                        mat-mini-fab
+                        color="warn"
+                        aria-label="Borrar"
+                        mat-icon-button
+                        (click)="borrarPosgrado(i)">
+                        <i class="fa fa-trash" aria-hidden="true"></i>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </mat-step>
+
+        <mat-step label="Titulación" #stepForm>
+          <ng-container *ngFor="let form of titulacionForms">
+            <form [formGroup]="form"></form>
+          </ng-container>
+          <br />
+          <button
+            type="button"
+            mat-raised-button
+            color="primary"
+            (click)="openAgregarTitulacionModal()">
+            Agregar (Opcional)
+          </button>
+          <div class="btn btn-primary float-right">
+            <button
+              type="button"
+              mat-raised-button
+              color="primary"
+              matStepperPrevious>
+              Regresar
+            </button>
+            |
+
+            <button
+              type="button"
+              mat-raised-button
+              color="primary"
+              matStepperNext>
+              Siguiente
+            </button>
+          </div>
+          <div class="table-container">
+            <table>
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Nombre</th>
+                  <th>Tesista/s</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let form of titulacionForms; let i = index">
+                  <td>{{ i + 1 }}</td>
+                  <td>{{ form.get('nombre').value }}</td>
+                  <td>{{ form.get('tesistas').value }}</td>
+                  <td>
+                    <div class="action-buttons">
+                      <button
+                        class="edit"
+                        mat-mini-fab
+                        color="primary"
+                        aria-label="Actualizar"
+                        mat-icon-button
+                        (click)="actualizarTitulacion(i)">
+                        <i class="fa fa-edit" aria-hidden="true"></i>
+                      </button>
+
+                      <button
+                        class="delete"
+                        mat-mini-fab
+                        color="warn"
+                        aria-label="Borrar"
+                        mat-icon-button
+                        (click)="borrarTitulacion(i)">
+                        <i class="fa fa-trash" aria-hidden="true"></i>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </mat-step>
+
+        <mat-step label="Libros" #stepForm>
+          <ng-container *ngFor="let form of librosForms">
+            <form [formGroup]="form"></form>
+          </ng-container>
+          <br />
+          <button
+            type="button"
+            mat-raised-button
+            color="primary"
+            (click)="openAgregarCapitulosLibrosModal()">
+            Agregar (Opcional)
+          </button>
+          <div class="btn btn-primary float-right">
+            <button
+              type="button"
+              mat-raised-button
+              color="primary"
+              matStepperPrevious>
+              Regresar
+            </button>
+            |
+
+            <button
+              type="button"
+              mat-raised-button
+              color="primary"
+              matStepperNext>
+              Siguiente
+            </button>
+          </div>
+          <div class="table-container">
+            <table>
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Número</th>
+                  <th>Título</th>
+                  <th>Libro</th>
+                  <th>Autor</th>
+                  <th>Índice</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let form of librosForms; let i = index">
+                  <td>{{ i + 1 }}</td>
+                  <td>{{ form.get('numero').value }}</td>
+                  <td>{{ form.get('titulo').value }}</td>
+                  <td>{{ form.get('libro').value }}</td>
+                  <td>{{ form.get('autor').value }}</td>
+                  <td>{{ form.get('indice').value }}</td>
+                  <td>
+                    <div class="action-buttons">
+                      <button
+                        class="edit"
+                        mat-mini-fab
+                        color="primary"
+                        aria-label="Actualizar"
+                        mat-icon-button
+                        (click)="actualizarCapitulosLibros(i)">
+                        <i class="fa fa-edit" aria-hidden="true"></i>
+                      </button>
+
+                      <button
+                        class="delete"
+                        mat-mini-fab
+                        color="warn"
+                        aria-label="Borrar"
+                        mat-icon-button
+                        (click)="borrarCapituloLibro(i)">
+                        <i class="fa fa-trash" aria-hidden="true"></i>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </mat-step>
+
+        <mat-step label="Revistas" #stepForm>
+          <ng-container *ngFor="let form of revistasForms">
+            <form [formGroup]="form"></form>
+          </ng-container>
+          <br />
+          <button
+            type="button"
+            mat-raised-button
+            color="primary"
+            (click)="openAgregarRevistasModal()">
+            Agregar (Opcional)
+          </button>
+          <div class="btn btn-primary float-right">
+            <button
+              type="button"
+              mat-raised-button
+              color="primary"
+              matStepperPrevious>
+              Regresar
+            </button>
+            |
+
+            <button
+              type="button"
+              mat-raised-button
+              color="primary"
+              matStepperNext>
+              Siguiente
+            </button>
+          </div>
+          <div class="table-container">
+            <table>
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Número</th>
+                  <th>Título</th>
+                  <th>Revista</th>
+                  <th>Autores</th>
+                  <th>Índice</th>
+                  <th>Quartil IFJRC</th>
+                  <th>Quartil IFSJR</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let form of revistasForms; let i = index">
+                  <td>{{ i + 1 }}</td>
+                  <td>{{ form.get('numero').value }}</td>
+                  <td>{{ form.get('titulo').value }}</td>
+                  <td>{{ form.get('revista').value }}</td>
+                  <td>{{ form.get('autores').value }}</td>
+                  <td>{{ form.get('indice').value }}</td>
+                  <td>{{ form.get('ifjrc').value }}</td>
+                  <td>{{ form.get('ifsjr').value }}</td>
+                  <td>
+                    <div class="action-buttons">
+                      <button
+                        class="edit"
+                        mat-mini-fab
+                        color="primary"
+                        aria-label="Actualizar"
+                        mat-icon-button
+                        (click)="actualizarRevista(i)">
+                        <i class="fa fa-edit" aria-hidden="true"></i>
+                      </button>
+
+                      <button
+                        class="delete"
+                        mat-mini-fab
+                        color="warn"
+                        aria-label="Borrar"
+                        mat-icon-button
+                        (click)="borrarRevista(i)">
+                        <i class="fa fa-trash" aria-hidden="true"></i>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </mat-step>
+
+        <mat-step label="Congresos" #stepForm>
+          <ng-container *ngFor="let form of congresosForms">
+            <form [formGroup]="form"></form>
+          </ng-container>
+          <br />
+          <button
+            type="button"
+            mat-raised-button
+            color="primary"
+            (click)="openAgregarCongresosModal()">
+            Agregar (Opcional)
+          </button>
+          <div class="btn btn-primary float-right">
+            <button
+              type="button"
+              mat-raised-button
+              color="primary"
+              matStepperPrevious>
+              Regresar
+            </button>
+            |
+
+            <button
+              type="button"
+              mat-raised-button
+              color="primary"
+              matStepperNext>
+              Siguiente
+            </button>
+          </div>
+          <div class="table-container">
+            <table>
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Número</th>
+                  <th>Título</th>
+                  <th>Congreso</th>
+                  <th>Autores</th>
+                  <th>Índice</th>
+                  <th>Quartil IFJCRSJR</th>
+                  <th>Quartil</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let form of congresosForms; let i = index">
+                  <td>{{ i + 1 }}</td>
+                  <td>{{ form.get('numero').value }}</td>
+                  <td>{{ form.get('titulo').value }}</td>
+                  <td>{{ form.get('congreso').value }}</td>
+                  <td>{{ form.get('autores').value }}</td>
+                  <td>{{ form.get('indice').value }}</td>
+                  <td>{{ form.get('ifJcrSjr').value }}</td>
+                  <td>{{ form.get('cuartil').value }}</td>
+                  <td>
+                    <div class="action-buttons">
+                      <button
+                        class="edit"
+                        mat-mini-fab
+                        color="primary"
+                        aria-label="Actualizar"
+                        mat-icon-button
+                        (click)="actualizarCongreso(i)">
+                        <i class="fa fa-edit" aria-hidden="true"></i>
+                      </button>
+
+                      <button
+                        class="delete"
+                        mat-mini-fab
+                        color="warn"
+                        aria-label="Borrar"
+                        mat-icon-button
+                        (click)="borrarCongreso(i)">
+                        <i class="fa fa-trash" aria-hidden="true"></i>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </mat-step>
+
+        <mat-step label="Ejecución" #stepForm>
+          <ng-container *ngFor="let form of ejecucionForms">
+            <form [formGroup]="form"></form>
+          </ng-container>
+          <br />
+          <button
+            type="button"
+            mat-raised-button
+            color="primary"
+            (click)="openAgregarEjecucionModal()">
+            Agregar (Opcional)
+          </button>
+          <div class="btn btn-primary float-right">
+            <button
+              type="button"
+              mat-raised-button
+              color="primary"
+              matStepperPrevious>
+              Regresar
+            </button>
+            |
+            <button
+              type="button"
+              mat-raised-button
+              color="primary"
+              matStepperNext>
+              Siguiente
+            </button>
+          </div>
+          <div class="table-container">
+            <table>
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>ítem</th>
+                  <th>Valor Asignado</th>
+                  <th>Valor Comprometido</th>
+                  <th>Valor Acumulado</th>
+                  <th>Bienes Adquiridos</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let form of ejecucionForms; let i = index">
+                  <td>{{ i + 1 }}</td>
+                  <td>{{ form.get('item').value }}</td>
+                  <td>{{ form.get('valorAsignado').value }}</td>
+                  <td>{{ form.get('valorComprometido').value }}</td>
+                  <td>{{ form.get('valorAcumulado').value }}</td>
+                  <td>{{ form.get('bienesAdquiridos').value }}</td>
+                  <td>
+                    <div class="action-buttons">
+                      <button
+                        class="edit"
+                        mat-mini-fab
+                        color="primary"
+                        aria-label="Actualizar"
+                        mat-icon-button
+                        (click)="actualizarEjecucion(i)">
+                        <i class="fa fa-edit" aria-hidden="true"></i>
+                      </button>
+
+                      <button
+                        class="delete"
+                        mat-mini-fab
+                        color="warn"
+                        aria-label="Borrar"
+                        mat-icon-button
+                        (click)="borrarEjecucion(i)">
+                        <i class="fa fa-trash" aria-hidden="true"></i>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </mat-step>
+
+        <mat-step [stepControl]="reporteForm" class="centrado-y-mayusculas">
+          <ng-template matStepLabel>Reporte</ng-template>
+          <br />
+          <form [formGroup]="reporteForm">
+            <div class="grid-item">
+              <h2>Conclusiones</h2>
+              <mat-form-field appearance="fill">
+                <mat-label>Ingresar Conclusiones:</mat-label>
+                <textarea
+                  matInput
+                  class="form-control large-textarea"
+                  formControlName="conclusiones"></textarea>
+              </mat-form-field>
+            </div>
+
+            <div class="grid-item">
+              <h2>Recomendaciones</h2>
+              <mat-form-field appearance="fill">
+                <mat-label>Ingresar Recomendaciones:</mat-label>
+                <textarea
+                  matInput
+                  class="form-control large-textarea"
+                  formControlName="recomendaciones"></textarea>
+              </mat-form-field>
+            </div>
+
+            <div class="btn btn-primary float-right">
+              <button
+                type="button"
+                mat-raised-button
+                color="primary"
+                matStepperPrevious>
+                Regresar
+              </button>
+              |
+              <button
+                type="button"
+                mat-raised-button
+                color="accent"
+                (click)="onSubmit()"
+                [disabled]="
+                  reporteForm.get('conclusiones').value === '' ||
+                  reporteForm.get('recomendaciones').value === ''
+                ">
+                Enviar
+              </button>
+            </div>
+          </form>
+        </mat-step>
+      </mat-horizontal-stepper>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,240 @@
+.cont{
+    padding: 8px;
+  }
+  .container-fluid{
+    padding: 17px;
+    background-color: #fff;
+    margin: 10px;
+    border: solid 1px #e9e9e9;
+    border-radius: 5px;
+  }
+  header {
+    background-color: #2e8041;
+    color: #fff;
+    padding: 13px;
+  }
+  .combo-box {
+    max-width: 100%;
+    width: auto; /* Cambiado de 100% a auto */
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 8px;
+    box-sizing: border-box;
+ 
+    word-wrap: break-word; /* Para ajustar las palabras si no caben */
+  }
+  
+    
+    .combo-box select,
+    .combo-box input[type="text"],
+    .combo-box textarea {
+      width: 100%;
+      border: none;
+      outline: none;
+     // background: transparent;
+   
+    }
+    .combo-box {
+      margin: 0 auto; /* Centra horizontalmente */
+     // text-align: center; /* Centra el contenido dentro del combo-box */
+    }
+    
+    .combo {
+      margin-bottom: 15px;
+    }
+    .textarea {
+      resize: vertical;
+      height: 100px;
+      background-color: #ebebee; 
+    }
+    
+    .btn-siguiente {
+      padding: 10px 20px;
+      background-color: #4e53d7;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    
+    .btn-modal {
+  
+      background-color: #2e8041;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      //height: 20px;
+      width: 40%;
+    }
+    .btn-siguiente:hover {
+      background-color: #38c258;
+    }
+    .grid-containe {
+      display: grid;
+      grid-template-columns: repeat(1, 1fr);
+      justify-items: center;
+      text-align: center;
+    }
+    .table-logros {
+      width: 100%;
+  }
+  
+  .table-logros header {
+      background-color: #4b4b4b;
+  }
+  
+  .table-logros table {
+      width: 100%;
+  }
+  
+  .table-logros th, .table-logros td {
+      padding: 16px;
+      text-align: center;
+  }
+  
+  .table-logros thead {
+      background-color: #f2f2f2;
+  }
+  
+  .table-logros tbody tr:nth-child(even) {
+      background-color: #f2f2f2;
+  }
+  
+    .grid-container {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 15px;
+      justify-items: center;
+      text-align: center;
+      margin-top: 35px;
+  
+    }
+    
+    .grid-column {
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .grid-item h2 {
+        font-weight: bold;
+        margin-bottom: 25px;
+    }
+    
+    .full-height {
+        height: 100%;
+    }
+    
+    .grid-contain {
+      display: grid;
+      grid-template-columns: repeat(1, 1fr);
+      gap: 5px;
+    }
+    
+    
+    .grid-item {
+ 
+      margin-top: 25px;
+    }
+    .grid-a h2 {
+      text-align: center;
+      font-weight: bold;
+      //margin-bottom: 10px;
+    }
+    
+ 
+    
+    .header {
+      background-color: #2e8041;
+      color: white;
+      padding: 20px;
+    }
+    
+    .title {
+      margin: 0;
+    }
+    
+    .error-message {
+      color: red;
+    }
+    .mat-form-field {
+      width: 100%; 
+      
+    }
+    
+    .mat-form-field-wrapper {
+      display: flex;
+      align-items: center;
+      //height: auto; 
+      height: 250%;
+    }
+  
+    .btn-container {
+      display: flex;
+      justify-content: center;
+      margin-top: 20px;
+  }
+ 
+  
+  button.btn-next {
+    padding: 1px 50px;
+  
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    border-radius: 4px;
+  }
+  
+  button.btn-next:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+  }
+.dos-filas-columna {
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* Centra verticalmente */
+  align-items: center; /* Centra horizontalmente */
+  text-align: center;
+}
+
+.checks {
+
+  border-radius: 4px;
+  text-align: left;
+  border: 1px solid #ccc;
+  padding: 10px;
+}
+.reso {
+  margin-bottom: 15px;
+}
+.reso input{
+  text-align: center;
+  background-color: #f9f3f3;
+}
+
+.btn-agregar {
+  background-color: #256a2c;
+  width: 223px;
+  padding: 10px 20px;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.button-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 35px;
+  margin-top: 35px;
+
+}
+.btn-avance {
+  background-color: rgb(147, 147, 147); 
+  color: white; 
+  width: 150px;
+  padding: 10px 50px;
+  border-radius: 4px;
+  margin-left: 25px;
+}
+

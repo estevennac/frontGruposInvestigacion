@@ -1,0 +1,67 @@
+.modulo-control-container {
+  background-color:  #2e8041;
+  padding: 20px;
+  text-align: center;
+  margin-top: 20px;
+  margin-bottom: 20px; /* Agregar espacio debajo del recuadro de Módulos de Control */
+}
+
+.cont{
+  padding: 8px;
+}
+.container-fluid{
+  padding: 17px;
+  background-color: #fff;
+  margin: 10px;
+  border: solid 1px #e9e9e9;
+  border-radius: 5px;
+}
+header {
+  background-color: #2e8041;
+  color: #fff;
+  padding: 13px;
+}
+.modulo-control h2 {
+  color: white;
+}
+
+.tarjetas-container {
+  display: flex;
+  justify-content: center; /* Centrar las tarjetas horizontalmente */
+}
+
+.card {
+  display: flex; /* Activar el modelo de caja flexible */
+  flex-direction: column; /* Alinear el contenido verticalmente */
+  justify-content: center; /* Centrar verticalmente el contenido */
+  flex: 0 0 150px;
+  cursor: pointer;
+  border-radius: 10px;
+  overflow: hidden;
+  margin-right: 20px;
+  margin-bottom: 20px; /* Agregar espacio entre las tarjetas */
+  transition: transform 0.3s ease;
+  height: 200px;
+  border: 2px solid black; 
+}
+
+.card:last-child {
+  margin-right: 0;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+}
+
+.card .card-body {
+  padding: 20px;
+}
+
+.card .card-image {
+  width: 50%; /* La imagen ocupará el 50% del ancho disponible dentro de la tarjeta */
+  height: auto; /* Altura automática para mantener la relación de aspecto */
+  object-fit: cover; /* La imagen se ajustará para cubrir el contenedor manteniendo su relación de aspecto */
+  border-radius: 10px;
+  z-index: 0;
+  margin: 0 auto; /* Centrar la imagen horizontalmente */
+}

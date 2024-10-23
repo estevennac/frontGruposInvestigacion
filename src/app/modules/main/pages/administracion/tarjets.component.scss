@@ -1,0 +1,72 @@
+.tarjetas-container {
+  display: flex;
+  justify-content: center;
+  padding: 15px;
+}
+
+mat-grid-list {
+  width: 100%;
+}
+
+mat-grid-tile {
+  display: flex;
+  
+}
+
+.tarjeta {
+  cursor: pointer;
+  transition: transform 0.3s ease;
+  text-align: center;
+  display: flex;
+  flex-direction: column; /* Para alinear los elementos verticalmente */
+  justify-content: space-between; /* Distribuye uniformemente el contenido dentro de la tarjeta */
+  height: 95%; /* Asegura que todas las tarjetas ocupen el 100% del espacio */
+}
+
+.tarjeta:hover {
+  transform: scale(1.05);
+  border-color: #266334;
+  background-color: #ece4e4;
+}
+
+mat-card {
+  width: 100%; /* Asegura que todas las tarjetas usen el espacio completo disponible */
+  text-align: center;
+  margin: 5px;
+  display: flex;
+  flex-direction: column; /* Para que el contenido sea flexible verticalmente */
+  height: 100%; /* Garantiza que las tarjetas tengan la misma altura */
+  //border: #746f6f 2px;
+  border: solid 2px #797878;
+  border-radius: 15px;
+  //background-color: #e6e2e2;
+
+}
+
+mat-card-header {
+  background-color: #f5f5f5;
+}
+
+mat-card-title {
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+
+img {
+  //height: 80px; /* Tamaño fijo de la imagen */
+  width: 85%;
+  object-fit: contain; /* Asegura que la imagen se ajuste dentro de su contenedor */
+  margin: 0 auto;
+  padding: 10px;
+}
+
+mat-card-content {
+  flex-grow: 1; /* Permite que el contenido crezca para ocupar el espacio disponible */
+}
+
+mat-card-actions {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end; /* Alinea los botones al final de la tarjeta */
+  padding: 10px;
+}

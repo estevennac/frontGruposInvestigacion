@@ -1,0 +1,109 @@
+<div class="cont">
+  <div class="container-fluid">
+    <div class="card">
+      <header>
+        <h1>Solicitud de Vinculación de Investigadores</h1>
+      </header>
+    </div>
+    <mat-stepper [linear]="isLinear" #stepper>
+      <mat-step>
+        <ng-template matStepLabel>Solicitud de Vinculación</ng-template>
+    <form [formGroup]="link" class="container">
+
+
+      <div class="grid-container">
+
+        <div class="grid-item">
+          <h2>NOMBRE DEL GRUPO</h2>
+          <div class="combo-box" *ngIf="grupos">
+            {{grupos.nombreGrupoInv}}
+          </div>
+        </div>
+
+        <div class="grid-item">
+          <h2>NOMBRE DEL COORDINADOR DEL GRUPO</h2>
+          <div class="combo-box" *ngIf="coordinadores">
+            {{coordinadores.nombre}} {{coordinadores.apellido}} </div>
+        </div>
+
+        <div class="grid-item" *ngIf="user">
+          <h2>NOMBRE DEL INVESTIGADOR</h2>
+          <div class="combo-box">
+            {{user.nombre}} {{user.apellido}}
+          </div>
+        </div>
+        <div class="grid-item" *ngIf="!user">
+          <button type="button" mat-raised-button color="primary" class="btn-modal" (click)="openDialog()">Seleccionar
+            Investigador</button>
+
+        </div>
+        <div class="grid-item" *ngIf="user">
+          <h2>CÉDULA DEL INVESTIGADOR</h2>
+          <div class="combo-box">
+            {{user.cedula}}
+          </div>
+        </div>
+        <div class="grid-item" *ngIf="user">
+          <h2>JUSTIFICACIÓN</h2>
+          <mat-form-field appearance="fill">
+            <mat-label>JUSTIFICACIÓN</mat-label>
+            <textarea matInput formControlName="justificacion" class="textarea"></textarea>
+          </mat-form-field>
+        </div>
+
+        <div class="grid-item" *ngIf="user">
+          <h2>OBSERVACIONES</h2>
+          <mat-form-field appearance="fill">
+            <mat-label>OBSERVACIONES</mat-label>
+            <textarea matInput formControlName="observaciones" placeholder="Observaciones" class="textarea"></textarea>
+          </mat-form-field>
+        </div>
+
+
+
+
+      </div>
+      
+
+
+    </form>
+    <div class="grid-item"  *ngIf="user">
+    <button type="button" mat-raised-button
+    color="primary"
+    matStepperNext>Siguiente</button></div>
+  </mat-step>
+  <mat-step  *ngIf="user">
+    <ng-template matStepLabel>Anexos de Documentación Pertinente</ng-template>
+    <form>
+      <div class="lista-documentos">
+        <p>En el siguiente campo, agregue en un solo PDF la documentación pertinente a la fase de inclusión:</p>
+        <ul>
+          <li>Trayectoria Investigativa del Docente</li>
+          <li>Hoja de Vida del Docente</li>
+        </ul>
+      </div>
+      
+      
+      <div class="drag-drop" (drop)="onDrop($event)" (dragover)="onDragOver($event)">
+        <p>Arrastra y suelta el documento aquí o haz clic para seleccionarlo.</p>
+        <div class="custom-file-input">
+          <label for="fileInput">Seleccionar archivo</label>
+          <input id="fileInput" type="file" (change)="onFileSelected($event)" accept=".pdf" />
+        </div>
+      </div>
+      <div style="text-align: right;"><button class="btnEnviar" color="primary" (click)="createLink()" *ngIf="user"  [disabled]="!selectedFile">
+        Enviar Solicitud
+      </button></div>
+
+      <div *ngIf="selectedFile" class="file-info">
+        <span>{{ selectedFile.name }} </span>
+        <i class="{{ getFileIcon(selectedFile.type) }}"></i>
+        <p *ngIf="fileUploaded" class="success-message">El anexo se ha cargado con éxito.</p>
+      </div>
+    </form>
+  </mat-step>
+
+  </mat-stepper>
+
+  </div>
+</div>

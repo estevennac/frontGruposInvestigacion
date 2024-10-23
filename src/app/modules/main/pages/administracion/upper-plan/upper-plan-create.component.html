@@ -1,0 +1,33 @@
+<div class="cont">
+  <div class="container-fluid">
+      <header style="display: flex;">
+        <button type="button" mat-mini-fab style="border: none;background-color: rgb(24, 130, 223);margin-right: 5px;"
+          (click)="goBack()">
+          <i class="fas fa-arrow-left"></i></button>
+        <h1>Crear Nuevo Plan  de Nivel Superior</h1>
+      </header>
+      
+    <div class="form-container">
+
+      <form [formGroup]="upperPlanForm" (ngSubmit)="createUpperLevelPlan()">
+        <div class="label-container">
+          <label for="nombre" class="label">Nombre:</label>
+        </div>
+        <input type="text" id="nombre" formControlName="nombre" required />
+        <div *ngIf="upperPlanForm.get('nombre').invalid && upperPlanForm.get('nombre').touched">
+          <div class="error-message">El nombre del plan de nivel Superior es obligatorio.</div>
+        </div>
+        <button type="submit" [disabled]="!upperPlanForm.valid" mat-mini-fab>
+          <i class="fas fa-save"></i>
+        </button>
+        <div *ngIf="showErrorMessage" class="error-message">
+          Por favor complete los campos obligatorios.
+        </div>
+      </form>
+      
+      <div *ngIf="showSuccessMessage" class="success-message">
+        Plan de Nivel Superior creado correctamente.
+      </div>
+    </div>
+  </div>
+</div>

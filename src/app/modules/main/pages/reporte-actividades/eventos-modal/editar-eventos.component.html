@@ -1,0 +1,63 @@
+<div class="cont">
+  <div class="container-fluid">
+    <div class="card">
+      <header>
+        <h2>Editar Eventos</h2>
+      </header>
+      <div class="container-fluid">
+        <div mat-dialog-content>
+          <form [formGroup]="eventsForm">
+            <div class="grid-item">
+              <h2>Nombre del Evento</h2>
+              <mat-form-field>
+                <mat-label>Ingresar Nombre</mat-label>
+                <input matInput formControlName="nombre">
+              </mat-form-field>
+            </div>
+
+            <div class="grid-item">
+              <h2>Ciudad</h2>
+              <mat-form-field>
+                <mat-label>Ingresar Ciudad</mat-label>
+                <input matInput placeholder="Ciudad" formControlName="ciudad">
+              </mat-form-field>
+            </div>
+
+            <div class="grid-item">
+              <h2>País</h2>
+              <mat-form-field>
+                <mat-label>Ingresar País</mat-label>
+                <input matInput placeholder="País" formControlName="pais">
+              </mat-form-field>
+            </div> 
+            <div class="grid-item">
+              <h2>Fecha</h2>
+              <mat-form-field>
+                <mat-label>Ingresar Fecha</mat-label>
+                <input matInput type="date" placeholder="Fecha" formControlName="fecha">
+                <mat-error *ngIf="eventsForm.get('fecha').errors && eventsForm.get('fecha').errors.futureOrCurrentDate">
+                  La fecha no puede ser una fecha pasada.
+                </mat-error>
+              </mat-form-field>
+            </div>       
+          </form>
+        </div>
+        <div mat-dialog-actions>
+          <div class="action-buttons">
+            <button class="edit" mat-mini-fab color="primary" aria-label="Guardar" mat-button  (click)="guardarCambios()">
+              <i class="fa fa-save" aria-hidden="true"></i>
+            </button>
+                        
+            <button class="delete" mat-mini-fab color="warn" aria-label="Borrar" mat-button  (click)="cerrar()">
+              <i class="fas fa-times-circle" aria-hidden="true"></i>  
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
