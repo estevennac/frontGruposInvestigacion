@@ -1,0 +1,36 @@
+<div class="cont">
+    <div class="container-fluid">
+      <div class="back-button-container">
+        <header style="display: flex;">
+          <h1>{{ isEditing ? 'Editar Plan de Nivel Superior' : 'Crear Nuevo Plan de Nivel Superior' }}</h1>
+        </header>
+      </div>
+  
+      <!-- Spinner de carga -->
+      <div *ngIf="isLoading" class="loading-spinner-overlay">
+        <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
+      </div>
+  
+      <!-- Formulario -->
+      <div class="form-container" *ngIf="!isLoading">
+        <form [formGroup]="upperPlanForm" (ngSubmit)="saveUpperPlan()">
+          <!-- Campo de nombre de la Plan de Nivel Superior -->
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Nombre del Plan de Nivel Superior</mat-label>
+            <input matInput type="text" formControlName="nombre" required>
+            <mat-error *ngIf="upperPlanForm.get('nombre').invalid && upperPlanForm.get('nombre').touched">
+              El nombre del Plan de Nivel Superior es obligatorio.
+            </mat-error>
+          </mat-form-field>
+  
+          <!-- Botón de guardar -->
+          <div class="button-container">
+            <button mat-raised-button color="primary" type="submit" [disabled]="!upperPlanForm.valid">
+              {{ isEditing ? 'Actualizar' : 'Guardar' }}
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  

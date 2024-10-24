@@ -1,0 +1,54 @@
+<div class="cont">
+    <div class="container-fluid">
+      <div class="back-button-container">
+        <header style="display: flex;">
+          <h1>{{ isEditing ? 'Editar Plan Nacional' : 'Crear Nuevo Plan Nacional' }}</h1>
+        </header>
+      </div>
+  
+      <!-- Spinner de carga -->
+      <div *ngIf="isLoading" class="loading-spinner-overlay">
+        <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
+      </div>
+  
+      <!-- Formulario -->
+      <div class="form-container" *ngIf="!isLoading">
+        <form [formGroup]="planNationalForm" (ngSubmit)="saveNationalPlan()">
+          <!-- Campo de nombre de la Plan nacional -->
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Nombre del Plan Nacional</mat-label>
+            <input matInput type="text" formControlName="nombre" required>
+            <mat-error *ngIf="planNationalForm.get('nombre').invalid && planNationalForm.get('nombre').touched">
+              El nombre del Plan Nacional es obligatorio.
+            </mat-error>
+          </mat-form-field>
+
+            <!--Campo de Numero Politica-->
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Numero de Politica</mat-label>
+            <input matInput type="text" formControlName="numeroPolitica" required>
+            <mat-error *ngIf="planNationalForm.get('numeroPolitica').invalid && planNationalForm.get('numeroPolitica').touched">
+              El numero de politica es obligatorio.
+            </mat-error>
+          </mat-form-field>
+
+          <!--Campo de descripcion-->
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Descripcion del Plan Nacional</mat-label>
+            <input matInput type="text" formControlName="descripcion" required>
+            <mat-error *ngIf="planNationalForm.get('descripcion').invalid && planNationalForm.get('descripcion').touched">
+              La descripcioon es obligatorio.
+            </mat-error>
+          </mat-form-field>
+  
+          <!-- Botón de guardar -->
+          <div class="button-container">
+            <button mat-raised-button color="primary" type="submit" [disabled]="!planNationalForm.valid">
+              {{ isEditing ? 'Actualizar' : 'Guardar' }}
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  

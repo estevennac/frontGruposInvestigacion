@@ -2,15 +2,22 @@ import { Component, OnInit } from '@angular/core';
 import { NationalPlan } from 'src/app/types/nationalPlan.types';
 import { NationalPlanService } from 'src/app/core/http/national-plan/national-plan.service';
 import { Router } from '@angular/router';
+import { MatDialog } from '@angular/material/dialog';
+import { ModalNationalControl } from './modal-national-plan.component';
 
 @Component({
   selector: 'app-national-plan-list',
   templateUrl: './national-plan.component.html',
   styleUrls: ['../modulos.component.scss'],})
+
 export class NationalPlanComponent implements OnInit {
    nationalPlan: NationalPlan[] = [];
 
-  constructor(private router: Router, private nationalPlanService: NationalPlanService) {}
+  constructor(
+    private router: Router, 
+    private nationalPlanService: NationalPlanService,
+    private dialog: MatDialog
+  ) {}
 
   ngOnInit() {
     this.getPlan();
@@ -23,14 +30,24 @@ export class NationalPlanComponent implements OnInit {
     });
   }
 
-  createPlan() {
-    this.router.navigate(['main/national-plan/create']);
+  openDialog(nationalPlan?: NationalPlan): void {
+    const dialogRef = this.dialog.open(ModalNationalControl, {
+      width: '50%',
+      height: '70%',
+      data: { nationalPlan } // Pasar los datos de la línea si existe (para edición)
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.getPlan(); // Actualizar la tabla si se creó o editó algo
+      }
+    });
   }
   
   editPlan(id: number) {
     this.nationalPlanService.getById(id).subscribe(
       (nationalPlan: NationalPlan) => {
-        this.router.navigate(['/main/national-plan/edit'], { state: { nationalPlan } });
+        this.openDialog(nationalPlan);
       },
       (error) => {
         console.error('Error al obtener los detalles del plan Nacional', error);

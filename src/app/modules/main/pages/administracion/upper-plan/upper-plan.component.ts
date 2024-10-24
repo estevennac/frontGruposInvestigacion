@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { UpperLevelPlan } from 'src/app/types/upperLevelPlan.types';
 import { UpperLevelPlanService } from 'src/app/core/http/upperLevel-plan/upper-level-plan.service';
 import { Router } from '@angular/router';
+import { MatDialog } from '@angular/material/dialog';
+import { ModalUpperPlanControl } from './modal-upper-plan.component';
 
 @Component({
   selector: 'app-upper-plan-list',
@@ -10,7 +12,11 @@ import { Router } from '@angular/router';
 export class UpperPlanComponent implements OnInit {
   upperLevelPlan: UpperLevelPlan[] = [];
 
-  constructor(private router: Router, private upperLevelPlanService: UpperLevelPlanService) {}
+  constructor(
+    private router: Router, 
+    private upperLevelPlanService: UpperLevelPlanService,
+    private dialog: MatDialog,
+  ) {}
 
   ngOnInit() {
     this.getPlan();
@@ -24,8 +30,18 @@ export class UpperPlanComponent implements OnInit {
     });
   }
 
-  createPlan() {
-    this.router.navigate(['main/upper-plan/create']);
+  openDialog(upperLevelPlan?: UpperLevelPlan): void {
+    const dialogRef = this.dialog.open(ModalUpperPlanControl, {
+      width: '50%',
+      height: '70%',
+      data: { upperLevelPlan } // Pasar los datos de la línea si existe (para edición)
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.getPlan(); // Actualizar la tabla si se creó o editó algo
+      }
+    });
   }
   
   editPlan(id: number) {

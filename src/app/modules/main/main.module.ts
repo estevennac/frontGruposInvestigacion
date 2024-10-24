@@ -49,7 +49,7 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import { CargaMemoDirComponent } from './pages/directorDepartamento/memorandosSolicitudCreacion/memorando.component';
 import { GestionRolesComponent } from './pages/administracion/gestion-roles/gestion-crea/gestion-roles.component';
 import { GestionMenuComponent } from './pages/administracion/gestion-roles/gestion-menu.component';
-
+import { ModalUpperPlanControl } from './pages/administracion/upper-plan/modal-upper-plan.component';
 import { GestionRolesPrincipalComponent } from './pages/administracion/gestion-roles/gestion-crea/gestion-roles-principal.component';
 import { AgregarObjetivosComponent } from './pages/reporte-actividades/objetivosModal/agregar-objetivos.component';
 import { EditarObjetivosComponent } from './pages/reporte-actividades/objetivosModal/editar-objetivos.component';
@@ -122,9 +122,12 @@ import { AcademicDomainsControl } from './pages/administracion/dominios-academic
 import { AreaControl } from './pages/administracion/area/modal_area.component';
 import { LineaControl } from './pages/administracion/line/modal_line.component';
 import { LegalFrameworkControl } from './pages/administracion/legal-framework/modal_legal_framework.component';
+import { ModalNationalControl } from './pages/administracion/national-plan/modal-national-plan.component';
 @NgModule({
   declarations: [
     MainComponent,
+    ModalNationalControl,
+    ModalUpperPlanControl,
     LegalFrameworkControl,
     LineaControl,
     ChecklistFormComponent,
