@@ -29,13 +29,13 @@
           <td>{{ a.nombreArea }}</td>
           <td> {{a.estado ? 'Activo' : 'Inactivo'}}</td>
           <td>
-            <button class="edit" mat-mini-fab (click)="editArea(a.idArea)">
+            <button class="edit" mat-mini-fab (click)="edit(a.idArea)">
               <i class="fas fa-edit"></i> 
             </button>
-            <button *ngIf="a.estado" class="delete"  mat-mini-fab (click)="deleteArea(a.idArea)">
+            <button *ngIf="a.estado" class="delete"  mat-mini-fab (click)="deletee(a.idArea)">
               <i class="fas fa-trash-alt"></i> 
             </button>
-            <button *ngIf="!a.estado" class="activar"  mat-mini-fab (click)="activeArea(a.idArea)">
+            <button *ngIf="!a.estado" class="activar"  mat-mini-fab (click)="active(a.idArea)">
               <i class="fas fa-check"></i> 
             </button>
           </td>

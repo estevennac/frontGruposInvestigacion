@@ -13,7 +13,7 @@
 
         <!-- Formulario -->
         <div class="form-container" *ngIf="!isLoading">
-            <form [formGroup]="areaForm" (ngSubmit)="saveArea()">
+            <form [formGroup]="areaForm" (ngSubmit)="save()">
                 <mat-form-field appearance="outline" class="full-width">
                     <mat-label>Nombre del Area</mat-label>
                     <input matInput type="text" formControlName="nombreArea" required>

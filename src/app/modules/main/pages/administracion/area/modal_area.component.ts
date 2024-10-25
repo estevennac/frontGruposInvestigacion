@@ -39,12 +39,12 @@ export class AreaControl implements OnInit {
         // Si hay datos, significa que se está editando un dominio
         if (this.data && this.data.area) {
             this.isEditing = true;
-            this.loadAreaData(this.data.area); // Cargar los datos del dominio para editar
+            this.loadData(this.data.area); // Cargar los datos del dominio para editar
         }
     }
 
     // Cargar los datos del dominio académico para la edición
-    loadAreaData(area: Area) {
+    loadData(area: Area) {
         this.areaForm.patchValue({
             nombreArea: area.nombreArea,
             estado: area.estado
@@ -52,20 +52,20 @@ export class AreaControl implements OnInit {
     }
 
     // Método para crear o actualizar dependiendo de la acción
-    saveArea() {
+    save() {
         if (this.areaForm.valid) {
             this.isLoading = true; // Mostrar el spinner
 
             if (this.isEditing) {
-                this.updateArea();
+                this.update();
             } else {
-                this.createArea();
+                this.create();
             }
         }
     }
 
     // Crear un nuevo dominio académico
-    createArea() {
+    create() {
         const areaData: Area = this.areaForm.value;
         areaData.fechaCreacionArea = this.currentDate;
         areaData.usuarioCreacionArea = this.currentUser;
@@ -85,7 +85,7 @@ export class AreaControl implements OnInit {
     }
 
     // Editar un dominio académico existente
-    updateArea() {
+    update() {
         const updatedData: Area = this.areaForm.value;
         updatedData.fechaModificacionArea = this.currentDate;
         updatedData.usuarioModificacionArea = this.currentUser;

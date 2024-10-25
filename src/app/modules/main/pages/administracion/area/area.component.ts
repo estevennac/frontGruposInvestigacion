@@ -17,10 +17,10 @@ export class AreaComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.getArea();
+    this.get();
   }
 
-  getArea() {
+  get() {
     this.areaService.getAll().subscribe((data) => {
       this.area = data;
     });
@@ -35,13 +35,13 @@ export class AreaComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe((result) => {
         if (result) {
-            this.getArea(); // Actualizar la tabla si se creó o editó algo
+            this.get(); // Actualizar la tabla si se creó o editó algo
         }
     });
 }
 
   
-editArea(id: number) {
+edit(id: number) {
   this.areaService.getById(id).subscribe(
       (area: Area) => {
           this.openDialog(area); // Abrir el modal con los datos para editar
@@ -52,22 +52,22 @@ editArea(id: number) {
   );
 }
 
-  deleteArea(id: number) {
+  deletee(id: number) {
     this.areaService.update(id, { estado: false }).subscribe(
       () => {
         console.log(`Area con ID ${id} eliminado correctamente`);
-        this.getArea();
+        this.get();
       },
       (error) => {
         console.error('Error al eliminar el dominio académico', error);
       }
     );
   }
-  activeArea(id: number) {
+  active(id: number) {
     this.areaService.update(id, { estado: true }).subscribe(
       () => {
         console.log(`Area con ID ${id} eliminado correctamente`);
-        this.getArea();
+        this.get();
       },
       (error) => {
         console.error('Error al eliminar el dominio académico', error);
