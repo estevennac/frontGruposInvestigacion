@@ -3,10 +3,11 @@ export interface InvGroupForm {
     idUser: number;
     nombreGrupoInv: string;
     estadoGrupoInv: string;
-    nombreOlGrupoInv: string;
     acronimoGrupoinv: string;
-    usuarioCreacionUsuario: string;
-    fechaCreacionUsuario: Date;
-    usuarioModificacionUsuario: string;
-    fechaModificacionUsuario: Date;
+    mision?:string;
+    vision?:string;
+    usuarioCreacion: string;
+    fechaCreacion: Date;
+    usuarioModificacion: string;
+    fechaModificacion: Date;
 }

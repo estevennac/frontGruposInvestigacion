@@ -8,7 +8,7 @@ import { CreationReqForm } from 'src/app/types/creationReq.types';
 import { CreationReqService } from 'src/app/core/http/creation-req/creation-req.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { InvGroupService } from 'src/app/core/http/inv-group/inv-group.service';
-import { InvGroupForm } from 'src/app/types/solCreaGI.types'; 
+import { InvGroupForm } from 'src/app/types/invGroup.types';
 import { DocumentsService } from 'src/app/core/http/documentos/documents.service';
 @Component({
   selector: 'app-carga-anexo',
@@ -169,12 +169,11 @@ export class CargaMemoConsejoComponent implements OnInit {
         idUser:data.idUser,
         nombreGrupoInv:data.nombreGrupoInv,
         estadoGrupoInv:"Registro",
-        nombreOlGrupoInv:data.nombreOlGrupoInv,
         acronimoGrupoinv:data.acronimoGrupoinv,
-        usuarioCreacionUsuario:data.usuarioCreacionUsuario,
-        fechaCreacionUsuario:data.fechaCreacionUsuario,
-        usuarioModificacionUsuario:this.currentUser,
-        fechaModificacionUsuario:this.currentDate
+        usuarioCreacion:data.usuarioCreacion,
+        fechaCreacion:data.fechaCreacion,
+        usuarioModificacion:this.currentUser,
+        fechaModificacion:this.currentDate
 
       }
       this.invGroupService.update(this.groupId,invGroup).subscribe(

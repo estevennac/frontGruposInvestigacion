@@ -1,14 +1,14 @@
 export interface Usuario{
     id:number;
-    usuario:string;
+    usuario?:string;
     nombre:string;
-    idInstitucional:string;
+    idInstitucional?:string;
     telefono:string;
     correo:string;
-    departamento:string;
+    departamento?:string;
     cedula:string;
     institucion:string;
-    cargo:string;
+    cargo?:string;
     fechaCreacion:Date;
     fechaModificacion:Date;
     usuarioCreacion:string;

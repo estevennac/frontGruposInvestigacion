@@ -8,13 +8,13 @@ import { CreationReqForm } from 'src/app/types/creationReq.types';
 import { InvGroupForm } from 'src/app/types/invGroup.types';
 import { InvMemberForm } from 'src/app/types/invMember.types';
 import { Usuario } from 'src/app/types/usuario.types';
-import { AcadCreaService } from 'src/app/core/http/acad-crea/acad-crea.service';
-import { LineCreaService } from 'src/app/core/http/line-crea/line-crea.service';
+import { InvGroup_academicDomainService } from 'src/app/core/http/invGroup_academicDomain/invGroup_academicDomain.service';
+import { InvGroup_linesService } from 'src/app/core/http/InvGroup_line/invGroup_linesService.service';
 import { Line } from 'src/app/types/line.types';
-import { LineCreaCompleto } from 'src/app/types/lineCrea.types';
-import { AcadCreaCompleto } from 'src/app/types/acadCrea.types';
-import { CreaAreaCompleto } from 'src/app/types/creaArea.types';
-import { CreaAreaService } from 'src/app/core/http/crea-area/crea-area.service';
+import { LineCreaCompleto } from 'src/app/types/invGroup_line';
+import { AcadCreaCompleto } from 'src/app/types/invGroup_academicDomain';
+import { CreaAreaCompleto } from 'src/app/types/invGroup_area.types';
+import { InvGroup_areaService } from 'src/app/core/http/invGroup_area/crea-area.service';
 import { DevelopmentPlanService } from 'src/app/core/http/develop-plan-form/develop-plan-form.service';
 import { DevelopmentPlanForms } from 'src/app/types/developPlanForm';
 import { LegalFrameworkFilter } from 'src/app/types/deveLega.types';
@@ -66,9 +66,9 @@ export class MostrarSolicitudForDirector implements OnInit {
     private invGroupService: InvGroupService,
     private userService: UsuarioService,
     private invMemberService: InvMemberService,
-    private lineCreaService: LineCreaService,
-    private acadCreaService: AcadCreaService,
-    private creaAreaService: CreaAreaService,
+    private invGroup_linesService: InvGroup_linesService,
+    private invGroup_academicDomainService: InvGroup_academicDomainService,
+    private invGroup_areaService: InvGroup_areaService,
     private router: Router,
     private developmentService: DevelopmentPlanService,
     private deveLegaService: DeveLegaService, 
@@ -156,14 +156,14 @@ export class MostrarSolicitudForDirector implements OnInit {
     })
   }
   obtenerSegmentosInvestigacion(id: number) {
-    this.lineCreaService.getByReq(id).subscribe(data => {
+    this.invGroup_linesService.getByReq(id).subscribe(data => {
       this.lineCrea = data;
 
     });
-    this.acadCreaService.getByReq(id).subscribe(data => {
+    this.invGroup_academicDomainService.getByReq(id).subscribe(data => {
       this.acadCrea = data;
     });
-    this.creaAreaService.getByReq(id).subscribe(data => {
+    this.invGroup_areaService.getByReq(id).subscribe(data => {
       this.creaArea = data;
     });
   }

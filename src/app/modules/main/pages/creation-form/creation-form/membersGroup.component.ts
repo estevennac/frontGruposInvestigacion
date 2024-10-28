@@ -1,10 +1,11 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialog,MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { UsuarioService } from 'src/app/core/http/usuario/usuario.service';
 import { UserApp } from 'src/app/types/userApp.types';
 import { Usuario } from 'src/app/types/usuario.types';
 import { AuthService } from 'src/app/core/auth/services/auth.service';
+import { ExternMembersGroup } from './externMemberForm.component';
 
 @Component({
   selector: 'app-members',
@@ -23,6 +24,8 @@ export class MembersGroup implements OnInit {
     private userService: UsuarioService,
     private authService: AuthService,
     public dialogRef: MatDialogRef<MembersGroup>,
+    private dialog: MatDialog,
+
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
     this.usuarios = data.usuarios;
@@ -113,4 +116,22 @@ export class MembersGroup implements OnInit {
       });
     });
   }
+  crearUsuarioExterno(): void {
+    const dialogRef = this.dialog.open(ExternMembersGroup, {
+        width: '60%',
+        height: '90%',
+        data: { usuarios: this.usuarios }
+    });
+
+    dialogRef.componentInstance.memberCreated.subscribe((usuarioCreado: Usuario) => {
+        console.log('Nuevo usuario creado:', usuarioCreado);
+        // Aquí puedes manejar el usuario creado, como agregarlo a una lista o realizar otra lógica
+        this.usuarios.push(usuarioCreado); // Por ejemplo, agregar a la lista de usuarios
+    });
+
+    dialogRef.afterClosed().subscribe((data: { user: any, usuarioValue: any }) => {
+        // Aquí puedes manejar el cierre del diálogo si es necesario
+    });
+}
+
 }

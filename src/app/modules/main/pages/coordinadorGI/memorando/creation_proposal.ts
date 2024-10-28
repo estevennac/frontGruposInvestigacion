@@ -8,7 +8,7 @@ import { DocumentsService } from 'src/app/core/http/documentos/documents.service
 import { InvGroupService } from 'src/app/core/http/inv-group/inv-group.service';
 import { CreationReqService } from 'src/app/core/http/creation-req/creation-req.service';
 import { CreationReqForm } from 'src/app/types/creationReq.types';
-import { InvGroupForm } from 'src/app/types/solCreaGI.types';
+import { InvGroupForm } from 'src/app/types/invGroup.types';
 import {MatSnackBar} from '@angular/material/snack-bar';
 @Component({
     selector: 'app-carga-anexo',
@@ -170,12 +170,11 @@ export class PropuestaGIComponent implements OnInit {
             idUser:data.idUser,
             nombreGrupoInv:data.nombreGrupoInv,
             estadoGrupoInv:"revDirDep",
-            nombreOlGrupoInv:data.nombreOlGrupoInv,
             acronimoGrupoinv:data.acronimoGrupoinv,
-            usuarioCreacionUsuario:data.usuarioCreacionUsuario,
-            fechaCreacionUsuario:data.fechaCreacionUsuario,
-            usuarioModificacionUsuario:this.currentUser,
-            fechaModificacionUsuario:this.currentDate
+            usuarioCreacion:data.usuarioCreacion,
+            fechaCreacion:data.fechaCreacion,
+            usuarioModificacion:this.currentUser,
+            fechaModificacion:this.currentDate
     
           }
           this.invGroupService.update(this.groupId,invGroup).subscribe(

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { InvGroupForm } from 'src/app/types/solCreaGI.types';
+import { InvGroupForm } from 'src/app/types/invGroup.types';
 
 @Injectable({
   providedIn: 'root'

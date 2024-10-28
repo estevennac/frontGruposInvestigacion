@@ -6,7 +6,7 @@ import { DatePipe } from '@angular/common';
 import { AuthService } from 'src/app/core/auth/services/auth.service';
 import { CreationReqService } from 'src/app/core/http/creation-req/creation-req.service';
 import { InvGroupService } from 'src/app/core/http/inv-group/inv-group.service';
-import { InvGroupForm } from 'src/app/types/solCreaGI.types';
+import { InvGroupForm } from 'src/app/types/invGroup.types';
 import { CreationReqForm } from 'src/app/types/creationReq.types';
 import { AcademicDomainService } from 'src/app/core/http/academic-domain/academic-domain.service';
 import { AreaService } from 'src/app/core/http/area/area.service';
@@ -15,12 +15,12 @@ import { InvMemberService } from 'src/app/core/http/inv-member/inv-member.servic
 import { UsuarioService } from 'src/app/core/http/usuario/usuario.service';
 import { MatDialog } from '@angular/material/dialog';
 import { MembersGroup } from './membersGroup.component';
-import { AcadCreaService } from 'src/app/core/http/acad-crea/acad-crea.service';
-import { LineCreaService } from 'src/app/core/http/line-crea/line-crea.service';
-import { CreaAreaService } from 'src/app/core/http/crea-area/crea-area.service';
-import { AcadCrea } from 'src/app/types/acadCrea.types';
-import { LineCrea } from 'src/app/types/lineCrea.types';
-import { CreaAreaForm } from 'src/app/types/creaArea.types';
+import { InvGroup_academicDomainService } from 'src/app/core/http/invGroup_academicDomain/invGroup_academicDomain.service';
+import { InvGroup_linesService } from 'src/app/core/http/InvGroup_line/invGroup_linesService.service';
+import { InvGroup_areaService } from 'src/app/core/http/invGroup_area/crea-area.service';
+import { InvGroup_academicDomain } from 'src/app/types/invGroup_academicDomain';
+import { InvGroup_line } from 'src/app/types/invGroup_line';
+import { InvGroup_area } from 'src/app/types/invGroup_area.types';
 import { InvMemberForm } from 'src/app/types/invMember.types';
 import { UserRolService } from 'src/app/core/http/userRol/userRol.service';
 import { UserRoles } from 'src/app/types/userRol.types';
@@ -79,9 +79,9 @@ export class CreationFormComponent implements OnInit {
     private router: Router,
     private dialog: MatDialog,
     private usuarioService: UsuarioService,
-    private creaAreaService: CreaAreaService,
-    private acadCreaService: AcadCreaService,
-    private lineCreaService: LineCreaService,
+    private invGroup_areaService: InvGroup_areaService,
+    private invGroup_academicDomainService: InvGroup_academicDomainService,
+    private invGroup_linesService: InvGroup_linesService,
     private userRolService: UserRolService,
     private annexesServices: AnnexesService, private checklistService: ChecklistService,
     private documentService: DocumentsService
@@ -94,6 +94,27 @@ export class CreationFormComponent implements OnInit {
     this.currentDate = new Date();
     this.currentUserId=Number(sessionStorage.getItem("userId"));
     this.checkInvGroupInSessionStorage();
+    this.areasControl.valueChanges.subscribe((selectedAreas: any[]) => {
+      this.updateLineasByAreas(selectedAreas);
+    });
+  }
+  updateLineasByAreas(selectedAreas: any[]) {
+    this.lineas = []; // Limpia las líneas actuales
+
+    if (selectedAreas.length > 0) {
+      // Itera sobre cada área seleccionada y llama al servicio para obtener sus líneas
+      selectedAreas.forEach((idArea) => {
+        this.lineService.getLineByArea(idArea).subscribe((lineasArea: any[]) => {
+          // Agrega las líneas obtenidas y evita duplicados
+          this.lineas = [
+            ...this.lineas,
+            ...lineasArea.filter(
+              (linea) => !this.lineas.some((l) => l.idLinea === linea.idLinea)
+            ),
+          ];
+        });
+      });
+    }
   }
   //Verificamos si existe un grupo de investigación o se ha empezado algun proceso respecto a la creacion del mismo
   checkInvGroupInSessionStorage() {
@@ -112,7 +133,7 @@ export class CreationFormComponent implements OnInit {
      this.cargarInfoGrupo(Number(invGroup));
       this.loadDominios();
       this.loadAreas();
-      this.loadLineas();
+      //this.loadLineas();
       this.dominiosControl.patchValue(this.dominios);
       this.areasControl.patchValue(this.areas);
       this.lineasControl.patchValue(this.lineas);
@@ -122,7 +143,6 @@ export class CreationFormComponent implements OnInit {
       grupoInv1: this.builder.group({
         idUser: sessionStorage.getItem('idUser'),
         nombreGrupoInv: ['', Validators.required],
-        nombreOlGrupoInv: ['', Validators.required],
         acronimoGrupoinv: ['', Validators.required],
       }),
       grupoInv2: this.builder.group({
@@ -193,12 +213,12 @@ export class CreationFormComponent implements OnInit {
     });
   }
   
-  loadLineas(): void {
+  /*loadLineas(): void {
     this.lineService.getAll().subscribe(data => {
       this.lineas = data.filter(linea => linea.estado === true);
       this.loadingData = false;
     });
-  }
+  }*/
 
 
   //Abrimos un modal para poder agregar investigadores, en base a usuarios que se utilizan mediante la Api de la ESPE, mediante su username
@@ -304,12 +324,11 @@ export class CreationFormComponent implements OnInit {
         idUser:this.currentUserId, 
         nombreGrupoInv:this.myForm.value.grupoInv1.nombreGrupoInv,
         estadoGrupoInv:"inicialpp", 
-        nombreOlGrupoInv:this.myForm.value.grupoInv1.nombreOlGrupoInv,
         acronimoGrupoinv:this.myForm.value.grupoInv1.acronimoGrupoinv, 
-        usuarioCreacionUsuario:this.currentUser, 
-        fechaCreacionUsuario:this.currentDate, 
-        usuarioModificacionUsuario:null, 
-        fechaModificacionUsuario:null
+        usuarioCreacion:this.currentUser, 
+        fechaCreacion:this.currentDate, 
+        usuarioModificacion:null, 
+        fechaModificacion:null
       }     
       this.solCreaGIFormService.createInvGroup(grupoInvData).subscribe(
         (response) => {
@@ -373,15 +392,15 @@ export class CreationFormComponent implements OnInit {
     const dominiosSeleccionados = this.dominiosControl.value;
     if (dominiosSeleccionados && dominiosSeleccionados.length > 0) {
       dominiosSeleccionados.forEach((dominioId: number) => {
-        const acadCreaForm: AcadCrea = {
-          idPeticionCreacion: id,
+        const acadCreaForm: InvGroup_academicDomain = {
+          idGrupo: id,
           idDomAcad: dominioId,
           usuarioCreacion: this.currentUser,
           fechaCreacion: this.currentDate,
           usuarioModificacion: null,
           fechaModificacion: null
         }
-        this.acadCreaService.createAcadCreaForm(acadCreaForm).subscribe(
+        this.invGroup_academicDomainService.createAcadCreaForm(acadCreaForm).subscribe(
           (response) => {
           }
         );
@@ -394,15 +413,15 @@ export class CreationFormComponent implements OnInit {
     const lineasSeleccionadas = this.lineasControl.value;
     if (lineasSeleccionadas && lineasSeleccionadas.length > 0) {
       lineasSeleccionadas.forEach((lineasId: number) => {
-        const lineCreaForm: LineCrea = {
-          idPeticionCreacion: id,
+        const lineCreaForm: InvGroup_line = {
+          idGrupo: id,
           idLinea: lineasId,
           usuarioCreacion: this.currentUser,
           fechaCreacion: this.currentDate,
           usuarioModificacion: null,
           fechaModificacion: null
         }
-        this.lineCreaService.createLineCreaForm(lineCreaForm).subscribe(
+        this.invGroup_linesService.createInvGroup_lineForm(lineCreaForm).subscribe(
           (response) => {
           }
         )
@@ -415,15 +434,15 @@ export class CreationFormComponent implements OnInit {
     const areasSeleccionadas = this.areasControl.value;
     if (areasSeleccionadas && areasSeleccionadas.length > 0) {
       areasSeleccionadas.forEach((areasId: number) => {
-        const areaForm: CreaAreaForm = {
-          idPeticionCreacion: id,
+        const areaForm: InvGroup_area = {
+          idGrupo: id,
           idArea: areasId,
           usuarioCreacion: this.currentUser,
           fechaCreacion: this.currentDate,
           usuarioModificacion: null,
           fechaModificacion: null
         }
-        this.creaAreaService.createAreaCreaForm(areaForm).subscribe(
+        this.invGroup_areaService.createAreaCreaForm(areaForm).subscribe(
           (response) => {
           }
         )

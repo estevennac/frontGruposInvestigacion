@@ -8,7 +8,7 @@ import { GlobalUserService } from 'src/app/core/http/user/global-user.service';
 import { Usuario } from 'src/app/types/usuario.types';
 import { CreationReqForm } from 'src/app/types/creationReq.types';
 import { InvGroupService } from 'src/app/core/http/inv-group/inv-group.service';
-import { InvGroupForm } from 'src/app/types/solCreaGI.types';
+import { InvGroupForm } from 'src/app/types/invGroup.types';
 import { CreationReqService } from 'src/app/core/http/creation-req/creation-req.service';
 import { ChecklistForm } from 'src/app/types/checklist.types';
 @Component({
@@ -149,12 +149,11 @@ export class ChecklistFormComponent implements OnInit {
           idUser:data.idUser,
           nombreGrupoInv:data.nombreGrupoInv,
           estadoGrupoInv:"ValidaCheckCI",
-          nombreOlGrupoInv:data.nombreOlGrupoInv,
           acronimoGrupoinv:data.acronimoGrupoinv,
-          usuarioCreacionUsuario:data.usuarioCreacionUsuario,
-          fechaCreacionUsuario:data.fechaCreacionUsuario,
-          usuarioModificacionUsuario:currentUser,
-          fechaModificacionUsuario:currentDateUpdate,
+          usuarioCreacion:data.usuarioCreacion,
+          fechaCreacion:data.fechaCreacion,
+          usuarioModificacion:currentUser,
+          fechaModificacion:currentDateUpdate,
         }
         this.invGroupService.update(idGroup,grupoData).subscribe(
           ()=>{
@@ -245,12 +244,11 @@ export class ChecklistFormComponent implements OnInit {
           idUser:data.idUser,
           nombreGrupoInv:data.nombreGrupoInv,
           estadoGrupoInv:"ValidaCheckCI",
-          nombreOlGrupoInv:data.nombreOlGrupoInv,
           acronimoGrupoinv:data.acronimoGrupoinv,
-          usuarioCreacionUsuario:data.usuarioCreacionUsuario,
-          fechaCreacionUsuario:data.fechaCreacionUsuario,
-          usuarioModificacionUsuario:currentUser,
-          fechaModificacionUsuario:currentDateUpdate,
+          usuarioCreacion:data.usuarioCreacion,
+          fechaCreacion:data.fechaCreacion,
+          usuarioModificacion:currentUser,
+          fechaModificacion:currentDateUpdate,
         }
         this.invGroupService.update(idGroup,grupoData).subscribe(
           ()=>{

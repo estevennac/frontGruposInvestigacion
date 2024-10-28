@@ -1,5 +1,5 @@
-export interface AcadCrea {
-    idPeticionCreacion: number;
+export interface InvGroup_academicDomain {
+    idGrupo: number;
     idDomAcad: number;
     usuarioCreacion: string;
     fechaCreacion: Date;

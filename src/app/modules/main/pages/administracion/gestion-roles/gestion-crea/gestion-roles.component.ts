@@ -92,7 +92,7 @@ export class GestionRolesComponent implements OnInit {
             usuarioCreacion: currentUser,
             usuarioModificacion: null,
             institucion: 'UNIVERSIDAD DE LAS FUERZAS ARMADAS – ESPE',
-            cargo: ''
+            cargo: data.escalafon
           };
           this.userService.createUser(usuario).subscribe(
             (response) => {

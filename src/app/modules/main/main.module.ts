@@ -123,9 +123,11 @@ import { AreaControl } from './pages/administracion/area/modal_area.component';
 import { LineaControl } from './pages/administracion/line/modal_line.component';
 import { LegalFrameworkControl } from './pages/administracion/legal-framework/modal_legal_framework.component';
 import { ModalNationalControl } from './pages/administracion/national-plan/modal-national-plan.component';
+import { ExternMembersGroup } from './pages/creation-form/creation-form/externMemberForm.component';
 @NgModule({
   declarations: [
     MainComponent,
+    ExternMembersGroup,
     ModalNationalControl,
     ModalUpperPlanControl,
     LegalFrameworkControl,

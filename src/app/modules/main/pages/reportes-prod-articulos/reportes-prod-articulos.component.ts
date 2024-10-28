@@ -3,7 +3,7 @@ import { Subject, forkJoin } from 'rxjs';
 import { map, switchMap, takeUntil, tap } from 'rxjs/operators';
 import { Chart } from 'chart.js';
 import 'chartjs-plugin-labels';
-import { InvGroupForm } from 'src/app/types/solCreaGI.types';
+import { InvGroupForm } from 'src/app/types/invGroup.types';
 import { SolCreaGiService } from 'src/app/core/http/sol-crea-gi/sol-crea-gi.service';
 import { InvgActiService } from 'src/app/core/http/invg-acti/invg-acti.service';
 import { MagazinesService } from 'src/app/core/http/magazines/magazines.service';

@@ -172,12 +172,11 @@ export class MemoDirVIITComponent implements OnInit {
         idUser:data.idUser,
         nombreGrupoInv:data.nombreGrupoInv,
         estadoGrupoInv:"revVITT",
-        nombreOlGrupoInv:data.nombreOlGrupoInv,
         acronimoGrupoinv:data.acronimoGrupoinv,
-        usuarioCreacionUsuario:data.usuarioCreacionUsuario,
-        fechaCreacionUsuario:data.fechaCreacionUsuario,
-        usuarioModificacionUsuario:this.currentUser,
-        fechaModificacionUsuario:this.currentDate
+        usuarioCreacion:data.usuarioCreacion,
+        fechaCreacion:data.fechaCreacion,
+        usuarioModificacion:this.currentUser,
+        fechaModificacion:this.currentDate
 
       }
       this.invGroupService.update(this.groupId,invGroup).subscribe(

@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 import { AuthService } from 'src/app/core/auth/services/auth.service';
 
 import { InvGroupService } from 'src/app/core/http/inv-group/inv-group.service';
-import { InvGroupForm } from 'src/app/types/solCreaGI.types';
+import { InvGroupForm } from 'src/app/types/invGroup.types';
 @Component({
   selector: 'app-carga-anexo',
   templateUrl: './memorando.component.html',

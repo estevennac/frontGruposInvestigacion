@@ -21,6 +21,8 @@
               <!-- Información del usuario -->
               <h2>{{user.nombres}}</h2>
               <h3>{{user.tipo}}</h3>
+              <h3>{{user.escalafon}}</h3>
+
               <h3>{{user.ubicacion}}</h3>
               <h3>{{user.correoInstitucional}} - {{user.correoPersonal}}</h3>
               <h3>{{user.id}} - {{user.cedula}}</h3>
@@ -49,6 +51,11 @@
           Añadir
         </button>
         <button mat-button class="btn-cerrar" [mat-dialog-close]="" (click)="limpiarUsuario()">Cerrar</button>
+        <button mat-button class="btn-agregar" 
+                (click)="crearUsuarioExterno()"
+                *ngIf="!isSearchClicked">
+          Añadir miembro externo
+        </button>
       </div>
     </div>
   </div>

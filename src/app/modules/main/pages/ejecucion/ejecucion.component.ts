@@ -1,17 +1,17 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { AcadCreaService } from 'src/app/core/http/acad-crea/acad-crea.service';
+import { InvGroup_academicDomainService } from 'src/app/core/http/invGroup_academicDomain/invGroup_academicDomain.service';
 import { AcademicDomainService } from 'src/app/core/http/academic-domain/academic-domain.service';
 import { AreaService } from 'src/app/core/http/area/area.service';
-import { CreaAreaService } from 'src/app/core/http/crea-area/crea-area.service';
+import { InvGroup_areaService } from 'src/app/core/http/invGroup_area/crea-area.service';
 import { CreationReqService } from 'src/app/core/http/creation-req/creation-req.service';
 import { InvMemberService } from 'src/app/core/http/inv-member/inv-member.service';
-import { LineCreaService } from 'src/app/core/http/line-crea/line-crea.service';
+import { InvGroup_linesService } from 'src/app/core/http/InvGroup_line/invGroup_linesService.service';
 import { LineService } from 'src/app/core/http/line/line.service';
 import { SolCreaGiService } from 'src/app/core/http/sol-crea-gi/sol-crea-gi.service';
 import { UserRolService } from 'src/app/core/http/userRol/userRol.service';
 import { UsuarioService } from 'src/app/core/http/usuario/usuario.service';
-import { InvGroupForm } from 'src/app/types/solCreaGI.types';
+import { InvGroupForm } from 'src/app/types/invGroup.types';
 import { Usuario } from 'src/app/types/usuario.types';
 import { forkJoin } from 'rxjs';
 import { DatePipe } from '@angular/common';
@@ -34,7 +34,7 @@ export class EjecucionComponent implements OnInit {
 
   constructor(
     private solCreaGiService: SolCreaGiService,
-    private acadCreaService: AcadCreaService,
+    private invGroup_academicDomainService: InvGroup_academicDomainService,
     private fb: FormBuilder,
     private usuarioService: UsuarioService,
     private userRolService: UserRolService,
@@ -43,8 +43,8 @@ export class EjecucionComponent implements OnInit {
     private creationReqService: CreationReqService,
     private areaService: AreaService,
     private lineaService: LineService,
-    private creaAreaService: CreaAreaService,
-    private lineCreaService: LineCreaService,
+    private invGroup_areaService: InvGroup_areaService,
+    private invGroup_linesService: InvGroup_linesService,
     private datePipe: DatePipe
   ) {
     this.dominiosAcademicos = [];
@@ -158,9 +158,9 @@ export class EjecucionComponent implements OnInit {
       const creationReq = creationReqs.find(req => req.idGrupoInv === grupoId);
 
       if (creationReq) {
-        this.acadCreaService.getAll().subscribe(acadCreas => {
+        this.invGroup_academicDomainService.getAll().subscribe(acadCreas => {
           const acadCreasForReq = acadCreas.filter(
-            acad => acad.idPeticionCreacion === creationReq.idPeticionCreacion
+            acad => acad.idGrupo === creationReq.idPeticionCreacion
           );
 
           if (acadCreasForReq.length > 0) {
@@ -186,9 +186,9 @@ export class EjecucionComponent implements OnInit {
       const creationReq = creationReqs.find(req => req.idGrupoInv === grupoId);
 
       if (creationReq) {
-        this.creaAreaService.getAll().subscribe(creaAreas => {
+        this.invGroup_areaService.getAll().subscribe(creaAreas => {
           const creaAreaForReq = creaAreas.filter(
-            ar => ar.idPeticionCreacion === creationReq.idPeticionCreacion
+            ar => ar.idGrupo === creationReq.idPeticionCreacion
           );
 
           if (creaAreaForReq.length > 0) {
@@ -215,9 +215,9 @@ export class EjecucionComponent implements OnInit {
       const creationReq = creationReqs.find(req => req.idGrupoInv === grupoId);
 
       if (creationReq) {
-        this.lineCreaService.getAll().subscribe(lineCreas => {
+        this.invGroup_linesService.getAll().subscribe(lineCreas => {
           const lineCreaForReq = lineCreas.filter(
-            lc => lc.idPeticionCreacion === creationReq.idPeticionCreacion
+            lc => lc.idGrupo === creationReq.idPeticionCreacion
           );
           if (lineCreaForReq.length > 0) {
             const lineCreaIds = lineCreaForReq.map(line => line.idLinea);

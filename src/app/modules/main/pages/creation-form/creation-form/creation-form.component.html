@@ -274,7 +274,7 @@
                                 <div class="grid-item">
 
                                     <mat-form-field appearance="fill">
-                                        <mat-label>Nombre del Grupo:</mat-label>
+                                        <mat-label>Nombre del Grupo (cualquier idioma):</mat-label>
                                         <input matInput id="nombreGrupo"
                                             type="text"
                                             formControlName="nombreGrupoInv"
@@ -283,24 +283,11 @@
                                     </mat-form-field>
                                 </div>
 
-                                <div class="grid-item">
-
-                                    <mat-form-field appearance="fill">
-                                        <mat-label>Nombre en otro
-                                            idioma:</mat-label>
-                                        <input matInput type="text"
-                                            id="nombreOtroIdioma"
-                                            formControlName="nombreOlGrupoInv"
-                                            class="form-control"
-                                            placeholder="Ingrese el nombre en otro idioma">
-                                    </mat-form-field>
-                                </div>
 
                                 <div class="grid-item">
 
                                     <mat-form-field appearance="fill">
-                                        <mat-label>Acrónimo del
-                                            Grupo:</mat-label>
+                                        <mat-label>Acrónimo:</mat-label>
                                         <input matInput type="text"
                                             id="acronimo"
                                             formControlName="acronimoGrupoinv"
@@ -348,7 +335,7 @@
 
                                 <!-- Áreas de Investigación -->
                                 <div class="grid-item">
-                                    <mat-form-field appearance="fill">
+                                    <mat-form-field appearance="fill" *ngIf="dominiosControl.value">
                                         <mat-label>Áreas de
                                             Investigación</mat-label>
                                         <mat-select [formControl]="areasControl"
@@ -364,7 +351,7 @@
 
                                 <!-- Líneas de Investigación -->
                                 <div class="grid-item">
-                                    <mat-form-field appearance="fill">
+                                    <mat-form-field appearance="fill"  *ngIf="areasControl.value">
                                         <mat-label>Líneas de
                                             Investigación</mat-label>
                                         <mat-select
@@ -466,6 +453,8 @@
                                         <thead>
                                             <tr>
                                                 <th>Nombre del Integrante</th>
+                                                <th>Cargo</th>
+                                                <th>Escalafon</th>
                                                 <th>Hoja de Vida</th>
                                                 <th>Borrar</th>
                                             </tr>
@@ -474,6 +463,9 @@
                                             <tr
                                                 *ngFor="let user of selectedUsers; let i = index;">
                                                 <td>{{ user.user.nombres }}</td>
+                                                <td>{{ user.user.tipo }}</td>
+                                                <td>{{ user.user.escalafon }}</td>
+
                                                 <td>
                                                     <input type="file"
                                                         (change)="onFileSelected($event,i,user.userId)"

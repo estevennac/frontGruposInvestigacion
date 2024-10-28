@@ -20,6 +20,10 @@ export class LineService {
   getById(id: number): Observable<Line> {
     return this.http.get<Line>(`${this.URL}/${id}`);
   }
+
+  getLineByArea(id:number):Observable<Line[]>{
+    return this.http.get<Line[]>(`${this.URL}/getLineByArea/${id}`);
+  }
   getArea(id: number): Observable<LineArea> {
     return this.http.get<LineArea>(`${this.URL}/getAreaLine/${id}`);
   }

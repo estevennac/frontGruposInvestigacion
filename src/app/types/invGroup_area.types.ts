@@ -1,13 +1,12 @@
-export interface LineCrea {
-    idPeticionCreacion: number;
-    idLinea: number;
+export interface InvGroup_area {
+    idArea: number;
+    idGrupo: number;
     usuarioCreacion: string;
     fechaCreacion: Date;
     usuarioModificacion: string;
     fechaModificacion: Date;
 }
-
-export interface LineCreaCompleto {
+export interface CreaAreaCompleto {
     creacion: {
       idPeticionCreacion: number;
       idGrupoInv: number;
@@ -17,14 +16,13 @@ export interface LineCreaCompleto {
       usuarioModificacionPeticion: string;
       fechaModificacionPeticion: string;
     };
-    linea: {
-      idLinea: number;
-      nombreLinea: string;
+    area: {
+        idArea: number;
+        nombreArea: string;
       estado: boolean;
-      usuarioCreacionLinea: string;
-      fechaCreacionLinea: string;
-      usuarioModificacionLinea: string ;
-      fechaModificacionLinea: string ;
+      usuarioCreacionArea: string;
+      fechaCreacionArea: string;
+      usuarioModificacionArea: string ;
+      fechaModificacionArea: string ;
     }[];
   }
-  

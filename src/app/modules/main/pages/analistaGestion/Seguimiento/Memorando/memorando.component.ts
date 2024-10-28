@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AnnexesService } from 'src/app/core/http/annexes/annexes.service';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/core/auth/services/auth.service';
-import { InvGroupForm } from 'src/app/types/solCreaGI.types';
+import { InvGroupForm } from 'src/app/types/invGroup.types';
 import { DocumentsService } from 'src/app/core/http/documentos/documents.service';
 @Component({
   selector: 'app-carga-anexo',

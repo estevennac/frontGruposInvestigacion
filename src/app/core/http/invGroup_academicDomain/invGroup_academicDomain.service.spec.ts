@@ -1,21 +1,21 @@
 import { TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import { AcadCreaService } from './acad-crea.service';
-import { AcadCrea, AcadCreaCompleto } from 'src/app/types/acadCrea.types';
+import { InvGroup_academicDomainService } from './invGroup_academicDomain.service';
+import { InvGroup_academicDomain, AcadCreaCompleto } from 'src/app/types/invGroup_academicDomain';
 import { environment } from 'src/environments/environment';
 
-describe('AcadCreaService', () => {
-  let service: AcadCreaService;
+describe('InvGroup_academicDomainService', () => {
+  let service: InvGroup_academicDomainService;
   let httpMock: HttpTestingController;
   const apiUrl = environment.appApiUrl + '/acad-creas';
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
-      providers: [AcadCreaService]
+      providers: [InvGroup_academicDomainService]
     });
 
-    service = TestBed.inject(AcadCreaService);
+    service = TestBed.inject(InvGroup_academicDomainService);
     httpMock = TestBed.inject(HttpTestingController);
   });
 
@@ -28,9 +28,9 @@ describe('AcadCreaService', () => {
   });
 
   it('should retrieve all AcadCrea records', () => {
-    const mockAcadCrea: AcadCrea[] = [
+    const mockAcadCrea: InvGroup_academicDomain[] = [
       {
-        idPeticionCreacion: 1,
+        idGrupo: 1,
         idDomAcad: 101,
         usuarioCreacion: 'user1',
         fechaCreacion: new Date(),
@@ -38,7 +38,7 @@ describe('AcadCreaService', () => {
         fechaModificacion: new Date()
       },
       {
-        idPeticionCreacion: 2,
+        idGrupo: 2,
         idDomAcad: 102,
         usuarioCreacion: 'user2',
         fechaCreacion: new Date(),
@@ -47,7 +47,7 @@ describe('AcadCreaService', () => {
       }
     ];
 
-    service.getAll().subscribe((data: AcadCrea[]) => {
+    service.getAll().subscribe((data: InvGroup_academicDomain[]) => {
       expect(data.length).toBe(2);
       expect(data).toEqual(mockAcadCrea);
     });
@@ -58,8 +58,8 @@ describe('AcadCreaService', () => {
   });
 
   it('should retrieve an AcadCrea by id', () => {
-    const mockAcadCrea: AcadCrea = {
-      idPeticionCreacion: 1,
+    const mockAcadCrea: InvGroup_academicDomain = {
+      idGrupo: 1,
       idDomAcad: 101,
       usuarioCreacion: 'user1',
       fechaCreacion: new Date(),
@@ -67,7 +67,7 @@ describe('AcadCreaService', () => {
       fechaModificacion: new Date()
     };
 
-    service.getById(1).subscribe((data: AcadCrea) => {
+    service.getById(1).subscribe((data: InvGroup_academicDomain) => {
       expect(data).toEqual(mockAcadCrea);
     });
 
@@ -77,8 +77,8 @@ describe('AcadCreaService', () => {
   });
 
   it('should create an AcadCrea form', () => {
-    const newAcadCrea: AcadCrea = {
-      idPeticionCreacion: 3,
+    const newAcadCrea: InvGroup_academicDomain = {
+      idGrupo: 3,
       idDomAcad: 103,
       usuarioCreacion: 'user3',
       fechaCreacion: new Date(),

@@ -26,7 +26,7 @@
                             <td>{{i+1}}</td>
                             <td>{{ getNombreGrupo(grupo.idGrupoInv) }}</td>
                             <td>{{getNombreCoordinador(grupo.idUser)}}</td>
-                            <td>{{ grupo.fechaCreacionUsuario | date }}</td>
+                            <td>{{ grupo.fechaCreacion | date }}</td>
                             <td>
                                 <button class="edit" mat-mini-fab color="primary" aria-label="Example icon button with a delete icon" (click)="validar(grupo.idGrupoInv)">
                                     <i class="fa fa-folder-open" aria-hidden="true"></i>

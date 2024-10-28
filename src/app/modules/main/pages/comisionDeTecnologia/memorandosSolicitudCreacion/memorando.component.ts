@@ -7,7 +7,7 @@ import { CreationReqForm } from 'src/app/types/creationReq.types';
 import { CreationReqService } from 'src/app/core/http/creation-req/creation-req.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { InvGroupService } from 'src/app/core/http/inv-group/inv-group.service';
-import { InvGroupForm } from 'src/app/types/solCreaGI.types'; 
+import { InvGroupForm } from 'src/app/types/invGroup.types';
 import { DocumentsService } from 'src/app/core/http/documentos/documents.service';
 @Component({
   selector: 'app-carga-anexo',
