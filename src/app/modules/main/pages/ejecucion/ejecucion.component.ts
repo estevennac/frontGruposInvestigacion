@@ -69,7 +69,7 @@ export class EjecucionComponent implements OnInit {
     this.usuarioService.getAll().subscribe(usuarios => {
       this.usuarios = usuarios;
       if (this.grupos.length > 0) {
-        this.updateCoordinadorGrupo(this.grupos[0].idUser);
+        this.updateCoordinadorGrupo(this.grupos[0].idCoordinador);
       }
     });
   }
@@ -257,7 +257,7 @@ export class EjecucionComponent implements OnInit {
 
     if (grupoSeleccionado) {
       this.populateForm(grupoSeleccionado);
-      this.updateCoordinadorGrupo(grupoSeleccionado.idUser);
+      this.updateCoordinadorGrupo(grupoSeleccionado.idCoordinador);
       this.invMemberService.getAll().subscribe(
         invMembers => {
           const usuariosDelGrupoIds = invMembers
@@ -285,7 +285,7 @@ export class EjecucionComponent implements OnInit {
         }
       );
 
-      this.updateCoordinadorGrupo(grupoSeleccionado.idUser);
+      this.updateCoordinadorGrupo(grupoSeleccionado.idCoordinador);
     }
   }
 
@@ -293,7 +293,7 @@ export class EjecucionComponent implements OnInit {
   populateForm(grupo: InvGroupForm): void {
     this.grupoForm.patchValue(grupo);
     this.grupoForm.disable();
-    this.updateCoordinadorGrupo(grupo.idUser);
+    this.updateCoordinadorGrupo(grupo.idCoordinador);
   }
 
   updateCoordinadorGrupo(idUser: number): void {

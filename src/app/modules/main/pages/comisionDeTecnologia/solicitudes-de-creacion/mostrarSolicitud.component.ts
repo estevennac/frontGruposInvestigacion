@@ -176,7 +176,7 @@ export class MostrarSolicitudForComision implements OnInit {
         (data)=>{
           //console.log(data)
 this.invGroup=data          
-  this.obtenerUsuario(data.idUser)
+  this.obtenerUsuario(data.idCoordinador)
   this.obtenerMiembros(data.idGrupoInv)
   this.cargarInformePertinencia(data.idGrupoInv);
   this.cargarMemo(data.idGrupoInv);

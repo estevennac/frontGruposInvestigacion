@@ -61,30 +61,7 @@
           </div>
         </mat-step>
 
-        <!-- Step 2: Alcance y Contexto -->
-        <mat-step [stepControl]="planDesarrolloForm2">
-          <ng-template matStepLabel>Alcance</ng-template>
-
-          <div formGroupName="planDesarrolloForm2">
-            <h2>ALCANCE</h2>
-            <mat-form-field appearance="fill">
-              <mat-label>ALCANCE</mat-label>
-              <textarea matInput formControlName="alcance" class="textarea"
-                rows="10" required></textarea>
-            </mat-form-field>
-            <div class="grid-container">
-              <div class="grid-item">
-                <button type="button" mat-raised-button color="primary"
-                  matStepperPrevious>Regresar</button>
-                <button type="button" mat-raised-button color="primary"
-                  [disabled]="!myForm.get('planDesarrolloForm2').valid"
-                  matStepperNext>
-                  Siguiente
-                </button>
-              </div>
-            </div>
-          </div>
-        </mat-step>
+       
 
         <!-- Step 2_1:Contexto -->
         <mat-step [stepControl]="planDesarrolloForm2_1">
@@ -103,6 +80,30 @@
                   matStepperPrevious>Regresar</button>
                 <button type="button" mat-raised-button color="primary"
                   [disabled]="!myForm.get('planDesarrolloForm2_1').valid"
+                  matStepperNext>
+                  Siguiente
+                </button>
+              </div>
+            </div>
+          </div>
+        </mat-step>
+         <!-- Step 2: Alcance y Contexto -->
+         <mat-step [stepControl]="planDesarrolloForm2">
+          <ng-template matStepLabel>Alcance</ng-template>
+
+          <div formGroupName="planDesarrolloForm2">
+            <h2>ALCANCE</h2>
+            <mat-form-field appearance="fill">
+              <mat-label>ALCANCE</mat-label>
+              <textarea matInput formControlName="alcance" class="textarea"
+                rows="10" required></textarea>
+            </mat-form-field>
+            <div class="grid-container">
+              <div class="grid-item">
+                <button type="button" mat-raised-button color="primary"
+                  matStepperPrevious>Regresar</button>
+                <button type="button" mat-raised-button color="primary"
+                  [disabled]="!myForm.get('planDesarrolloForm2').valid"
                   matStepperNext>
                   Siguiente
                 </button>

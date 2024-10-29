@@ -134,7 +134,7 @@ export class CargaSolDirComponent implements OnInit {
     this.invGroupService.getById(this.invGroup.idGrupoInv).subscribe((data)=>{
       const invData:any={
         idGrupoInv:data.idGrupoInv,
-        idUser:data.idUser,
+        idCoordinador:data.idCoordinador,
         estadoGrupoInv:'sol_documentacion',
         usuarioModificacionUsuario:currentUser,
         fechaModificacionUsuario:currentDateUpdate,

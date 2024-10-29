@@ -94,7 +94,7 @@ export class MostrarSolicitudForAnalista implements OnInit {
         (data)=>{
           //console.log(data)
 this.invGroup=data          
-  this.obtenerUsuario(data.idUser)
+  this.obtenerUsuario(data.idCoordinador)
   this.obtenerMiembros(data.idGrupoInv)
         }
     )

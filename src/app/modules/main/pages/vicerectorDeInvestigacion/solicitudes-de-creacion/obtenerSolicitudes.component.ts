@@ -56,9 +56,9 @@ export class SolicitudesForVicerectorComponent implements OnInit {
         this.solicitudesFiltradas.forEach((solicitud) => {
             this.invGroupService.getById(solicitud.idGrupoInv).subscribe((grupo) => {
                 this.grupos.push(grupo);
-                this.getUsuarios(grupo.idUser); 
+                this.getUsuarios(grupo.idCoordinador); 
                 this.loadingData = false;
-                this.userService.getById(grupo.idUser).subscribe(user=>{
+                this.userService.getById(grupo.idCoordinador).subscribe(user=>{
                     const coordinadorConGrupo = { usuario: user, idGroup: grupo.idGrupoInv };
                     this.coordinador.push(coordinadorConGrupo);
                    

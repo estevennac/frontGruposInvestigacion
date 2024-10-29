@@ -101,7 +101,7 @@ export class ReporteActividadesComponent implements OnInit {
     });
 
     this.solCreaGiService.getAll().subscribe(groups => {
-      const userGroup = groups.find(group => group.idUser === userId);
+      const userGroup = groups.find(group => group.idCoordinador === userId);
       let idGroupInv: number;
 
       if (userGroup) {

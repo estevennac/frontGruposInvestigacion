@@ -29,6 +29,7 @@ import { Annexes } from 'src/app/types/annexes.types';
 import { ChecklistService } from 'src/app/core/http/checklist/checklist.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { DocumentsService } from 'src/app/core/http/documentos/documents.service';
+import { Usuario } from 'src/app/types/usuario.types';
 
 @Component({
   selector: 'vex-creation-form',
@@ -40,6 +41,9 @@ import { DocumentsService } from 'src/app/core/http/documentos/documents.service
 })
 export class CreationFormComponent implements OnInit {
   selectedUsers: any[] = [];
+  documentosCargados = {};
+
+  selectedUsersExterns:any[]=[];
   selectedFiles: File[] = [];
   userIdSelect: any[] = [];
   dominiosControl = new FormControl();
@@ -54,6 +58,7 @@ export class CreationFormComponent implements OnInit {
   areas: any[];
   lineas: any[];
   investigadores: number[] = [1];
+  investigadoresExterns: number[] = [1];
   invGroupExists: boolean = false;
   checklistForm: FormGroup;
   checkList: any;
@@ -122,7 +127,7 @@ export class CreationFormComponent implements OnInit {
     if (invGroup) {
       this.invGroupExists = true;
       this.cargarInfoGrupo(Number(invGroup));
-      this.cargarChecklist(Number(invGroup));
+     // this.cargarChecklist(Number(invGroup));
     } else {
       this.invGroupExists = false;
       this.cargarFormularios(invGroup);
@@ -138,7 +143,7 @@ export class CreationFormComponent implements OnInit {
       this.areasControl.patchValue(this.areas);
       this.lineasControl.patchValue(this.lineas);
       const token = sessionStorage.getItem('acces_token');
-      this.loadUser(this.currentUser, token);
+      //this.loadUser(this.currentUser, token);
     this.myForm = this.builder.group({
       grupoInv1: this.builder.group({
         idUser: sessionStorage.getItem('idUser'),
@@ -159,6 +164,9 @@ export class CreationFormComponent implements OnInit {
         certificadosCoordinador: new FormControl(''),
         investigadores: new FormArray([
           this.crearFormGroupInvestigador(),
+        ]),
+        investigadoresExterns: new FormArray([
+          this.crearFormGroupInvestigadorExtern(),
         ]),
         resumenGrupo: new FormControl(''),
         planDesarrolloGrupo: new FormControl(''),
@@ -193,6 +201,15 @@ export class CreationFormComponent implements OnInit {
       certificadosInvestigador: new FormControl(''),
     });
   }
+  
+  private crearFormGroupInvestigadorExtern() {
+    return new FormGroup({
+      idUsuario: new FormControl(''),
+      cvsInvestigador: new FormControl(''),
+      meritosInvestigador: new FormControl(''),
+      certificadosInvestigador: new FormControl(''),
+    });
+  }
   //Cargamos la Información del Grupo si tiene un proceso Anterior
   cargarInfoGrupo(id: number){
     this.apiInvGroupService.getById(id).subscribe(data =>{
@@ -213,12 +230,6 @@ export class CreationFormComponent implements OnInit {
     });
   }
   
-  /*loadLineas(): void {
-    this.lineService.getAll().subscribe(data => {
-      this.lineas = data.filter(linea => linea.estado === true);
-      this.loadingData = false;
-    });
-  }*/
 
 
   //Abrimos un modal para poder agregar investigadores, en base a usuarios que se utilizan mediante la Api de la ESPE, mediante su username
@@ -229,34 +240,54 @@ export class CreationFormComponent implements OnInit {
       data: { usuarios: this.usuarios }
     });
 
+    dialogRef.componentInstance.usuarioExternoCreado.subscribe((usuarioCreado: Usuario) => {
+      console.log('Usuario creado recibido en openDialog:', usuarioCreado);
+      this.selectedUsersExterns.push(usuarioCreado); // Agregar el usuario a la lista de usuarios en el componente padre
+      this.snackBar.open('Investigador agregado exitosamente', 'Cerrar', {
+        duration: 3000,          // Duración en milisegundos
+        horizontalPosition: 'right',
+        verticalPosition: 'top', // Posición del toast
+      });
+    });
+  
     dialogRef.afterClosed().subscribe((data: { user: any, usuarioValue: any }) => {
-      if (data.usuarioValue) {
+      if (data?.usuarioValue) {
         this.userIdSelect.push(data.usuarioValue);
       }
-      if (data.user) {
-        this.selectedUsers.push({ user: data.user, userId: data.usuarioValue }); // Agregar el usuario y establecer su valor de identificación en null
+      if (data?.user) {
+        this.selectedUsers.push({ user: data.user, userId: data.usuarioValue });
       }
-
     });
   }
 
-  loadUser(user: string, token: string) {
-    this.usuarioService.getUserApp(user, token).subscribe((data) => {
+ 
+ /* loadUser(user: string, token: string) {
+   this.usuarioService.getUserApp(user, token).subscribe((data) => {
       //console.log("informacion api",data);
     }
 
     )
-  }
+  }*/
 
   //borrar investigadores de la lista al agregar miembros em caso de que estos hayan sido mal descritos
   borrarInvestigador(index: number) {
     this.selectedUsers.splice(index, 1); 
   }
+  borrarInvestigadorExtern(index: number) {
+    this.selectedUsersExterns.splice(index, 1); 
+  }
   agregarInvestigador() {
     (this.myForm.get('grupoInv3').get('investigadores') as FormArray).push(
       this.crearFormGroupInvestigador()
     );
-    this.investigadores.push(this.investigadores.length + 1); // Agregar el nuevo índice
+    this.investigadores.push(this.investigadores.length + 1); 
+ }
+  agregarInvestigadorExtern() {
+    (this.myForm.get('grupoInv3').get('investigadoresExterns') as FormArray).push(
+      this.crearFormGroupInvestigadorExtern()
+    );
+    this.investigadoresExterns.push(this.investigadoresExterns.length + 1); 
+
   }
 
   eliminarInvestigador() {
@@ -265,8 +296,16 @@ export class CreationFormComponent implements OnInit {
     this.investigadores.pop(); // Eliminar el último índice
   }
 
+  eliminarInvestigadorExtern() {
+    const index = this.investigadoresExterns.length - 1; // Obtener el índice del último investigador
+    (this.myForm.get('grupoInv3').get('investigadoresExterns') as FormArray).removeAt(index); // Eliminar el investigador en el índice
+    this.investigadoresExterns.pop(); // Eliminar el último índice
+  }
+
   // !!!REVISSAR SI SE UTLIZARA ESTOS ANEXOS 
   selectedFileByUser: { [index: number]: File } = {};
+  selectedFileByUserExtern: { [index: number]: File } = {};
+
   anexos(event: Event, letter: string) {
     const input = event.target as HTMLInputElement;
     const files = input.files;
@@ -298,16 +337,65 @@ export class CreationFormComponent implements OnInit {
   }
 
 //Para dar formato y controlar las hojas de vida de los miembros del grupo de Investigación.
-  onFileSelected(event: Event, index: number, nombre: string) {
+  onFileSelected(event: Event, index: number, userId: string) {
     const input = event.target as HTMLInputElement;
     const files = input.files;
+    if (input?.files?.length) {
+      // Registra que el documento está cargado para el usuario específico
+      this.documentosCargados[userId] = true;
+    } else {
+      // Si no hay archivo, elimina el registro
+      this.documentosCargados[userId] = false;
+    }
+    this.verificarDocumentosCargados();
     if (files && files.length > 0) {
       const file = files[0];
       if (file.type === 'application/pdf') {
-        const nombreUsuario = nombre;
+        const nombreUsuario = userId;
         const nuevoNombre = `hojaDeVida_${nombreUsuario}.${file.name.split('.').pop()}`;
         const archivoRenombrado = new File([file], nuevoNombre, { type: file.type });
         this.selectedFileByUser[index] = archivoRenombrado;
+        console.log(archivoRenombrado);
+      } else {
+        alert('Por favor, seleccione un archivo PDF.');
+        input.value = '';
+      }
+    }
+  }
+documentosCompletosCargados = false;
+
+verificarDocumentosCargados(): void {
+  const usuariosInternosCompletos = this.selectedUsers.every(user => this.documentosCargados[user.userId]);
+  const usuariosExternosCompletos = this.selectedUsersExterns.every(user => this.documentosCargados[user.id]);
+
+  // Actualiza el estado general si todos los documentos están cargados
+  this.documentosCompletosCargados = usuariosInternosCompletos && usuariosExternosCompletos;
+}
+
+
+  onFileSelectedExtern(event: Event, index: number, userId: string) {
+    const input = event.target as HTMLInputElement;
+    const files = input.files;
+    console.log(files);
+    console.log(this.selectedUsersExterns);
+    console.log(this.selectedUsers);
+
+    if (input?.files?.length) {
+      // Registra que el documento está cargado para el usuario específico
+      this.documentosCargados[userId] = true;
+    } else {
+      // Si no hay archivo, elimina el registro
+      this.documentosCargados[userId] = false;
+    }
+    this.verificarDocumentosCargados();
+    if (files && files.length > 0) {
+      const file = files[0];
+      if (file.type === 'application/pdf') {
+        const nombreUsuario = userId;
+        const nuevoNombre = `hojaDeVida_${nombreUsuario}.${file.name.split('.').pop()}`;
+        const archivoRenombrado = new File([file], nuevoNombre, { type: file.type });
+        this.selectedFileByUserExtern[index] = archivoRenombrado;
+        console.log(archivoRenombrado);
       } else {
         alert('Por favor, seleccione un archivo PDF.');
         input.value = '';
@@ -321,7 +409,7 @@ export class CreationFormComponent implements OnInit {
       this.loadingData = true;
       const grupoInvData:InvGroupForm={
         idGrupoInv:1, 
-        idUser:this.currentUserId, 
+        idCoordinador:this.currentUserId, 
         nombreGrupoInv:this.myForm.value.grupoInv1.nombreGrupoInv,
         estadoGrupoInv:"inicialpp", 
         acronimoGrupoinv:this.myForm.value.grupoInv1.acronimoGrupoinv, 
@@ -329,7 +417,8 @@ export class CreationFormComponent implements OnInit {
         fechaCreacion:this.currentDate, 
         usuarioModificacion:null, 
         fechaModificacion:null
-      }     
+      }  
+      console.log("datos antes de enviar",grupoInvData)   
       this.solCreaGIFormService.createInvGroup(grupoInvData).subscribe(
         (response) => {
           this.reqFormResponse = response;
@@ -364,11 +453,12 @@ export class CreationFormComponent implements OnInit {
             (reqFormResponse) => {
               
               this.saveCurriculums(idGrupoCreado, this.currentUser, this.currentDate);
-              this.saveAcademicDomain(reqFormResponse);
-              this.saveArea(reqFormResponse);
-              this.saveLine(reqFormResponse);
+
+              this.saveAcademicDomain(idGrupoCreado);
+              this.saveArea(idGrupoCreado);
+              this.saveLine(idGrupoCreado);
               this.saveMember(idGrupoCreado);
-              this.saveAnexos(idGrupoCreado, this.currentUser, this.currentDate);
+              //this.saveAnexos(idGrupoCreado, this.currentUser, this.currentDate);
               // Guardar reqFormResponse en el localStorage
               localStorage.setItem('reqFormResponse', JSON.stringify(reqFormResponse));
             },
@@ -453,7 +543,8 @@ export class CreationFormComponent implements OnInit {
  
 //Guarda información de los miembros del grupo y se les asiga al rol de miembro
   private saveMember(idGrupo: number) {
-    console.log(this.selectedUsers);
+    console.log(this.selectedUsersExterns);
+
     if (this.userIdSelect && this.userIdSelect.length > 0) {
       this.userIdSelect.forEach((user: string) => {
         this.usuarioService.getByUserName(user).subscribe((data) => {
@@ -488,19 +579,51 @@ export class CreationFormComponent implements OnInit {
         })
       })
     }
+
+
+    if (this.selectedUsersExterns && this.selectedUsersExterns.length > 0) {
+      this.selectedUsersExterns.forEach((user: { id: number }) => {
+          const member: InvMemberForm = {
+            idGrupoInv: idGrupo,
+            idUsuario: user.id,
+            usuarioCreacion: this.currentUser,
+            fechaCreacion: this.currentDate,
+            usuarioModificacion: null,
+            fechaModificacion: null
+          }
+          this.apiInvMemberService.createInvMemberFormForm(member).subscribe(
+            (response) => {
+              console.log(response);
+            },(error)=>{
+              console.log(error);
+            }
+          )
+          const userRol: UserRoles = {
+            idUsuario: user.id,
+            idRoles: 8,
+            usuarioCreacion: this.currentUser,
+            fechaCreacion: this.currentDate,
+            usuarioModificacion: null,
+            fechaModificacion: null
+          }
+          this.userRolService.createUserRol(userRol).subscribe((response) => {
+          },
+            (error) => {
+              console.error('El usuario ya tiene el rol:', error);
+            }
+          )
+       
+      })
+    }
   }
   private saveCurriculums(idGrupo: number, user: string, date: Date) {
     for (let index in this.selectedFileByUser) {
-      //const archivo = this.selectedFileByUser[index];
-      //console.log(`Archivo para el usuario antes ${index}:`, archivo);
       if (this.selectedFileByUser.hasOwnProperty(index)) {
         const archivo = this.selectedFileByUser[index];
         console.log(`Archivo para el usuario despues ${index}:`, archivo);
         const token = sessionStorage.getItem('access_token');
         const sistema = 'publicaciones'
         this.documentService.saveDocument(token,archivo,sistema).subscribe(response=>{
-          //console.log("respuesta", response);
-          //console.log("sistema sent", archivo);
           const annexes: Annexes = {
             idAnexo: null,
             idGrupo: idGrupo,
@@ -521,10 +644,39 @@ export class CreationFormComponent implements OnInit {
         
       }
     }
+
+    for (let index in this.selectedFileByUserExtern) {
+      if (this.selectedFileByUserExtern.hasOwnProperty(index)) {
+        const archivo = this.selectedFileByUserExtern[index];
+        console.log(`Archivo para el usuario despues ${index}:`, archivo);
+        const token = sessionStorage.getItem('access_token');
+        const sistema = 'publicaciones'
+        this.documentService.saveDocument(token,archivo,sistema).subscribe(response=>{
+          const annexes: Annexes = {
+            idAnexo: null,
+            idGrupo: idGrupo,
+            nombreAnexo: response.fileName,
+            rutaAnexo: response.uuid,
+            usuarioCreacionAnexo: user,
+            fechaCreacionAnexo: date,
+            usuarioModificacionAnexo: null,
+            fechaModificacionAnexo: null
+          }
+          this.annexesServices.createAnnexesForm(annexes).subscribe((response) => {
+
+          })
+        }),(err)=>{
+          console.log(err);
+        }
+        
+        
+      }
+    }
+    
   }
 
   //Cargamos Información respectiva de un  checklist de verificacion de documentos, 
-  cargarChecklist(id: number) {
+ /* cargarChecklist(id: number) {
     this.checklistService.getByGroup(id).subscribe(data => {
       this.checkList = data;
       this.revisadoPor(data.recibidoPor);
@@ -554,7 +706,7 @@ export class CreationFormComponent implements OnInit {
     })
 
     
-  }
+  }*/
   
   revisadoPor(user: string): void {
     this.usuarioService.getByUserName(user).subscribe(data => {
@@ -563,7 +715,7 @@ export class CreationFormComponent implements OnInit {
   }
 
  
-  enviarAnexos(){
+ /* enviarAnexos(){
 
     const invGroup = Number(sessionStorage.getItem('invGroup'));
     const currentUser = this.authService.getUserName();
@@ -581,7 +733,7 @@ export class CreationFormComponent implements OnInit {
     
     
   }
-  
+  */
   /*postInvestigador(data: any) {
     this.apiInvMemberService.createInvMemberFormForm(data).subscribe((item) => {
       alert("Guardado correctamente")
@@ -591,7 +743,7 @@ export class CreationFormComponent implements OnInit {
   }*/
 
 
-  private saveAnexos(idGrupo: number, user: string, date: Date) {
+ /* private saveAnexos(idGrupo: number, user: string, date: Date) {
     this.selectedFiles.forEach((data) => {
       const annexes: Annexes = {
         idAnexo: null,
@@ -612,7 +764,7 @@ export class CreationFormComponent implements OnInit {
     })
   }
  
-
+*/
 
 
   enlace(plan:string){

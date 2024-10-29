@@ -394,6 +394,10 @@ component:ActaTecComponent},
 {
   path:'memoDIR_VITT',
   component:MemoDirVIITComponent
+},
+{
+  path:'obj_institucionales',
+  
 }
 
 

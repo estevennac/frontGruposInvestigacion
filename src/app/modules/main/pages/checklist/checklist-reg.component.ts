@@ -146,7 +146,7 @@ export class ChecklistFormComponent implements OnInit {
       this.invGroupService.getById(idGroup).subscribe((data)=>{
         const grupoData:InvGroupForm={
           idGrupoInv:idGroup,
-          idUser:data.idUser,
+          idCoordinador:data.idCoordinador,
           nombreGrupoInv:data.nombreGrupoInv,
           estadoGrupoInv:"ValidaCheckCI",
           acronimoGrupoinv:data.acronimoGrupoinv,
@@ -241,7 +241,7 @@ export class ChecklistFormComponent implements OnInit {
       this.invGroupService.getById(idGroup).subscribe((data)=>{
         const grupoData:InvGroupForm={
           idGrupoInv:idGroup,
-          idUser:data.idUser,
+          idCoordinador:data.idCoordinador,
           nombreGrupoInv:data.nombreGrupoInv,
           estadoGrupoInv:"ValidaCheckCI",
           acronimoGrupoinv:data.acronimoGrupoinv,

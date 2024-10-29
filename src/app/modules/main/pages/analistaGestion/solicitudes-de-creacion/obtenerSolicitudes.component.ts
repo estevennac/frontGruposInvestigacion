@@ -55,9 +55,9 @@ export class SolicitudesForAnalistaComponent implements OnInit {
         this.solicitudesFiltradas.forEach((solicitud) => {
             this.invGroupService.getById(solicitud.idGrupoInv).subscribe((grupo) => {
                 this.grupos.push(grupo);
-                this.getUsuarios(grupo.idUser); 
+                this.getUsuarios(grupo.idCoordinador); 
                 this.loadingData = false;
-                this.getNombreCoordinador(grupo.idUser);
+                this.getNombreCoordinador(grupo.idCoordinador);
                 // Aquí pasamos el idUsuario para obtener el coordinador
             });
         });

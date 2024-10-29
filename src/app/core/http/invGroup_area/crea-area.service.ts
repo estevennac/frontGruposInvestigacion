@@ -9,7 +9,7 @@ import { InvGroup_area,CreaAreaCompleto } from 'src/app/types/invGroup_area.type
 })
 export class InvGroup_areaService {
 
-  private readonly URL = environment.appApiUrl + '/crea-areas';
+  private readonly URL = environment.appApiUrl + '/invGroup_area';
 
   constructor(private http: HttpClient) {}
 

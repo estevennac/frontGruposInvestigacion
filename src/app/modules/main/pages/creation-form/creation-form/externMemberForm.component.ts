@@ -68,6 +68,7 @@ export class ExternMembersGroup implements OnInit {
             (response) => {
                 this.isSaved = true;
                 this.isLoading = false;
+                userData.id=response;
                 this.memberCreated.emit(userData); // Emitir el usuario creado
                 this.dialogRef.close(); // Cierra solo este modal
             },

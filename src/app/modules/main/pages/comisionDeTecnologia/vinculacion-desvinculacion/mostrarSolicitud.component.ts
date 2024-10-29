@@ -57,7 +57,7 @@ export class VinculacionForTec implements OnInit {
     this.invGroupService.getById(id).subscribe(
       (data) => {
         this.invGroup = data
-        this.obtenerUsuario(data.idUser)
+        this.obtenerUsuario(data.idCoordinador)
       }
     )
 

@@ -169,7 +169,7 @@ export class CargaMemoDirComponent implements OnInit {
     this.invGroupService.getById(this.groupId).subscribe(data=>{
       const invGroup:InvGroupForm={
         idGrupoInv:this.groupId,
-        idUser:data.idUser,
+        idCoordinador:data.idCoordinador,
         nombreGrupoInv:data.nombreGrupoInv,
         estadoGrupoInv:"solInfPer",
         acronimoGrupoinv:data.acronimoGrupoinv,

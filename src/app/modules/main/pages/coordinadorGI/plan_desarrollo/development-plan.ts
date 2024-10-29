@@ -97,6 +97,9 @@ export class DevelopmentPlanFormComponent implements OnInit {
         actividades: this.fb.array([]),
       }),
     });
+    this.planSuperiorControl.setValue([3]); // ID del plan que deseas seleccionar por defecto
+    this.marcoControl.setValue([7]);        // ID del marco que deseas seleccionar por defecto
+    this.planNacionalControl.setValue([8]); // ID del plan nacional que deseas seleccionar por defecto
   }
 
   ngOnInit(): void {
@@ -104,6 +107,7 @@ export class DevelopmentPlanFormComponent implements OnInit {
     this.idGroup = Number(sessionStorage.getItem("invGroup"))
     this.currentUser = this.authService.getUserName();
     this.currentDate = this.datePipe.transform(new Date(), 'yyyy-MM-ddTHH:mm:ss');
+
   }
 
   get planDesarrolloForm1() {
@@ -398,7 +402,7 @@ export class DevelopmentPlanFormComponent implements OnInit {
     this.invGroupService.getById(this.idGroup).subscribe(data=>{
       const invGroup:InvGroupForm={
         idGrupoInv:this.idGroup,
-        idUser:data.idUser,
+        idCoordinador:data.idCoordinador,
         nombreGrupoInv:data.nombreGrupoInv,
         estadoGrupoInv:"ppropuesta",
         acronimoGrupoinv:data.acronimoGrupoinv,

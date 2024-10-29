@@ -166,7 +166,7 @@ export class CargaMemoConsejoComponent implements OnInit {
     this.invGroupService.getById(this.groupId).subscribe(data=>{
       const invGroup:InvGroupForm={
         idGrupoInv:this.groupId,
-        idUser:data.idUser,
+        idCoordinador:data.idCoordinador,
         nombreGrupoInv:data.nombreGrupoInv,
         estadoGrupoInv:"Registro",
         acronimoGrupoinv:data.acronimoGrupoinv,

@@ -139,7 +139,7 @@
             <h1>Grupo de Investigación {{grupo.nombreGrupoInv}}</h1>
         </div>
  <!-- Información que aparece conforme al estado del envio de documentacion del proceso de creación de grupos de investigación muestra el checklist de requisitos -->
-        <form [formGroup]="checklistForm"
+      <!--  <form [formGroup]="checklistForm"
             *ngIf="checkList && grupo.estadoGrupoInv!=='Activo' && grupo.estadoGrupoInv=='sol_documentacion'">
             <mat-stepper [linear]="isLinear" #stepper>
                 <mat-step>
@@ -256,7 +256,7 @@
                     </div>
                 </mat-step>
             </mat-stepper>
-        </form>
+        </form>-->
 
         <!-- FASE DE CREACIÓN DEL GRUPO DE INVESTIGACIÓN (FORMULARIO CUANDO SE ENVÍA LA SOLICITUD POR PRIMERA VEZ) -->
         <div class="container-fluid" *ngIf="!invGroupExists">
@@ -484,23 +484,62 @@
                                             </tr>
                                         </tbody>
                                     </table>
+                                </div> </div>
 
-                                </div>
-                                <button type="button" mat-raised-button
-                                    color="primary" class="btn-add"
-                                    (click)="openDialog()">Agregar
-                                    Investigador</button>
-                            </div>
+                                <div *ngIf="selectedUsersExterns.length > 0">
+
+                                    <header>
+                                        <h1>Ivestigadores Externos:</h1>
+
+                                    </header>
+                                    <table>
+                                        <thead>
+                                            <tr>
+                                                <th>Nombre del Integrante</th>
+                                                <th>Institución</th>
+                                                <th>Hoja de Vida</th>
+                                                <th>Borrar</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr
+                                                *ngFor="let user of selectedUsersExterns; let i = index;">
+                                                <td>{{ user.nombre }}</td>
+                                                <td>{{ user.institucion }}</td>
+
+                                                <td>
+                                                    <input type="file"
+                                                        (change)="onFileSelectedExtern($event,i,user.id)"
+                                                        accept=".pdf">
+                                                </td>
+                                                <td>
+                                                    <!-- Columna para el botón de borrar -->
+                                                    <button type="button"
+                                                        class="delete"
+                                                        mat-mini-fab
+                                                        (click)="borrarInvestigadorExtern(i)">
+                                                        <i
+                                                            class="fas fa-trash-alt"></i>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+
+                     
+                            </div>           <button type="button" mat-raised-button
+                            color="primary" class="btn-add"
+                            (click)="openDialog()">Agregar
+                            Investigador</button>
                             <div class="grid-item">
                                 <div>
                                     <button type="button"
                                         mat-raised-button color="primary"
                                         matStepperPrevious>Regresar</button>
-                                    <button type="button"
-                                        mat-raised-button color="primary"
-                                        type="submit"
-                                        matStepperNext
-                                        [disabled]="selectedUsers.length === 0">Enviar</button>
+<!-- Deshabilitar el botón Enviar hasta que documentosCompletosCargados sea true -->
+<button type="button" mat-raised-button color="primary" type="submit" matStepperNext
+        [disabled]="selectedUsers.length === 0 || !documentosCompletosCargados">Enviar</button>
+
                                         
                                 </div>
                             </div>

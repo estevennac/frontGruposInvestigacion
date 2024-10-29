@@ -15,13 +15,13 @@
       <div class="form-container" *ngIf="!isLoading">
         <form [formGroup]="planNationalForm" (ngSubmit)="saveNationalPlan()">
           <!-- Campo de nombre de la Plan nacional -->
-          <mat-form-field appearance="outline" class="full-width">
+          <!-- <mat-form-field appearance="outline" class="full-width">
             <mat-label>Nombre del Plan Nacional</mat-label>
             <input matInput type="text" formControlName="nombre" required>
             <mat-error *ngIf="planNationalForm.get('nombre').invalid && planNationalForm.get('nombre').touched">
               El nombre del Plan Nacional es obligatorio.
             </mat-error>
-          </mat-form-field>
+          </mat-form-field> -->
 
             <!--Campo de Numero Politica-->
           <mat-form-field appearance="outline" class="full-width">

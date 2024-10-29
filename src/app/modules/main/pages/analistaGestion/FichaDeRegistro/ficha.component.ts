@@ -115,7 +115,7 @@ export class FichaFormComponent implements OnInit {
       this.creationReqForm = navigationState.creationReqForm;
       this.invGroupService.getById(this.creationReqForm.idGrupoInv).subscribe((data) => {
         this.grupos = data;
-        this.usuarioService.getById(data.idUser).subscribe((userData) => {
+        this.usuarioService.getById(data.idCoordinador).subscribe((userData) => {
           this.coordinadores = userData;
         });
 

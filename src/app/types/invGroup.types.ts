@@ -1,6 +1,6 @@
 export interface InvGroupForm {
     idGrupoInv: number;
-    idUser: number;
+    idCoordinador: number;
     nombreGrupoInv: string;
     estadoGrupoInv: string;
     acronimoGrupoinv: string;

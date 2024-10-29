@@ -46,7 +46,7 @@ export class GruposForDirectorComponent implements OnInit {
 
     getUsuarios() {
         this.gruposFiltrados.forEach(grupo => {
-            this.userService.getById(grupo.idUser).subscribe((usuario) => {
+            this.userService.getById(grupo.idCoordinador).subscribe((usuario) => {
                 this.usuarios.push(usuario);
             });
         });

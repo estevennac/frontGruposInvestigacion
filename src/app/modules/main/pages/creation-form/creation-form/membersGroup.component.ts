@@ -6,6 +6,7 @@ import { UserApp } from 'src/app/types/userApp.types';
 import { Usuario } from 'src/app/types/usuario.types';
 import { AuthService } from 'src/app/core/auth/services/auth.service';
 import { ExternMembersGroup } from './externMemberForm.component';
+import { Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-members',
@@ -14,6 +15,8 @@ import { ExternMembersGroup } from './externMemberForm.component';
 })
 export class MembersGroup implements OnInit {
   user: UserApp;
+  @Output() usuarioExternoCreado: EventEmitter<Usuario> = new EventEmitter<Usuario>();
+
   usuarios: any[];
   miembro: FormGroup;
   isSearchClicked = false; // Bandera para controlar la visibilidad del botón "Añadir"
@@ -65,11 +68,6 @@ export class MembersGroup implements OnInit {
     );
   }
 
-  separarNombreCompleto(nombreCompleto: string): { nombre: string, apellido: string } {
-    const [apellido, nombre] = nombreCompleto.split(", ");
-    return { nombre, apellido };
-  }
-
   limpiarUsuario(): void {
     this.user = null;
     this.isSearchClicked = false; // Resetear la bandera al limpiar
@@ -88,12 +86,11 @@ export class MembersGroup implements OnInit {
         if (userData.id != null) {
           console.log("El usuario ya existe en la bd");
         } else {
-          const nombreCompleto = data.nombres;
-          const { nombre, apellido } = this.separarNombreCompleto(nombreCompleto);
+
           const usuario: Usuario = {
             id: null,
             usuario: userName,
-            nombre: nombre,
+            nombre: data.nombres,
             idInstitucional: data.id,
             telefono: null,
             correo: data.correoInstitucional,
@@ -123,15 +120,16 @@ export class MembersGroup implements OnInit {
         data: { usuarios: this.usuarios }
     });
 
+    // Suscríbete al evento `memberCreated` para recibir el usuario creado
     dialogRef.componentInstance.memberCreated.subscribe((usuarioCreado: Usuario) => {
-        console.log('Nuevo usuario creado:', usuarioCreado);
-        // Aquí puedes manejar el usuario creado, como agregarlo a una lista o realizar otra lógica
-        this.usuarios.push(usuarioCreado); // Por ejemplo, agregar a la lista de usuarios
+      console.log('Nuevo usuario creado en ExternMembersGroup:', usuarioCreado);
+      this.usuarios.push(usuarioCreado); // Agregar el usuario a la lista de usuarios
+      this.usuarioExternoCreado.emit(usuarioCreado); // Emitir el usuario al componente padre
     });
-
-    dialogRef.afterClosed().subscribe((data: { user: any, usuarioValue: any }) => {
-        // Aquí puedes manejar el cierre del diálogo si es necesario
-    });
+    // También puedes suscribirte al cierre del diálogo para realizar otras acciones
+  
 }
+
+
 
 }

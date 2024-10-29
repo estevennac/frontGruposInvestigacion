@@ -61,7 +61,7 @@ export class VerReportesComponent implements OnInit {
   getUserIdAndLoadReports() {
     const userId = Number(sessionStorage.getItem('userId'));
     this.invGroupService.getAll().subscribe(groups => {
-      const userGroup = groups.find(group => group.idUser === userId);
+      const userGroup = groups.find(group => group.idCoordinador === userId);
       if (userGroup) {
         this.idGrupoInv = userGroup.idGrupoInv;
         this.getInvgActiAndLoadReports();

@@ -32,7 +32,7 @@ export class ModalNationalControl implements OnInit {
 
     // Inicializar el formulario con los controles correspondientes
     this.planNationalForm = this.fb.group({
-      nombre: ['', Validators.required],
+      //nombre: ['', Validators.required],
       numeroPolitica: ['',Validators.required], // Campo para almacenar el ID del área
       descripcion: ['',Validators.required],
       estado: [1, Validators.required],
@@ -48,7 +48,7 @@ export class ModalNationalControl implements OnInit {
   // Cargar los datos de la línea para la edición
   loadNationalPlanData(nationalPlan: NationalPlan): void {
     this.planNationalForm.patchValue({
-      nombre: nationalPlan.nombre,
+      //nombre: nationalPlan.nombre,
       numeroPolitica: nationalPlan.numeroPolitica,
       descripcion: nationalPlan.descripcion,
       estado: nationalPlan.estado,

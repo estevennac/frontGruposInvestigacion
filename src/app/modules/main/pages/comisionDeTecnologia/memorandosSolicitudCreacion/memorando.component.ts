@@ -198,7 +198,7 @@ export class CargaMemoComComponent implements OnInit {
       this.invGroupService.getById(this.creationReqForm.idGrupoInv).subscribe(data => {
         const groupActualizacion: any = {
           idGrupoInv: data.idGrupoInv,
-          idUser: data.idUser,
+          idCoordinador: data.idCoordinador,
           estado: 'Rechazado',
           usuarioModificacionUsuario: currentUser,
           fechaModificacionUsuario: currentDateUpdate
@@ -232,7 +232,7 @@ export class CargaMemoComComponent implements OnInit {
     this.invGroupService.getById(this.creationReqForm.idGrupoInv).subscribe(data => {
       const groupActualizacion: any = {
         idGrupoInv: data.idGrupoInv,
-        idUser: data.idUser,
+        idCoordinador: data.idCoordinador,
         estado: 'Favorable',
         usuarioModificacionUsuario: this.currentUser,
         fechaModificacionUsuario: this.currentDate
