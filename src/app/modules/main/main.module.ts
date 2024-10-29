@@ -18,8 +18,11 @@ import { MatCardModule } from '@angular/material/card';
 
 import { DesvinculacionFormComponent } from './pages/coordinadorGI/vinculacion-desvinculacion/desvinculacion/desvinculacion.component';
 import { DominioAcademico } from './pages/administracion/dominios-academicos/dom-acad.component';
+
 //import { ControlPanelFormComponent } from './pages/control-panel/control-panel-form.component';
 
+import { InstStrategicObjComponent } from './pages/administracion/inst-strategic-obj/inst-strategic-obj.component';
+import { ModalInstStrategicObjControl } from './pages/administracion/inst-strategic-obj/modal-inst-strategic-obj.component';
 import { LineComponent } from './pages/administracion/line/line.component';
 
 import { AreaComponent } from './pages/administracion/area/area.component';
@@ -218,6 +221,8 @@ import { ExternMembersGroup } from './pages/creation-form/creation-form/externMe
     MostrarSolicitudForVicerectorI,
     CargaMemoVicIComponent,AcademicDomainsControl,
     AreaControl,
+    InstStrategicObjComponent,
+    ModalInstStrategicObjControl,
     
    
   ],
