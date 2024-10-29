@@ -81,6 +81,7 @@ import { MemoDirVIITComponent } from './pages/directorDepartamento/memorandosVII
 import { SolicitudesForVicerectorIComponent } from './pages/vicerectorDeInvestigacion/resoluciones copy/solicitudes-de-creacion/obtenerSolicitudes.component';
 import { CargaMemoVicIComponent } from './pages/vicerectorDeInvestigacion/resoluciones copy/memorandosSolicitudCreacion/memorando.component';
 import { MostrarSolicitudForVicerectorI } from './pages/vicerectorDeInvestigacion/resoluciones copy/solicitudes-de-creacion/mostrarSolicitud.component';
+import { InstStrategicObjComponent } from './pages/administracion/inst-strategic-obj/inst-strategic-obj.component';
 const routes: Routes = [
   {
     path: 'principal',
@@ -398,7 +399,7 @@ component:ActaTecComponent},
 },
 {
   path:'obj_institucionales',
-  
+  component:InstStrategicObjComponent
 }
 
 

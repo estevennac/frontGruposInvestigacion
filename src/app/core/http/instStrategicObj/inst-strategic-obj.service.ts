@@ -9,7 +9,7 @@ import { InstStrategicObj } from 'src/app/types/InstStrategicObj.types';
 })
 export class InstStrategicObjService {
 
-  private readonly URL = environment.appApiUrl + '/instStrategicObj/';
+  private readonly URL = environment.appApiUrl + '/instStrategicObj';
 
   constructor(private http: HttpClient) { }
 
