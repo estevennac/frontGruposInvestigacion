@@ -1,0 +1,41 @@
+<div class="cont">
+    <div class="container-fluid">
+        <div class="back-button-container">
+            <header style="display: flex;">
+                <h1>{{ isEditing ? 'Editar Estrategia' : 'Crear Nueva Estrategia' }}</h1>
+            </header>
+        </div>
+
+        <!-- Spinner de carga -->
+        <div *ngIf="isLoading" class="loading-spinner-overlay">
+            <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
+        </div>
+
+        <!-- Formulario -->
+        <div class="form-container" *ngIf="!isLoading">
+            <form [formGroup]="strategiesForm" (ngSubmit)="saveStrategies()">
+                <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>Estrategia</mat-label>
+                    <input matInput type="text" formControlName="estrategia" required>
+                    <mat-error *ngIf="strategiesForm.get('estrategia').invalid && strategiesForm.get('estrategia').touched">
+                        El nombre del area es obligatorio.
+                    </mat-error>
+                </mat-form-field>
+                <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>ODS</mat-label>
+                    <input matInput type="text" formControlName="ods" required>
+                    <mat-error *ngIf="strategiesForm.get('ods').invalid && strategiesForm.get('ods').touched">
+                        El nombre del area es obligatorio.
+                    </mat-error>
+                </mat-form-field>
+
+                <!-- Botón de guardar -->
+                <div class="button-container">
+                    <button mat-raised-button color="primary" type="submit" [disabled]="!strategiesForm.valid">
+                        {{ isEditing ? 'Actualizar' : 'Guardar' }}
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

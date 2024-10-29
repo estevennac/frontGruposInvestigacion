@@ -28,4 +28,7 @@ export class StrategiesService {
   createStrategiesForm(formData: Strategies): Observable<any> {
     return this.http.post(`${this.URL}/create`, formData);
   }
+  update(id: number, formData: Strategies): Observable<Strategies>{
+    return this.http.put<Strategies>(`${this.URL}/update/${id}`, formData)
+  }
 }

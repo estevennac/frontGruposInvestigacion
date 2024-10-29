@@ -23,6 +23,9 @@ import { DominioAcademico } from './pages/administracion/dominios-academicos/dom
 
 import { InstStrategicObjComponent } from './pages/administracion/inst-strategic-obj/inst-strategic-obj.component';
 import { ModalInstStrategicObjControl } from './pages/administracion/inst-strategic-obj/modal-inst-strategic-obj.component';
+import { StrategiesComponent } from './pages/administracion/strategies/strategies.component';
+import { ModalStrategiesControl } from './pages/administracion/strategies/modal-strategies.component';
+
 import { LineComponent } from './pages/administracion/line/line.component';
 
 import { AreaComponent } from './pages/administracion/area/area.component';
@@ -223,7 +226,8 @@ import { ExternMembersGroup } from './pages/creation-form/creation-form/externMe
     AreaControl,
     InstStrategicObjComponent,
     ModalInstStrategicObjControl,
-    
+    StrategiesComponent,
+    ModalStrategiesControl
    
   ],
   imports: [
