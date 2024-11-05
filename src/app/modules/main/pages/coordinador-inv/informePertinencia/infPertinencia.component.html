@@ -1,0 +1,298 @@
+<div class="cont">
+    <div class="container-fluid">
+      <div class="card">
+        <header>
+          <h1>Plan de Desarrollo</h1>
+        </header>
+      </div>
+      <form [formGroup]="myForm" (ngSubmit)="HandleSubmit()">
+        <mat-stepper [linear]="isLinear" #stepper>
+          <!-- Step 1: Referencias -->
+          <mat-step [stepControl]="planDesarrolloForm1">
+            <ng-template matStepLabel>Referencias</ng-template>
+            <div formGroupName="planDesarrolloForm1">
+              <div class="grid-container">
+                <div class="grid-item">
+                  <mat-form-field appearance="fill">
+                    <mat-label>Plan del Nivel Superior</mat-label>
+                    <mat-select [formControl]="planSuperiorControl" multiple
+                      required>
+                      <mat-option *ngFor="let plan of planSuperior"
+                        [value]="plan.idPlanNivelSuperior">
+                        {{ plan.nombre }}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+  
+                <div class="grid-item">
+                  <mat-form-field appearance="fill">
+                    <mat-label>Marco Legal específico del nivel</mat-label>
+                    <mat-select [formControl]="marcoControl" multiple required>
+                      <mat-option *ngFor="let marco of marcoLegal"
+                        [value]="marco.idMarcoLegal">
+                        {{ marco.nombre }}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+  
+                <div class="grid-item">
+                  <mat-form-field appearance="fill">
+                    <mat-label>Plan de Creación de Oportunidades - PNBV
+                      (2021-2025)</mat-label>
+                    <mat-select [formControl]="planNacionalControl" multiple
+                      required>
+                      <mat-option *ngFor="let plan of planNacional"
+                        [value]="plan.idPlanNacional">
+                        {{ plan.numeroPolitica + " " + plan.descripcion }}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+              </div>
+            </div>
+            <div class="grid-item">
+              <button type="button" mat-raised-button color="primary"
+                [disabled]="!marcoControl.value?.length || !planNacionalControl.value?.length! || !planSuperiorControl.value?.length"
+                matStepperNext>
+                Siguiente
+              </button>
+            </div>
+          </mat-step>
+  
+         
+  
+          <!-- Step 2_1:Contexto -->
+          <mat-step [stepControl]="planDesarrolloForm2_1">
+            <ng-template matStepLabel>Contexto</ng-template>
+  
+            <div formGroupName="planDesarrolloForm2_1">
+              <h2>CONTEXTO</h2>
+              <mat-form-field appearance="fill">
+                <mat-label>CONTEXTO</mat-label>
+                <textarea matInput formControlName="contexto" class="textarea"
+                  rows="10" required></textarea>
+              </mat-form-field>
+              <div class="grid-container">
+                <div class="grid-item">
+                  <button type="button" mat-raised-button color="primary"
+                    matStepperPrevious>Regresar</button>
+                  <button type="button" mat-raised-button color="primary"
+                    [disabled]="!myForm.get('planDesarrolloForm2_1').valid"
+                    matStepperNext>
+                    Siguiente
+                  </button>
+                </div>
+              </div>
+            </div>
+          </mat-step>
+           <!-- Step 2: Alcance y Contexto -->
+           <mat-step [stepControl]="planDesarrolloForm2">
+            <ng-template matStepLabel>Alcance</ng-template>
+  
+            <div formGroupName="planDesarrolloForm2">
+              <h2>ALCANCE</h2>
+              <mat-form-field appearance="fill">
+                <mat-label>ALCANCE</mat-label>
+                <textarea matInput formControlName="alcance" class="textarea"
+                  rows="10" required></textarea>
+              </mat-form-field>
+              <div class="grid-container">
+                <div class="grid-item">
+                  <button type="button" mat-raised-button color="primary"
+                    matStepperPrevious>Regresar</button>
+                  <button type="button" mat-raised-button color="primary"
+                    [disabled]="!myForm.get('planDesarrolloForm2').valid"
+                    matStepperNext>
+                    Siguiente
+                  </button>
+                </div>
+              </div>
+            </div>
+          </mat-step>
+          <!-- Step 2_2:Objetivos Generales y Estratégicos -->
+          <mat-step [stepControl]="planDesarrolloForm2_2">
+            <ng-template matStepLabel>Objetivos</ng-template>
+  
+            <div formGroupName="planDesarrolloForm2_2">
+              <div class="grid-container">
+                <div class="grid-item">
+                  <h2>Objetivo General</h2>
+                  <mat-form-field appearance="fill">
+                    <mat-label>OBJETIVO GENERAL</mat-label>
+                    <textarea matInput formControlName="objGeneral"
+                      class="textarea" rows="10" required></textarea>
+                  </mat-form-field></div>
+                <div class="grid-item">
+                  <h2>Objetivo Estratégico</h2>
+                  <mat-form-field appearance="fill">
+                    <mat-label>OBJETIVO ESTRATÉGICO</mat-label>
+                    <textarea matInput formControlName="objEstrategico"
+                      class="textarea" rows="10" required></textarea>
+                  </mat-form-field></div>
+                <div class="grid-item">
+                  <button type="button" mat-raised-button color="primary"
+                    matStepperPrevious>Regresar</button>
+                  <button type="button" mat-raised-button color="primary"
+                    [disabled]="!myForm.get('planDesarrolloForm2_2').valid"
+                    matStepperNext>
+                    Siguiente
+                  </button>
+                </div>
+              </div>
+            </div>
+          </mat-step>
+  
+          <!-- Step 3: Objetivos y Estrategias -->
+          <mat-step [stepControl]="planDesarrolloForm3">
+            <ng-template matStepLabel>Objetivos y Estrategias</ng-template>
+            <div formGroupName="planDesarrolloForm3">
+              <button (click)="addObjetivo()" mat-raised-button
+                color="primary">Añadir objetivo</button>
+  
+              <!-- Cabecera de la tabla -->
+              <div class="grid-contenedor table-header">
+                <div class="grid-item_cont head">OBJETIVOS ESPECÍFICOS</div>
+                <div class="grid-item_cont head">ESTRATEGIAS INSTITUCIONALES</div>
+                <div class="grid-item_cont head">ODS Relacionado</div>
+              </div>
+  
+              <!-- Para los objetivos -->
+              <div formArrayName="objetivos"
+                *ngFor="let objetivo of objetivos.controls; let i = index">
+                <div [formGroupName]="i">
+                  <div class="grid-contenedor table-row">
+                    <!-- Nombre del objetivo -->
+                    <div class="grid-item_cont">
+                      <mat-form-field appearance="fill">
+                        <mat-label>Nombre del objetivo</mat-label>
+                        <input matInput formControlName="nombre" required>
+                      </mat-form-field>
+                      <button mat-raised-button color="accent"
+                        (click)="addEstrategia(i)">Añadir estrategia</button>
+                    </div>
+  
+                    <!-- Estrategias -->
+                    <div class="grid-item_cont">
+  
+                      <div formArrayName="estrategias">
+                        <div
+                          *ngFor="let estrategia of getEstrategias(i).controls; let j = index"
+                          [formGroupName]="j">
+                          <mat-form-field appearance="fill">
+                            <mat-label>Descripción de la estrategia</mat-label>
+                            <textarea matInput formControlName="descripcion"
+                              rows="3" required></textarea>
+                          </mat-form-field>
+                        </div>
+                      </div>
+                    </div>
+  
+                    <!-- ODS Relacionado -->
+                    <div class="grid-item_cont">
+                      <div formArrayName="estrategias">
+                        <div
+                          *ngFor="let estrategia of getEstrategias(i).controls; let j = index"
+                          [formGroupName]="j">
+                          <mat-form-field appearance="fill">
+                            <mat-label>ODS Relacionado</mat-label>
+                            <textarea matInput formControlName="ods" rows="3"
+                              required></textarea>
+                          </mat-form-field>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="grid-item">
+              <button type="button" mat-raised-button color="primary"
+                matStepperPrevious>Regresar</button>
+              <button type="button" mat-raised-button color="primary"
+                [disabled]="!myForm.get('planDesarrolloForm3').valid"
+                matStepperNext>
+                Siguiente
+              </button>
+            </div>
+          </mat-step>
+  
+          <!-- Step 4: Actividades -->
+          <mat-step [stepControl]="planDesarrolloForm4">
+            <ng-template matStepLabel>Actividades</ng-template>
+            <div formGroupName="planDesarrolloForm4">
+              <button mat-raised-button color="primary"
+                (click)="agregarActividad()">Añadir actividad</button>
+  
+              <div formArrayName="actividades">
+                <div *ngFor="let actividad of actividades.controls; let i = index"
+                  [formGroupName]="i">
+                  <div class="grid-cp">
+                    <div class="grid-item">
+                      <mat-form-field appearance="fill">
+                        <mat-label>Objetivo Específico</mat-label>
+                        <textarea matInput formControlName="objEspecifico" required rows="3"></textarea>
+                      </mat-form-field></div>
+                    <div class="grid-item">
+                      <mat-form-field appearance="fill">
+                        <mat-label>Actividad</mat-label>
+                        <textarea matInput formControlName="actividad" required rows="3"></textarea>
+                      </mat-form-field></div><div class="grid-item">
+                      <mat-form-field appearance="fill">
+                        <mat-label>Responsable</mat-label>
+                        <input matInput formControlName="responsable" required>
+                      </mat-form-field></div>
+                    <mat-form-field appearance="fill">
+                      <mat-label>Indicador</mat-label>
+                      <input matInput formControlName="indicador" required>
+                    </mat-form-field>
+                    <mat-form-field appearance="fill">
+                      <mat-label>Meta 1</mat-label>
+                      <input matInput formControlName="meta1" required>
+                    </mat-form-field>
+                    <mat-form-field appearance="fill">
+                      <mat-label>Meta 2</mat-label>
+                      <input matInput formControlName="meta2" required>
+                    </mat-form-field>
+                    <mat-form-field appearance="fill">
+                      <mat-label>Meta 3</mat-label>
+                      <input matInput formControlName="meta3" required>
+                    </mat-form-field>
+                    <mat-form-field appearance="fill">
+                      <mat-label>Meta 4</mat-label>
+                      <input matInput formControlName="meta4" required>
+                    </mat-form-field>
+                    <mat-form-field appearance="fill">
+                      <mat-label>Financiamiento</mat-label>
+                      <input matInput formControlName="financiamiento" required
+                        type="number"
+                        min="0"
+                        max="999999.99"
+                        step="0.01">
+                    </mat-form-field>
+                    <mat-form-field appearance="fill">
+                      <mat-label>Observaciones</mat-label>
+                      <textarea matInput formControlName="observaciones" rows="3"
+                        required></textarea>
+                    </mat-form-field>
+                    <button mat-raised-button color="warn"
+                      (click)="borrarActividad(i)">Eliminar actividad</button>
+                  </div>
+                </div></div>
+            </div>
+            <div class="grid-item">
+              <button type="button" mat-raised-button color="primary"
+                matStepperPrevious>Regresar</button>
+              <button type="submit" mat-raised-button color="primary"
+                [disabled]="!myForm.get('planDesarrolloForm4').valid">
+                Enviar
+              </button>
+            </div>
+          </mat-step>
+  
+        </mat-stepper>
+      </form>
+    </div>
+  </div>
+  
