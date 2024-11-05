@@ -4,12 +4,12 @@ export interface Strategies {
     idEstrategia?: number;
     idObjetivo?: number;
     estrategia?: string;
-    ods?:string;
     estado?: boolean;
     usuarioCreacion?: string;
     fechaCreacion?: Date;
     usuarioModificacion?: string;
     fechaModificacion?: Date;
+    objetivo?:string;
 }
 
 export interface ObjStrategiesComplete {

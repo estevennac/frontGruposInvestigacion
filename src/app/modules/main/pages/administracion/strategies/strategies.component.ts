@@ -4,6 +4,7 @@ import { StrategiesService } from "src/app/core/http/strategies/strategies.servi
 import { Router } from "@angular/router";
 import { MatDialog } from "@angular/material/dialog";
 import { ModalStrategiesControl } from "./modal-strategies.component";
+import { InstStrategicObjService } from "src/app/core/http/instStrategicObj/inst-strategic-obj.service";
 
 @Component({
     selector: 'app-strategies',
@@ -13,10 +14,12 @@ import { ModalStrategiesControl } from "./modal-strategies.component";
 
 export class StrategiesComponent implements OnInit {
     strategies: Strategies[] = [];
+    objetivos:any[]=[];
 
     constructor(
         private router: Router,
         private strategiesService: StrategiesService,
+        private instStrategiesService: InstStrategicObjService,
         private dialog: MatDialog
     ){}
 
@@ -25,9 +28,19 @@ export class StrategiesComponent implements OnInit {
     }
 
     getStrategies(){
+      this.instStrategiesService.getAll().subscribe((objetivosData)=>{
+        this.objetivos=objetivosData;
         this.strategiesService.getAll().subscribe((data) => {
-            this.strategies = data;
-        });
+          this.strategies = data.map((estrategia)=>{
+            const objetivo=this.objetivos.find(o=>o.idObjetivoEstrategico==estrategia.idObjetivo);
+            return {
+              ...estrategia,
+              objetivo:objetivo ? objetivo.objetivo:'objetivo no encontrado'
+            };
+          });
+      });
+      });
+        
     }
 
     openDialog(strategies?: Strategies): void{
@@ -55,8 +68,8 @@ export class StrategiesComponent implements OnInit {
         );
     }
 
-    deleteStrategies(id: number) {
-        this.strategiesService.update(id, { estado: false}).subscribe(
+    deleteStrategies(id: number,idObjetivo:number) {
+        this.strategiesService.update(id, { idObjetivo:idObjetivo,estado: false}).subscribe(
           () => {
             console.log(`Estrategia con ID ${id} eliminado correctamente`);
             this.getStrategies();
@@ -66,8 +79,8 @@ export class StrategiesComponent implements OnInit {
           }
         );
     }
-      activateStrategies(id: number) {
-        this.strategiesService.update(id, { estado: true }).subscribe(
+      activateStrategies(id: number,idObjetivo:number) {
+        this.strategiesService.update(id, { idObjetivo:idObjetivo,estado: true }).subscribe(
           () => {
             console.log(`Estrategia con ID ${id} eliminado correctamente`);
             this.getStrategies();

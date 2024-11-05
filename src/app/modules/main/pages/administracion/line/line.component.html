@@ -34,10 +34,10 @@
               <button class="edit" mat-mini-fab (click)="editLine(lin.idLinea)">
                 <i class="fas fa-edit"></i>
               </button>
-              <button *ngIf="lin.estado" class="delete" mat-mini-fab (click)="deleteLine(lin.idLinea)">
+              <button *ngIf="lin.estado" class="delete" mat-mini-fab (click)="deleteLine(lin.idLinea,lin.idArea)">
                 <i class="fas fa-trash-alt"></i>
               </button>
-              <button *ngIf="!lin.estado" class="activar" mat-mini-fab (click)="activateLine(lin.idLinea)">
+              <button *ngIf="!lin.estado" class="activar" mat-mini-fab (click)="activateLine(lin.idLinea,lin.idArea)">
                 <i class="fas fa-check"></i>
               </button>
             </td>

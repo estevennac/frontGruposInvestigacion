@@ -16,9 +16,9 @@
         <thead style="position: sticky; top: 0;">
           <tr>
             <th>ID</th>
-            <th>ID Objetivo</th>
+            <th>Objetivo</th>
             <th>Estrategias</th>
-            <th>Ods</th>
+        
             <th>Estado</th>
             <th>Acciones</th>
           </tr>
@@ -28,18 +28,18 @@
           <!-- Filas de la tabla -->
           <tr *ngFor="let s of strategies">
             <td>{{ s.idEstrategia }}</td>
-            <td>{{ s.idObjetivo}}</td>
+            <td>{{ s.objetivo}}</td>
             <td>{{ s.estrategia }}</td>
-            <td>{{ s.ods}}</td>
+            
             <td> {{s.estado ? 'Activo' : 'Inactivo'}}</td>
             <td>
               <button class="edit" mat-mini-fab (click)="editStrategies(s.idEstrategia)">
                 <i class="fas fa-edit"></i> 
               </button>
-              <button *ngIf="s.estado" class="delete"  mat-mini-fab (click)="deleteStrategies(s.idEstrategia)">
+              <button *ngIf="s.estado" class="delete"  mat-mini-fab (click)="deleteStrategies(s.idEstrategia,s.idObjetivo)">
                 <i class="fas fa-trash-alt"></i> 
               </button>
-              <button *ngIf="!s.estado" class="activar"  mat-mini-fab (click)="activateStrategies(s.idEstrategia)">
+              <button *ngIf="!s.estado" class="activar"  mat-mini-fab (click)="activateStrategies(s.idEstrategia,s.idObjetivo)">
                 <i class="fas fa-check"></i> 
               </button>
             </td>

@@ -82,6 +82,7 @@ import { SolicitudesForVicerectorIComponent } from './pages/vicerectorDeInvestig
 import { CargaMemoVicIComponent } from './pages/vicerectorDeInvestigacion/resoluciones copy/memorandosSolicitudCreacion/memorando.component';
 import { MostrarSolicitudForVicerectorI } from './pages/vicerectorDeInvestigacion/resoluciones copy/solicitudes-de-creacion/mostrarSolicitud.component';
 import { InstStrategicObjComponent } from './pages/administracion/inst-strategic-obj/inst-strategic-obj.component';
+import { StrategiesComponent } from './pages/administracion/strategies/strategies.component';
 const routes: Routes = [
   {
     path: 'principal',
@@ -400,6 +401,10 @@ component:ActaTecComponent},
 {
   path:'obj_institucionales',
   component:InstStrategicObjComponent
+},
+{
+  path:'strategiesInst',
+  component:StrategiesComponent
 }
 
 

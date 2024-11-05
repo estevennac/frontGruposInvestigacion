@@ -4,11 +4,12 @@ import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { AuthService } from 'src/app/core/auth/services/auth.service';
 import { StrategiesService } from "src/app/core/http/strategies/strategies.service";
 import { Strategies } from "src/app/types/strategies.types";
-
+import { InstStrategicObjService } from "src/app/core/http/instStrategicObj/inst-strategic-obj.service";
+import { InstStrategicObj } from "src/app/types/InstStrategicObj.types";
 @Component({
     selector: 'app-strategies',
     templateUrl: './modal-strategies.component.html',
-    styleUrls: ['../modulos.component.scss']
+    styleUrls: ['../../../styles/modales.scss']
 })
 
 export class ModalStrategiesControl implements OnInit {
@@ -18,23 +19,23 @@ export class ModalStrategiesControl implements OnInit {
     isSaved: boolean = false;
     isLoading: boolean = false;
     isEditing: boolean = false; // Variable para determinar si se está en modo edición
-  
+    objetivos:InstStrategicObj[]=[];
     constructor(
       private fb: FormBuilder,
       private authService: AuthService,
       public dialogRef: MatDialogRef<ModalStrategiesControl>,
       private strategiesService: StrategiesService,
+      private instStrategicObjService: InstStrategicObjService,
       @Inject(MAT_DIALOG_DATA) public data: any // Datos que vienen del componente de la tabla
     ) {}
   
     ngOnInit(): void {
       this.currentUser = this.authService.getUserName();
-  
+      this.loadObj();
       // Inicializar el formulario con los controles correspondientes
       this.strategiesForm = this.fb.group({
-        //Id 
+        idObjetivo :[null, Validators.required],
         estrategia: ['', Validators.required],
-        ods: ['',Validators.required],
         estado: [1, Validators.required],
       });
   
@@ -44,12 +45,18 @@ export class ModalStrategiesControl implements OnInit {
         this.strategiesData(this.data.strategies); // Cargar los datos de la línea para editar
       }
     }
+
+    loadObj():void{
+      this.instStrategicObjService.getAll().subscribe((data)=>{
+        this.objetivos=data.filter(objetivo=>objetivo.estado===true);
+      });
+    }
   
     // Cargar los datos de la línea para la edición
     strategiesData(strategies: Strategies): void {
       this.strategiesForm.patchValue({
         estrategia: strategies.estrategia,
-        ods: strategies.ods,
+        idObjetivo:strategies.idObjetivo,
         estado: strategies.estado,
       });
     }
