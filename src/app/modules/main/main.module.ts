@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { importProvidersFrom, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MainRoutingModule } from './main-routing.module';
 import { MainComponent } from './pages/main/main.component';
@@ -130,6 +130,7 @@ import { LineaControl } from './pages/administracion/line/modal_line.component';
 import { LegalFrameworkControl } from './pages/administracion/legal-framework/modal_legal_framework.component';
 import { ModalNationalControl } from './pages/administracion/national-plan/modal-national-plan.component';
 import { ExternMembersGroup } from './pages/creation-form/creation-form/externMemberForm.component';
+import { InfPertinenciaComponent } from './pages/coordinador-inv/informePertinencia/infPertinencia.component';
 @NgModule({
   declarations: [
     MainComponent,
@@ -227,7 +228,8 @@ import { ExternMembersGroup } from './pages/creation-form/creation-form/externMe
     InstStrategicObjComponent,
     ModalInstStrategicObjControl,
     StrategiesComponent,
-    ModalStrategiesControl
+    ModalStrategiesControl,
+    InfPertinenciaComponent,
    
   ],
   imports: [
