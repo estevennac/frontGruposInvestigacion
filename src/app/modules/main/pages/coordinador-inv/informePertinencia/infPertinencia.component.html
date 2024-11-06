@@ -15,7 +15,7 @@
                 <div class="grid-item">
                   <mat-form-field appearance="fill">
                     <mat-label>Plan del Nivel Superior</mat-label>
-                    <mat-select [formControl]="planSuperiorControl" multiple
+                    <mat-checkbox  [formControl]="planSuperiorControl" multiple
                       required>
                       <mat-option *ngFor="let plan of planSuperior"
                         [value]="plan.idPlanNivelSuperior">
