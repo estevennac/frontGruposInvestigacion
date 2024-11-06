@@ -281,7 +281,7 @@ export class DevelopmentPlanFormComponent implements OnInit {
         console.error('Error al crear el plan de desarrollo:', error); // Manejo de errores
       }
     )
-  }
+    }
   guardarObj(idPlan: number) {
     const objetivos = this.myForm.value.planDesarrolloForm3.objetivos;
 
