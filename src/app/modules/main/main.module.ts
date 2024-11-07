@@ -131,6 +131,7 @@ import { LegalFrameworkControl } from './pages/administracion/legal-framework/mo
 import { ModalNationalControl } from './pages/administracion/national-plan/modal-national-plan.component';
 import { ExternMembersGroup } from './pages/creation-form/creation-form/externMemberForm.component';
 import { InfPertinenciaComponent } from './pages/coordinador-inv/informePertinencia/infPertinencia.component';
+import { infBienesEquiposComponent } from './pages/coordinadorGI/informeBienesEquipos/infBienesEquipos.component';
 @NgModule({
   declarations: [
     MainComponent,
@@ -230,6 +231,7 @@ import { InfPertinenciaComponent } from './pages/coordinador-inv/informePertinen
     StrategiesComponent,
     ModalStrategiesControl,
     InfPertinenciaComponent,
+    infBienesEquiposComponent,
    
   ],
   imports: [
