@@ -1,16 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { CreationReqService } from 'src/app/core/http/creation-req/creation-req.service';
 import { Router } from '@angular/router';
-import { CreationReqForm } from 'src/app/types/creationReq.types';
 import { InvGroupForm } from 'src/app/types/invGroup.types';
 import { InvGroupService } from 'src/app/core/http/inv-group/inv-group.service';
 import { UsuarioService } from 'src/app/core/http/usuario/usuario.service';
-import { state } from '@angular/animations';
-import { DatePipe } from '@angular/common';
-import { Usuario } from 'src/app/types/usuario.types';
 import { Link as LinkForm } from 'src/app/types/link.types';
 import { LinkService } from 'src/app/core/http/link/link.service';
-import { DisLink } from 'src/app/types/disLink.types';
 @Component({
     selector: 'app-solicitud-list',
     templateUrl: './obtenerSolicitudes.component.html',

@@ -1,6 +1,7 @@
 export interface DevelopmentPlanForms {
     idPlanDesarrollo: number;
     idGrupoInv: number;
+    idObjetivoInst:number;
     tipo: string;
     estado: string;
     alcance:string;

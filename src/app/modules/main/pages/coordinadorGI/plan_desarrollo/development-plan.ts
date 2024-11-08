@@ -28,6 +28,12 @@ import { CreationReqService } from 'src/app/core/http/creation-req/creation-req.
 import { InvGroupService } from 'src/app/core/http/inv-group/inv-group.service';
 import { CreationReqForm } from 'src/app/types/creationReq.types';
 import { InvGroupForm } from 'src/app/types/invGroup.types';
+import { InstStrategicObj } from 'src/app/types/InstStrategicObj.types';
+import { InstStrategicObjService } from 'src/app/core/http/instStrategicObj/inst-strategic-obj.service';
+import { OdsService } from 'src/app/core/http/ods/ods.service';
+import { ODS } from 'src/app/types/ods.types';
+import { ObjStrategiesODSService } from 'src/app/core/http/obj_strategies_ods/obj_strategies_ods.service';
+import { Objectives_Strategies_Ods } from 'src/app/types/obj_strategies_ods.types';
 
 @Component({
   selector: 'vex-creation-form',
@@ -51,9 +57,14 @@ export class DevelopmentPlanFormComponent implements OnInit {
   objEstrategicoControl = new FormControl("", Validators.required);
   marcoControl = new FormControl<any>(0, Validators.required);
   planNacionalControl = new FormControl<any>(0, Validators.required);
+  objetivoInstitucionalControl = new FormControl<any>(0, Validators.required);
+  odsControl = new FormControl<any>(0, Validators.required);
   myForm: FormGroup;
   currentUser: string;
   currentDate: any;
+  objetivoInstitucional: InstStrategicObj[];
+  ods:ODS[];
+  estrategias:Strategies[];
   constructor(
     private fb: FormBuilder,
     private upperLevelPlanService: UpperLevelPlanService,
@@ -73,6 +84,9 @@ export class DevelopmentPlanFormComponent implements OnInit {
     private controlPanelService: ControlPanelService,
     private creationReqService: CreationReqService,
     private invGroupService: InvGroupService,
+    private objInstitucionalService:InstStrategicObjService,
+    private odsService: OdsService,
+    private strategiesService:StrategiesService,
 
   ) {
     this.myForm = this.fb.group({
@@ -88,8 +102,9 @@ export class DevelopmentPlanFormComponent implements OnInit {
         contexto: this.contextoControl,
       }),
       planDesarrolloForm2_2: this.fb.group({
+        objInstitucional: this.objetivoInstitucionalControl,
         objGeneral: this.objGeneralControl,
-        objEstrategico: this.objEstrategicoControl,
+        objEstrategico: this.objEstrategicoControl,//eliminar este
       }),
       planDesarrolloForm3: this.fb.group({
         objetivos: this.fb.array([]),
@@ -98,9 +113,9 @@ export class DevelopmentPlanFormComponent implements OnInit {
         actividades: this.fb.array([]),
       }),
     });
-    this.planSuperiorControl.setValue([3]); // ID del plan que deseas seleccionar por defecto
-    this.marcoControl.setValue([7]);        // ID del marco que deseas seleccionar por defecto
-    this.planNacionalControl.setValue([8]); // ID del plan nacional que deseas seleccionar por defecto
+    this.planSuperiorControl.setValue(this.planSuperior[0].idPlanNivelSuperior); // ID del plan que deseas seleccionar por defecto
+    this.marcoControl.setValue(this.marcoLegal[0].idMarcoLegal);        // ID del marco que deseas seleccionar por defecto
+    this.planNacionalControl.setValue(this.planNacional[0].idPlanNacional); // ID del plan nacional que deseas seleccionar por defecto
   }
 
   ngOnInit(): void {
@@ -140,6 +155,13 @@ export class DevelopmentPlanFormComponent implements OnInit {
     this.nationalPlanService.getAll().subscribe((data) => {
       this.planNacional = data.filter((plan) => plan.estado === true);
     });
+    this.objInstitucionalService.getAll().subscribe((data)=>{
+      this.objetivoInstitucional = data.filter((obj)=>obj.estado==true);
+    })
+    this.strategiesService.getAll().subscribe((data)=>{
+      this.estrategias = data.filter((estrategia)=>estrategia.estado==true);
+    })
+    
   }
 
   addObjetivo() {
@@ -254,6 +276,7 @@ export class DevelopmentPlanFormComponent implements OnInit {
     const DevPlan: DevelopmentPlanForms = {
       idPlanDesarrollo: 0,
       idGrupoInv: this.idGroup,
+      idObjetivoInst:1,
       tipo: "c",
       estado: "e",
       alcance: this.myForm.value.planDesarrolloForm2.alcance,
@@ -341,9 +364,17 @@ export class DevelopmentPlanFormComponent implements OnInit {
       const act: ControlPanelForm = {
         idPlanDesarrollo: idPlan,
         idPanelControl: 0,
-        indicador: obj.indicador,
-        responsable: obj.responsable,
-        objetivoEspecifico: obj.objEspecifico,
+        idObjetivoEspecifico:0, 
+        idResponsable:0, 
+        indicadorNombre:"", 
+        indicadorTipo:"",
+        indicadorForma:"", 
+        indicadorCondicional:"",
+         indicadorAcumulativo:"",
+
+        //indicador: obj.indicador,
+        //responsable: obj.responsable,
+       // objetivoEspecifico: obj.objEspecifico,
         actividad: obj.actividad,
         meta1: obj.meta1,
         meta2: obj.meta2,
@@ -351,10 +382,10 @@ export class DevelopmentPlanFormComponent implements OnInit {
         meta4: obj.meta4,
         financiamiento: obj.financiamiento,
         observacion: obj.observaciones,
-        usuarioCreacionPanelControl: this.currentUser,
-        fechaCreacionPanelControl: this.currentDate,
-        usuarioModificacionPanelControl: null,
-        fechaModificacionPanelControl: null
+        usuarioCreacion: this.currentUser,
+        fechaCreacion: this.currentDate,
+        usuarioModificacion: null,
+        fechaModificacion: null
       };
 
       // Guarda el objetivo y espera la respuesta
