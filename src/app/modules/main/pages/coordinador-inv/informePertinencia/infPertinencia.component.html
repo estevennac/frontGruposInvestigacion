@@ -1,0 +1,158 @@
+<div class="cont">
+    <div class="container-fluid">
+      <div class="card">
+        <header>
+          <h1>Plan de Desarrollo</h1>
+        </header>
+      </div>
+      <form [formGroup]="myForm" (ngSubmit)="HandleSubmit()">
+        <mat-stepper [linear]="isLinear" #stepper>
+          <!-- Step 1: Referencias -->
+          <mat-step [stepControl]="form1">
+            <ng-template matStepLabel>Antecedentes</ng-template>
+            <div formGroupName="form1">
+              <div class="grid-container">
+                <div class="grid-item">
+                  <mat-form-field appearance="fill">
+                    <mat-label>Número de memorando de solicitud de informe de pertinencia</mat-label>
+                    <input matInput placeholder="No Memorando" value="numeroMemo">
+                  </mat-form-field>
+                </div>
+  
+                <div class="grid-item">
+                  <mat-form-field appearance="fill">
+                    <mat-checkbox value="formularioCreacion" >Solicitud de creación de grupo de investigación.</mat-checkbox>
+                  </mat-form-field>
+                </div>
+  
+                <div class="grid-item">
+                  <mat-form-field appearance="fill">
+                    <mat-checkbox value="planDesarrollo">Plan de desarrollo del grupo de investigación.</mat-checkbox>
+                  </mat-form-field>
+                </div>
+
+                <div class="grid-item">
+                  <mat-form-field appearance="fill">
+                    <mat-checkbox value="documentosAdicionales">Documentación adicional de sustento.</mat-checkbox>
+                  </mat-form-field>
+                </div>
+              </div>
+            </div>
+            <div class="grid-item">
+              <button type="button" mat-raised-button color="primary">
+
+                Siguiente
+              </button>
+            </div>
+          </mat-step>
+          
+           <!-- Step 2: Objetivo-->
+          <mat-step [stepControl]="form2">
+            <ng-template matStepLabel>Objetivo</ng-template>
+  
+            <div formGroupName="form2">
+              <mat-form-field appearance="fill">
+                <mat-form-field>Objetivo</mat-form-field>
+                <textarea matInput placeholder="Objetivo" value="objetivos"></textarea>
+              </mat-form-field>
+
+              <div class="grid-container">
+                <div class="grid-item">
+                  <button type="button" mat-raised-button color="primary"
+                    matStepperPrevious>Regresar</button>
+                  <button type="button" mat-raised-button color="primary">
+                    
+                    Siguiente
+                  </button>
+                </div>
+              </div>
+            </div>
+          </mat-step>
+          <!-- Step 3: Desarrollo -->
+          <mat-step [stepControl]="form3">
+            <ng-template matStepLabel>Desarrollo</ng-template>
+  
+            <div formGroupName="form3">
+              <div class="grid-container">
+                <div class="grid-item">
+                  <mat-form-field>
+                    <mat-checkbox value="planEstrategico">Pertinencia académica del grupo de investigación a 
+                      los Objetivos de Desarrollo Sostenible y el Plan Estratégico de la universidad</mat-checkbox>
+                  </mat-form-field>
+                </div>
+                <div class="grid-item">
+                  <mat-form-field>
+                    <mat-checkbox value="pertenenciaAcademicaAporte">Pertinencia académica del grupo de investigación 
+                      con su aporte a los dominios, áreas y líneas de investigación de la universidad.
+                    </mat-checkbox>
+                  </mat-form-field>
+                </div>
+                <div class="grid-item">
+                  <mat-form-field>
+                    <mat-checkbox value="coordinador">Cumplimiento de requisitos de coordinador del grupo de investigación 
+                      con documentos de respaldo.
+                    </mat-checkbox>
+                  </mat-form-field>
+                </div>
+                <div class="grid-item">
+                  <mat-form-field>
+                    <mat-checkbox value="miembros">Cumplimiento de requisitos de miembros y colaboradores del grupo de 
+                      investigación con documentos de respaldo.
+                    </mat-checkbox>
+                  </mat-form-field>
+                </div>
+                <div class="grid-item">
+                  <mat-form-field>
+                    <mat-checkbox value="objetivosPlanDesarrollo">Relevancia de la creación del grupo de investigación con base a los
+                       objetivos del Plan de Desarrollo del grupo de investigación.
+                    </mat-checkbox>
+                  </mat-form-field>
+                </div>
+
+
+                <div class="grid-container">
+                  <div class="grid-item">
+                    <button type="button" mat-raised-button color="primary"
+                      matStepperPrevious>Regresar</button>
+                    <button type="button" mat-raised-button color="primary">
+                      
+                      Siguiente
+                    </button>
+                  </div>
+                </div>
+                
+              </div>
+            </div>
+          </mat-step>
+  
+          <!-- Step 4: Conclusiones y Recomendaciones -->
+          <mat-step [stepControl]="form4">
+            <ng-template matStepLabel>Objetivos y Estrategias</ng-template>
+            <div formGroupName="form4">
+              <div class="grid-item">
+                <mat-form-field appearance="fill">
+                  <mat-form-field>Conclusiones</mat-form-field>
+                  <textarea matInput placeholder="Conclusiones" value="conclusiones"></textarea>
+                </mat-form-field>
+              </div>
+              <div class="grid-item">
+                <mat-form-field appearance="fill">
+                  <mat-form-field>Recomendaciones</mat-form-field>
+                  <textarea matInput placeholder="Recomendaciones" value="recomendaciones"></textarea>
+                </mat-form-field>
+              </div>
+            </div>
+            <div class="grid-item">
+              <button type="button" mat-raised-button color="primary"
+                matStepperPrevious>Regresar</button>
+              <button type="submit" mat-raised-button color="primary">
+                Finalizar
+              </button>
+            </div>
+          </mat-step>
+  
+        </mat-stepper>
+      </form>
+    </div>
+  </div>
+  

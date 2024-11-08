@@ -71,8 +71,8 @@ export class LineComponent implements OnInit {
     );
   }
 
-  deleteLine(id: number) {
-    this.lineService.update(id, { estado: false }).subscribe(
+  deleteLine(id: number,idArea:number) {
+    this.lineService.update(id, { idArea: idArea, estado: false }).subscribe(
       () => {
         console.log(`Línea de investigación con ID ${id} eliminada correctamente`);
         this.getLine();
@@ -83,8 +83,8 @@ export class LineComponent implements OnInit {
     );
   }
 
-  activateLine(id: number) {
-    this.lineService.update(id, { estado: true }).subscribe(
+  activateLine(id: number,idArea:number) {
+    this.lineService.update(id, { idArea: idArea,estado: true }).subscribe(
       () => {
         console.log(`Línea de investigación con ID ${id} activada correctamente`);
         this.getLine();

@@ -281,7 +281,7 @@ export class DevelopmentPlanFormComponent implements OnInit {
         console.error('Error al crear el plan de desarrollo:', error); // Manejo de errores
       }
     )
-  }
+    }
   guardarObj(idPlan: number) {
     const objetivos = this.myForm.value.planDesarrolloForm3.objetivos;
 
@@ -308,7 +308,7 @@ export class DevelopmentPlanFormComponent implements OnInit {
               //descripcion: estrategia.descripcion,
               idEstrategia: 0,
               estrategia: estrategia.descripcion,
-              ods: estrategia.ods,
+              
               idObjetivo: idObjetivo, // Relaciona la estrategia con el objetivo creado
               usuarioCreacion: this.currentUser,
               fechaCreacion: this.currentDate,

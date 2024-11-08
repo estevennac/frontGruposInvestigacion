@@ -25,4 +25,5 @@ export class ObjStrategiesService {
   createObjStrategiesForm(formData: ObjStrategies): Observable<any> {
     return this.http.post(`${this.URL}/create`, formData);
   }
+
 }

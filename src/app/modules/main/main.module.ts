@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { importProvidersFrom, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MainRoutingModule } from './main-routing.module';
 import { MainComponent } from './pages/main/main.component';
@@ -23,6 +23,9 @@ import { DominioAcademico } from './pages/administracion/dominios-academicos/dom
 
 import { InstStrategicObjComponent } from './pages/administracion/inst-strategic-obj/inst-strategic-obj.component';
 import { ModalInstStrategicObjControl } from './pages/administracion/inst-strategic-obj/modal-inst-strategic-obj.component';
+import { StrategiesComponent } from './pages/administracion/strategies/strategies.component';
+import { ModalStrategiesControl } from './pages/administracion/strategies/modal-strategies.component';
+
 import { LineComponent } from './pages/administracion/line/line.component';
 
 import { AreaComponent } from './pages/administracion/area/area.component';
@@ -127,6 +130,8 @@ import { LineaControl } from './pages/administracion/line/modal_line.component';
 import { LegalFrameworkControl } from './pages/administracion/legal-framework/modal_legal_framework.component';
 import { ModalNationalControl } from './pages/administracion/national-plan/modal-national-plan.component';
 import { ExternMembersGroup } from './pages/creation-form/creation-form/externMemberForm.component';
+import { InfPertinenciaComponent } from './pages/coordinador-inv/informePertinencia/infPertinencia.component';
+import { infBienesEquiposComponent } from './pages/coordinadorGI/informeBienesEquipos/infBienesEquipos.component';
 @NgModule({
   declarations: [
     MainComponent,
@@ -223,7 +228,10 @@ import { ExternMembersGroup } from './pages/creation-form/creation-form/externMe
     AreaControl,
     InstStrategicObjComponent,
     ModalInstStrategicObjControl,
-    
+    StrategiesComponent,
+    ModalStrategiesControl,
+    InfPertinenciaComponent,
+    infBienesEquiposComponent,
    
   ],
   imports: [
