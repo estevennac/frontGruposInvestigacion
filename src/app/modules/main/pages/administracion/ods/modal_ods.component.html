@@ -1,0 +1,40 @@
+<div class="cont">
+    <div class="container-fluid">
+        <div class="back-button-container">
+            <header style="display: flex;">
+                <h1>{{ isEditing ? 'Editar ODS' : 'Crear Nuevo ODS' }}</h1>
+            </header>
+        </div>
+
+        <!-- Spinner de carga -->
+        <div *ngIf="isLoading" class="loading-spinner-overlay">
+            <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
+        </div>
+
+        <!-- Formulario -->
+        <div class="form-container" *ngIf="!isLoading">
+            <form [formGroup]="form" (ngSubmit)="save()">
+                <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>Nombre del ODS</mat-label>
+                    <input matInput type="text" formControlName="ods" required>
+                    <mat-error *ngIf="form.get('ods').invalid && form.get('ods').touched">
+                        El ods es obligatorio.
+                    </mat-error>
+                </mat-form-field>
+                <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>Descripcion del ODS</mat-label>
+                    <textarea matInput type="text" formControlName="descripcion" required>   </textarea>
+                    <mat-error *ngIf="form.get('descripcion').invalid && form.get('descripcion').touched">
+                        campo requerido
+                    </mat-error>
+                </mat-form-field>
+                <!-- Botón de guardar -->
+                <div class="button-container">
+                    <button mat-raised-button color="primary" type="submit" [disabled]="!form.valid">
+                        {{ isEditing ? 'Actualizar' : 'Guardar' }}
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

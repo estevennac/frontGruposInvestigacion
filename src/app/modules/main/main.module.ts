@@ -18,7 +18,7 @@ import { MatCardModule } from '@angular/material/card';
 
 import { DesvinculacionFormComponent } from './pages/coordinadorGI/vinculacion-desvinculacion/desvinculacion/desvinculacion.component';
 import { DominioAcademico } from './pages/administracion/dominios-academicos/dom-acad.component';
-
+import { OdsComponent } from './pages/administracion/ods/ods.component';
 //import { ControlPanelFormComponent } from './pages/control-panel/control-panel-form.component';
 
 import { InstStrategicObjComponent } from './pages/administracion/inst-strategic-obj/inst-strategic-obj.component';
@@ -132,9 +132,12 @@ import { ModalNationalControl } from './pages/administracion/national-plan/modal
 import { ExternMembersGroup } from './pages/creation-form/creation-form/externMemberForm.component';
 import { InfPertinenciaComponent } from './pages/coordinador-inv/informePertinencia/infPertinencia.component';
 import { infBienesEquiposComponent } from './pages/coordinadorGI/informeBienesEquipos/infBienesEquipos.component';
+import { OdsControl } from './pages/administracion/ods/modal_ods.component';
 @NgModule({
   declarations: [
     MainComponent,
+    OdsControl,
+    OdsComponent,
     ExternMembersGroup,
     ModalNationalControl,
     ModalUpperPlanControl,

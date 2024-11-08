@@ -20,7 +20,7 @@ import { NationalPlanComponent } from './pages/administracion/national-plan/nati
 
 import { LegalFrameworkComponent } from './pages/administracion/legal-framework/legal-framework.component';
 
-
+import { OdsComponent } from './pages/administracion/ods/ods.component';
 import {CreationFormComponent} from './pages/creation-form/creation-form/creation-form.component';
 import { EjecucionComponent } from './pages/ejecucion/ejecucion.component';
 import { TarjetSeguimientoComponent } from './pages/coordinadorGI/seguimiento/seguimiento.component';
@@ -87,6 +87,10 @@ const routes: Routes = [
   {
     path: 'principal',
     component: MainComponent
+  },
+  {
+path: 'ods',
+component: OdsComponent
   },
   {
     path: 'rol',
