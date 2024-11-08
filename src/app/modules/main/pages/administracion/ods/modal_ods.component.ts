@@ -1,9 +1,9 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { OdsService } from 'src/app/core/http/ods/ods.service';
 import { AuthService } from 'src/app/core/auth/services/auth.service';
 import { ODS } from 'src/app/types/ods.types';
-import { OdsService } from 'src/app/core/http/ods/ods.service';
 
 @Component({
     selector: 'app-area',
@@ -14,7 +14,7 @@ export class OdsControl implements OnInit {
     currentUser: string;
     currentDate: Date = new Date();
     ods: ODS[] = [];
-    form: FormGroup;
+    odsForm: FormGroup;
     isSaved: boolean = false;
     isLoading: boolean = false;
     isEditing: boolean = false; // Variable para determinar si se está en modo edición
@@ -31,10 +31,9 @@ export class OdsControl implements OnInit {
         this.currentUser = this.authService.getUserName();
 
         // Inicializar el formulario
-        this.form = this.fb.group({
-            ods: ['', Validators.required],
-            descripcion: ['', Validators.required],
-            //estado: [1, Validators.required],
+        this.odsForm = this.fb.group({
+            nombreOds: ['', Validators.required],
+            estado: [1, Validators.required],
         });
 
         // Si hay datos, significa que se está editando un dominio
@@ -46,16 +45,15 @@ export class OdsControl implements OnInit {
 
     // Cargar los datos del dominio académico para la edición
     loadData(ods: ODS) {
-        this.form.patchValue({
-            ods: ods.ods,
-            descripcion: ods.descripcion,
-           // estado: ods.estado
+        this.odsForm.patchValue({
+            nombreOds: ods.ods,
+            estado: ods.descripcion
         });
     }
 
     // Método para crear o actualizar dependiendo de la acción
     save() {
-        if (this.form.valid) {
+        if (this.odsForm.valid) {
             this.isLoading = true; // Mostrar el spinner
 
             if (this.isEditing) {
@@ -68,19 +66,19 @@ export class OdsControl implements OnInit {
 
     // Crear un nuevo dominio académico
     create() {
-        const data: ODS = this.form.value;
-        data.fechaCreacion = this.currentDate;
-        data.usuarioCreacion = this.currentUser;
+        const odsData: ODS = this.odsForm.value;
+        odsData.fechaCreacion = this.currentDate;
+        odsData.usuarioCreacion = this.currentUser;
 
-        this.odsService.create(data).subscribe(
+        this.odsService.create(odsData).subscribe(
             () => {
-                console.log('ODS creada correctamente');
+                console.log('Area creada correctamente');
                 this.isSaved = true;
                 this.isLoading = false; // Ocultar el spinner
                 this.dialogRef.close(true); // Cerrar el modal y retornar éxito
             },
             (error) => {
-                console.error('Error al crear el ODS', error);
+                console.error('Error al crear el ods', error);
                 this.isLoading = false; // Ocultar el spinner
             }
         );
@@ -88,13 +86,13 @@ export class OdsControl implements OnInit {
 
     // Editar un dominio académico existente
     update() {
-        const updatedData: ODS = this.form.value;
+        const updatedData: ODS = this.odsForm.value;
         updatedData.fechaModificacion = this.currentDate;
         updatedData.usuarioModificacion = this.currentUser;
 
-        this.odsService.update(this.data.ods.idOds, updatedData).subscribe(
+        this.odsService.update(this.data.area.idArea, updatedData).subscribe(
             () => {
-                console.log('ODS actualizado correctamente');
+                console.log('Ods actualizado correctamente');
                 this.isSaved = true;
                 this.isLoading = false; // Ocultar el spinner
                 this.dialogRef.close(true); // Cerrar el modal y retornar éxito
