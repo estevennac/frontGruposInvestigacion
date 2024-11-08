@@ -7,8 +7,6 @@ import { AuthService } from "src/app/core/auth/services/auth.service";
 import { RelevanceReportService } from "src/app/core/http/relevance-report/relevance-report.service";
 import { DatePipe } from "@angular/common";
 import { RelevanceReport } from "src/app/types/relevancereport.types";
-import { error } from "console";
-import { NgModel } from "@angular/forms";
 
 @Component({
     selector: 'vex-creation-form',

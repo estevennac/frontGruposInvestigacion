@@ -1,0 +1,109 @@
+<div class="cont">
+    <div class="container-fluid">
+        <div class="card">
+            <header>
+            <h1>Plan de Desarrollo</h1>
+            </header>
+        </div>
+        <form [formGroup]="myForm" (ngSubmit)="HandleSubmit()">
+            <mat-stepper [linear]="isLinear" #stepper>
+            <!-- Step 1: Referencias -->
+                <mat-step [stepControl]="form1">
+                    <ng-template matStepLabel>Introducción</ng-template>
+                    <div formGroupName="form1">
+                        <div class="grid-container">
+                            <div class="grid-item">
+                                <mat-form-field appearance="fill">
+                                    <mat-label>Objetivo de reporte</mat-label>
+                                    <input matInput placeholder="Obejetivo" value="objetivoReporte">
+                                </mat-form-field>
+                            </div>
+            
+                            <div class="grid-item">
+                                <mat-form-field appearance="fill">
+                                    <mat-label>Contexto del envio del reporte</mat-label>
+                                    <textarea matInput placeholder="Contexto" value="contextoReporte"></textarea>
+                                </mat-form-field>
+                            </div>
+        
+                        </div>
+                    </div>
+                    <div class="grid-item">
+                        <button type="button" mat-raised-button color="primary">
+
+                            Siguiente
+                        </button>
+                    </div>
+                </mat-step>
+                
+                <!-- Step 2: Tabla-->
+                <mat-step>
+                    <ng-template matStepLabel>Detalle de Bienes</ng-template>
+        
+                </mat-step>
+
+                <!-- Step 3: Estado Actual de bienes -->
+                <mat-step [stepControl]="form3">
+                    <ng-template matStepLabel>Estado Actual de los Bienes y Equipos</ng-template>
+        
+                    <div formGroupName="form2">
+                        <div class="grid-container">
+                            <div class="grid-item">
+                                <mat-form-field appearance="fill">
+                                    <mat-label>Funcionamiento y Uso</mat-label>
+                                    <textarea matInput placeholder="" value="usoEstado"></textarea>
+                                </mat-form-field>
+                            </div>
+                            <div class="grid-item">
+                                <mat-form-field appearance="fill">
+                                    <mat-label>Condiciones Generales de uso</mat-label>
+                                    <textarea matInput placeholder="Condicones" value="condicionesGenerales"></textarea>
+                                </mat-form-field>
+                            </div>
+                            <div class="grid-item">
+                                <mat-form-field appearance="fill">
+                                    <mat-label>Relevancia para Proyectos Actuales</mat-label>
+                                    <textarea matInput placeholder="Relevancia" value="relevancia"></textarea>
+                                </mat-form-field>
+                            </div>
+                            
+
+                            <div class="grid-container">
+                                <div class="grid-item">
+                                    <button type="button" mat-raised-button color="primary"
+                                    matStepperPrevious>Regresar</button>
+                                    <button type="button" mat-raised-button color="primary">
+                                    
+                                    Siguiente
+                                    </button>
+                                </div>
+                            </div>
+                            
+                        </div>
+                    </div>
+                </mat-step>
+        
+                <!-- Step 4: Conclusiones y Recomendaciones -->
+                <mat-step [stepControl]="form3">
+                    <ng-template matStepLabel>Conclusiones</ng-template>
+                    <div formGroupName="form3">
+                        <div class="grid-item">
+                            <mat-form-field appearance="fill">
+                            <mat-form-field>Conclusiones</mat-form-field>
+                            <textarea matInput placeholder="Conclusiones" value="conclusiones"></textarea>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="grid-item">
+                        <button type="button" mat-raised-button color="primary"
+                            matStepperPrevious>Regresar</button>
+                        <button type="submit" mat-raised-button color="primary">
+                            Finalizar
+                        </button>
+                    </div>
+                </mat-step>
+    
+            </mat-stepper>
+        </form>
+    </div>
+</div>
