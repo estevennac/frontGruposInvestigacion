@@ -69,7 +69,7 @@ import { NgModel } from "@angular/forms";
       return this.myForm.get('form1') as FormGroup;
     }
     get form2(){
-      return this.myForm.get('fomr2') as FormGroup;
+      return this.myForm.get('form2') as FormGroup;
     }
     get form3(){
       return this.myForm.get('form3') as FormGroup;
