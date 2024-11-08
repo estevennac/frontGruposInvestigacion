@@ -14,7 +14,7 @@ export class OdsControl implements OnInit {
     currentUser: string;
     currentDate: Date = new Date();
     ods: ODS[] = [];
-    odsForm: FormGroup;
+    form: FormGroup;
     isSaved: boolean = false;
     isLoading: boolean = false;
     isEditing: boolean = false; // Variable para determinar si se está en modo edición
@@ -31,7 +31,7 @@ export class OdsControl implements OnInit {
         this.currentUser = this.authService.getUserName();
 
         // Inicializar el formulario
-        this.odsForm = this.fb.group({
+        this.form = this.fb.group({
             nombreOds: ['', Validators.required],
             estado: [1, Validators.required],
         });
@@ -45,7 +45,7 @@ export class OdsControl implements OnInit {
 
     // Cargar los datos del dominio académico para la edición
     loadData(ods: ODS) {
-        this.odsForm.patchValue({
+        this.form.patchValue({
             nombreOds: ods.ods,
             estado: ods.descripcion
         });
@@ -53,7 +53,7 @@ export class OdsControl implements OnInit {
 
     // Método para crear o actualizar dependiendo de la acción
     save() {
-        if (this.odsForm.valid) {
+        if (this.form.valid) {
             this.isLoading = true; // Mostrar el spinner
 
             if (this.isEditing) {
@@ -66,7 +66,7 @@ export class OdsControl implements OnInit {
 
     // Crear un nuevo dominio académico
     create() {
-        const odsData: ODS = this.odsForm.value;
+        const odsData: ODS = this.form.value;
         odsData.fechaCreacion = this.currentDate;
         odsData.usuarioCreacion = this.currentUser;
 
@@ -86,7 +86,7 @@ export class OdsControl implements OnInit {
 
     // Editar un dominio académico existente
     update() {
-        const updatedData: ODS = this.odsForm.value;
+        const updatedData: ODS = this.form.value;
         updatedData.fechaModificacion = this.currentDate;
         updatedData.usuarioModificacion = this.currentUser;
 

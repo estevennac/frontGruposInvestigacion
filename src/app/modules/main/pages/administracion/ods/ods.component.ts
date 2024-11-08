@@ -1,6 +1,5 @@
 import { Component, OnInit } from "@angular/core";
 import { ODS } from "src/app/types/ods.types";
-import { Router } from '@angular/router';
 import { OdsService } from "src/app/core/http/ods/ods.service";
 import { OdsControl } from './modal_ods.component';
 import { MatDialog } from "@angular/material/dialog";
@@ -14,7 +13,7 @@ import { Router } from '@angular/router';
 export class OdsComponent implements OnInit {
   ods: ODS[] = [];
 
-  constructor(private router: Router, private odsService: MatDialog,
+  constructor(private router: Router, private odsService: OdsService,
     private dialog: MatDialog
   ) {}
 
@@ -35,7 +34,7 @@ openDialog(ods ?: ODS): void {
     data: { ods }
   });
 
-  DialogRef.afterClosed().subscribe((result) => {
+  dialogRef.afterClosed().subscribe((result) => {
     if (result) {
       this.get();
     }
@@ -53,29 +52,7 @@ edit(id: number) {
   );
 }
 
-deletee(id: number) {
-  this.odsService.update(id, { estado: false }).subscribe(
-    () => {
-      console.log(`ODS con ID ${id} eliminado correctamente`);
-      this.get();
-    },
-    (error) => {
-      console.error('Error al eliminar el dominio académico', error);
-    }
-  );
-}
 
-active(id: number) {
-  this.odsService.update(id, { estado: true }).subscribe(
-    () => {
-      console.log(`ODS con ID ${id} eliminado correctamente`);
-      this.get();
-    },
-    (error) => {
-      console.error('Error al eliminar el dominio académico', error);
-    }
-  );
-}
 goBack() {
   this.router.navigate(['main/admin']);
 }
