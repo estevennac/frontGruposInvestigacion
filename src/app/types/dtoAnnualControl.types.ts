@@ -1,4 +1,4 @@
-export interface AnnualControl {
+export interface DtoAnnualControl {
     idPanelControl: number;
     idPlanAnual: number;
     objetivoAnual: string;

@@ -1,4 +1,4 @@
-export interface Compliance {
+export interface DtoCompliance {
     idReporteActividades: number;
     idObjEspecifico: number;
     verificable: string;
