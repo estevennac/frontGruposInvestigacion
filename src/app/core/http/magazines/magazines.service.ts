@@ -25,4 +25,8 @@ export class MagazinesService {
   createMagazinesForm(formData: Magazines): Observable<any> {
     return this.http.post(`${this.URL}/create`, formData);
   }
+
+  update(id: number, formData: Magazines): Observable<Magazines>{
+    return this.http.put<Magazines>(`${this.URL}/update/${id}`, formData);
+  }
 }

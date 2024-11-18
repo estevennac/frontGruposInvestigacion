@@ -30,7 +30,9 @@ export class DevelopmentPlanService {
     return this.http.post<any>(`${this.URL}/create`, formData);
   }
 
-
+  update(id: number, formData: DevelopmentPlanForms): Observable<DevelopmentPlanForms>{
+    return this.http.put<DevelopmentPlanForms>(`${this.URL}/update/${id}`, formData);
+  }
 }
 
 

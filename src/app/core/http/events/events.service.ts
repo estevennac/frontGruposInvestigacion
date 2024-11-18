@@ -25,4 +25,8 @@ export class EventsService {
   createEventsForm(formData: Events): Observable<any> {
     return this.http.post(`${this.URL}/create`, formData);
   }
+
+  update(id: number, formData: Events): Observable<Events>{
+    return this.http.put<Events>(`${this.URL}/update/${id}`, formData);
+  }
 }

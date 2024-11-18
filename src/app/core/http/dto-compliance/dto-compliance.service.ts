@@ -10,18 +10,18 @@ import { Observable } from 'rxjs';
 export class DtoComplianceService
 {
 
-  private readonly URL = environment.appApiUrl + '/dtoCompliances';
+  private readonly URL = environment.appApiUrl + '/complience';
 
   constructor(private http: HttpClient) {}
 
-  getAll(): Observable<DtoCompliance[]>
+  getByObj(id: number): Observable<DtoCompliance[]>
   {
-    return this.http.get<DtoCompliance[]>(`${this.URL + "/"}`);
+    return this.http.get<DtoCompliance[]>(`${this.URL}/specificObj/${id}`);
   }
 
-  getById(id: number): Observable<DtoCompliance>
+  getByAcReport(id: number): Observable<DtoCompliance[]>
   {
-    return this.http.get<DtoCompliance>(`${this.URL}/${id}`);
+    return this.http.get<DtoCompliance[]>(`${this.URL}/activityReport/${id}`);
   }
 
   createDtoComplianceForm(formData: DtoCompliance): Observable<any>
@@ -29,8 +29,4 @@ export class DtoComplianceService
     return this.http.post(`${this.URL}/create`, formData);
   }
 
-  update(id: number, formData: DtoCompliance): Observable<DtoCompliance>
-  {
-    return this.http.put<DtoCompliance>(`${this.URL}/update/${id}`, formData);
-  }
 }

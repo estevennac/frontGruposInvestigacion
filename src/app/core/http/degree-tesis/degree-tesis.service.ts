@@ -26,4 +26,8 @@ export class DegreeTesisService {
     return this.http.post(`${this.URL}/create`, formData);
   }
 
+  update(id: number, formData: DegreeTesisForm): Observable<DegreeTesisForm>{
+    return this.http.put<DegreeTesisForm>(`${this.URL}/update/${id}`,formData);
+  }
+
 }

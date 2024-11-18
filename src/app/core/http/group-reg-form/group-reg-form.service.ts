@@ -25,6 +25,9 @@ export class GroupRegFormService {
     return this.http.post(`${this.URL}/add`, formData);
   }
 
+  update(id: number, formData: GroupRegForm): Observable<GroupRegForm>{
+    return this.http.put<GroupRegForm>(`${this.URL}/update/${id}`, formData);
+  }
 }
 
 

@@ -25,4 +25,8 @@ export class ProgressAchievService {
   createProgressAchievForm(formData: ProgressAchiev): Observable<any> {
     return this.http.post(`${this.URL}/create`, formData);
   }
+
+  update(id: number,formData: ProgressAchiev): Observable<ProgressAchiev>{
+    return this.http.put<ProgressAchiev>(`${this.URL}/update/${id}`,formData)
+  }
 }

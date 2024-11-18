@@ -8,7 +8,7 @@ import { AssetesDetails } from 'src/app/types/assetesDetails.types';
   providedIn: 'root'
 })
 export class AssetsDetailsService {
-  private readonly URL = environment.appApiUrl + '/assets-details'
+  private readonly URL = environment.appApiUrl + '/assetsDetails/'
   
   constructor(private http: HttpClient) { }
 
@@ -21,7 +21,7 @@ export class AssetsDetailsService {
   }
 
   createAssetesDetails(formData: AssetesDetails): Observable<any>{
-    return this.http.post(`${this.URL}/created`, formData)
+    return this.http.post(`${this.URL}/create`, formData)
   }
 
   updateAssetsReport(id: number, formData:AssetesDetails): Observable<any>{

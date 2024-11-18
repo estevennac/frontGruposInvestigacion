@@ -8,7 +8,7 @@ import { environment } from 'src/environments/environment';
   providedIn: 'root'
 })
 export class AssetsReportService {
-  private readonly URL = environment.appApiUrl + '/assets-report'
+  private readonly URL = environment.appApiUrl + '/assetsReport';
 
   constructor(private http: HttpClient) { }
 
@@ -21,10 +21,11 @@ export class AssetsReportService {
   }
 
   createAssetsReport(formData: AssetsReport): Observable<any>{
-    return this.http.post(`${this.URL}/created`,formData);
+    return this.http.post(`${this.URL}/create`,formData);
   }
 
   updateAssetsReport(id:number, formData: AssetsReport): Observable<any>{
     return this.http.put(`${this.URL}/update/${id}`,formData);
   }
+  
 }

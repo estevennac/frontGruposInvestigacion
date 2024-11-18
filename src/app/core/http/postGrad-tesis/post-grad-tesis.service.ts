@@ -25,4 +25,8 @@ export class PostGradTesisService {
   createPostGradTesisForm(formData: PostGradTesis): Observable<any> {
     return this.http.post(`${this.URL}/create`, formData);
   }
+
+  update(id: number, formData:PostGradTesis): Observable<PostGradTesis>{
+    return this.http.put<PostGradTesis>(`${this.URL}/update/${id}`, formData)
+  }
 }

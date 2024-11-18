@@ -26,4 +26,7 @@ export class ObjStrategiesService {
     return this.http.post(`${this.URL}/create`, formData);
   }
 
+  update(id: number, formData: ObjStrategies): Observable<ObjStrategies>{
+    return this.http.put<ObjStrategies>(`${this.URL}/update/${id}`,formData);
+  }
 }

@@ -11,28 +11,28 @@ import { Observable } from "rxjs";
 export class DtoAnnualControlService
 {
 
-  private readonly URL = environment.appApiUrl + '/dtoAnnualControls';
+  private readonly URL = environment.appApiUrl + '/annualControl';
 
   constructor(private http: HttpClient) {}
 
-  getAll(): Observable<DtoAnnualControl[]>
+  getByPanel(id: number): Observable<DtoAnnualControl[]>
   {
-    return this.http.get<DtoAnnualControl[]>(`${this.URL + "/"}`);
+    return this.http.get<DtoAnnualControl[]>(`${this.URL}/AnnualPlan/${id}`);
   }
 
-  getById(id: number): Observable<DtoAnnualControl>
+  getByPlanel(id: number): Observable<DtoAnnualControl[]>
   {
-    return this.http.get<DtoAnnualControl>(`${this.URL}/${id}`);
+    return this.http.get<DtoAnnualControl[]>(`${this.URL}/ControlPanel/${id}`);
+  }
+
+  update(idPanel: number, idPlan:number): Observable<DtoAnnualControl>
+  {
+    return this.http.get<DtoAnnualControl>(`${this.URL + "/"}`);
   }
 
   createDtoAnnualControlForm(formData: DtoAnnualControl): Observable<any>
   {
     return this.http.post(`${this.URL}/create`, formData);
-  }
-
-  update(id: number, formData: DtoAnnualControl): Observable<DtoAnnualControl>
-  {
-    return this.http.put<DtoAnnualControl>(`${this.URL}/update/${id}`, formData);
   }
 }
 
