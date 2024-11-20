@@ -134,9 +134,11 @@ import { InfPertinenciaComponent } from './pages/coordinador-inv/informePertinen
 import { infBienesEquiposComponent } from './pages/coordinadorGI/informeBienesEquipos/infBienesEquipos.component';
 import { OdsControl } from './pages/administracion/ods/modal_ods.component';
 import { ObjControl } from './pages/coordinadorGI/plan_desarrollo/modal_objetivos.component';
+import { ActControl } from './pages/coordinadorGI/plan_desarrollo/modal_cuadro_actividades.component';
 @NgModule({
   declarations: [
     MainComponent,
+    ActControl,
     ObjControl,
     OdsControl,
     OdsComponent,

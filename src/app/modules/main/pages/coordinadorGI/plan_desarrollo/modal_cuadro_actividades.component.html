@@ -1,0 +1,129 @@
+<div class="cont">
+    <div class="container-fluid">
+        <div class="back-button-container">
+            <header style="display: flex;">
+                
+                <h1>PANEL DE CONTROL{{ isEditing ? 'Editar Control' : 'Crear Nuevo control' }}</h1>
+            </header>
+        </div>
+
+        <!-- Spinner de carga -->
+        <div *ngIf="isLoading" class="loading-spinner-overlay">
+            <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
+        </div>
+
+        <!-- Formulario -->
+        <div class="form-container" *ngIf="!isLoading">
+            <form [formGroup]="controlPanelForm" (ngSubmit)="saveControlPanel()">
+
+                <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>Identificar del objetivo Específico</mat-label>
+                    <input matInput type="number" formControlName="idPlanDesarrollo" required>
+                    <mat-error *ngIf="controlPanelForm.get('idPlanDesarrollo').invalid && controlPanelForm.get('idPlanDesarrollo').touched">
+                        El campo es obligatorio.
+                    </mat-error>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>Identificador de Responsable</mat-label>
+                    <input matInput type="number" formControlName="idResponsable" required>
+                    <mat-error *ngIf="controlPanelForm.get('idResponsable').invalid && controlPanelForm.get('idResponsable').touched">
+                        El campo es obligatorio.
+                    </mat-error>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>Actividad</mat-label>
+                    <input matInput type="text" formControlName="actividad" required>
+                    <mat-error *ngIf="controlPanelForm.get('idResponsable').invalid && controlPanelForm.get('idResponsable').touched">
+                        El campo es obligatorio.
+                    </mat-error>
+                </mat-form-field>
+
+                <!--Inicio Indicador -->
+                <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>Indicador Nombre</mat-label>
+                    <input matInput type="text" formControlName="indicadorNombre" required>
+                    <mat-error *ngIf="controlPanelForm.get('indicadorNombre').invalid && controlPanelForm.get('indicadorNombre').touched">
+                        El campo es obligatorio.
+                    </mat-error>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>Indicador Tipo</mat-label>
+                    <input matInput type="text" formControlName="indicadorTipo" required>
+                    <mat-error *ngIf="controlPanelForm.get('indicadorTipo').invalid && controlPanelForm.get('indicadorTipo').touched">
+                        El campo es obligatorio.
+                    </mat-error>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>Indicador Forma</mat-label>
+                    <input matInput type="text" formControlName="indicadorForma" required>
+                    <mat-error *ngIf="controlPanelForm.get('indicadorForma').invalid && controlPanelForm.get('indicadorForma').touched">
+                        El campo es obligatorio.
+                    </mat-error>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>Indicador Condicional</mat-label>
+                    <input matInput type="text" formControlName="indicadorCondicional" required>
+                    <mat-error *ngIf="controlPanelForm.get('indicadorCondicional').invalid && controlPanelForm.get('indicadorCondicional').touched">
+                        El campo es obligatorio.
+                    </mat-error>
+                </mat-form-field>
+                
+                <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>Indicador Acumulativo</mat-label>
+                    <input matInput type="text" formControlName="indicadorAcumulativo" required>
+                    <mat-error *ngIf="controlPanelForm.get('indicadorAcumulativo').invalid && controlPanelForm.get('indicadorAcumulativo').touched">
+                        El campo es obligatorio.
+                    </mat-error>
+                </mat-form-field>
+                <!--Fin indicador-->
+
+                <!--Inicio metas-->
+                <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>Meta 1</mat-label>
+                    <textarea matInput placeholder="" value="meta1"></textarea>
+                </mat-form-field>
+                
+                <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>Meta 2</mat-label>
+                    <textarea matInput placeholder="" value="meta2"></textarea>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>Meta 3</mat-label>
+                    <textarea matInput placeholder="" value="meta3"></textarea>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>Meta 4</mat-label>
+                    <textarea matInput placeholder="" value="meta4"></textarea>
+                </mat-form-field>
+                <!--Fin Metas-->
+
+                <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>Financiamiento</mat-label>
+                    <input matInput type="text" formControlName="financiamiento" required>
+                    <mat-error *ngIf="controlPanelForm.get('financiamiento').invalid && controlPanelForm.get('financiamiento').touched">
+                        El campo es obligatorio.
+                    </mat-error>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>Obervación</mat-label>
+                    <textarea matInput placeholder="" value="observacion"></textarea>
+                </mat-form-field>
+
+                <!-- Botón de guardar -->
+                <div class="button-container">
+                    <button mat-raised-button color="primary" type="submit" [disabled]="!controlPanelForm.valid">
+                        {{ isEditing ? 'Actualizar' : 'Guardar' }}
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
