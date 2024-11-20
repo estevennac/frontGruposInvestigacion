@@ -1,6 +1,6 @@
 export interface Objectives {
     idObjetivo: number;
-    idPlanDesarrollo: number;
+    //idPlanDesarrollo: number;
     objetivo: string;
     usuarioCreacion: string;
     fechaCreacion: Date;

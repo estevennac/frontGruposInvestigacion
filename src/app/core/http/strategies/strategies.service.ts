@@ -25,6 +25,9 @@ export class StrategiesService {
   getByPlan(id: number): Observable<ObjStrategiesComplete[]> {
     return this.http.get<ObjStrategiesComplete[]>(`${this.URL}/complete/${id}`);
   }
+  getByObj(id: number): Observable<Strategies[]> {
+    return this.http.get<Strategies[]>(`${this.URL}/byObj/${id}`);
+  }
   createStrategiesForm(formData: Strategies): Observable<any> {
     return this.http.post(`${this.URL}/create`, formData);
   }

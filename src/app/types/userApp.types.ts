@@ -9,6 +9,7 @@ export interface UserApp {
   urlFoto: string;
   tipo: string;
   ubicacion: string;
+  idBd?: number;
   //roles: UserRole[]; 
   escalafon:string;
 }

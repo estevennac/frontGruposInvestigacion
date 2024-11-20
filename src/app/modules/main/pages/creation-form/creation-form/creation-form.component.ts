@@ -69,6 +69,7 @@ export class CreationFormComponent implements OnInit {
   currentUser: string;
   currentDate: any;
   currentUserId:number;
+  public isLoading: boolean = true; // Inicializar como true para que el spinner aparezca al inicio
 
   constructor(
     private builder: FormBuilder,
@@ -337,7 +338,7 @@ export class CreationFormComponent implements OnInit {
   }
 
 //Para dar formato y controlar las hojas de vida de los miembros del grupo de Investigación.
-  onFileSelected(event: Event, index: number, userId: string) {
+  onFileSelected(event: Event, index: number, userId: number) {
     const input = event.target as HTMLInputElement;
     const files = input.files;
     if (input?.files?.length) {
@@ -365,7 +366,7 @@ export class CreationFormComponent implements OnInit {
 documentosCompletosCargados = false;
 
 verificarDocumentosCargados(): void {
-  const usuariosInternosCompletos = this.selectedUsers.every(user => this.documentosCargados[user.userId]);
+  const usuariosInternosCompletos = this.selectedUsers.every(user => this.documentosCargados[user.user.idBd]);
   const usuariosExternosCompletos = this.selectedUsersExterns.every(user => this.documentosCargados[user.id]);
 
   // Actualiza el estado general si todos los documentos están cargados
@@ -373,7 +374,7 @@ verificarDocumentosCargados(): void {
 }
 
 
-  onFileSelectedExtern(event: Event, index: number, userId: string) {
+  onFileSelectedExtern(event: Event, index: number, userId: number) {
     const input = event.target as HTMLInputElement;
     const files = input.files;
     console.log(files);

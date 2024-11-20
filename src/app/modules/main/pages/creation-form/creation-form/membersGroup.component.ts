@@ -85,6 +85,7 @@ export class MembersGroup implements OnInit {
       this.userService.getByUserName(userName).subscribe((userData) => {
         if (userData.id != null) {
           console.log("El usuario ya existe en la bd");
+          this.user.idBd = userData.id;
         } else {
 
           const usuario: Usuario = {
@@ -101,10 +102,11 @@ export class MembersGroup implements OnInit {
             usuarioCreacion: currentUser,
             usuarioModificacion: null,
             institucion: 'UNIVERSIDAD DE LAS FUERZAS ARMADAS – ESPE',
-            cargo: ''
+            cargo: data.escalafon,
           };
           this.userService.createUser(usuario).subscribe(
             (response) => {
+              this.user.idBd = response;
               console.log("usuario", response);
             }
           );

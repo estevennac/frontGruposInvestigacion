@@ -46,7 +46,7 @@ export class ModalInstStrategicObjControl implements OnInit{
     //Cargar Datos
     loadInstStrategicObj(instStrategicObj: InstStrategicObj) {
         this.instStrategicForm.patchValue({
-            objetivo: instStrategicObj.estado,
+            objetivo: instStrategicObj.objetivo,
             estado: instStrategicObj.estado
         });
     }
@@ -90,7 +90,7 @@ export class ModalInstStrategicObjControl implements OnInit{
         updatedData.fechaModificadoObj = this.currentDate;
         updatedData.usuarioModificadoObj = this.currentUser;
 
-        this.instStrategicObjService.update(this.data.InstStrategicObj.idObjetivoEstrategico, updatedData).subscribe(
+        this.instStrategicObjService.update(this.data.instStrategicObj.idObjetivoEstrategico, updatedData).subscribe(
         () => {
             console.log('Objetivo actualizado correctamente');
             this.isSaved = true;

@@ -1,5 +1,5 @@
 import { ObjectivesService } from "../core/http/objectives/objectives.service";
-import { Objectives } from "./objectives.types";
+import { Objectives } from "./specificobjectives.types";
 export interface Strategies {
     idEstrategia?: number;
     idObjetivo?: number;

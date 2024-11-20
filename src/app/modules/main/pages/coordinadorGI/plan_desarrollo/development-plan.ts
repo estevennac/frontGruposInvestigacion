@@ -20,7 +20,7 @@ import { DeveLegaForm } from 'src/app/types/deveLega.types';
 import { ObjectivesService } from 'src/app/core/http/objectives/objectives.service';
 import { StrategiesService } from 'src/app/core/http/strategies/strategies.service';
 import { ControlPanelService } from 'src/app/core/http/control-panel/control-panel.service';
-import { Objectives } from 'src/app/types/objectives.types';
+import { Objectives } from 'src/app/types/specificobjectives.types';
 import { Strategies } from 'src/app/types/strategies.types';
 import { ControlPanelForm } from 'src/app/types/controlPanel.types';
 import { fadeInUpAnimation } from 'src/@vex/animations/fade-in-up.animation';
@@ -34,6 +34,9 @@ import { OdsService } from 'src/app/core/http/ods/ods.service';
 import { ODS } from 'src/app/types/ods.types';
 import { ObjStrategiesODSService } from 'src/app/core/http/obj_strategies_ods/obj_strategies_ods.service';
 import { Objectives_Strategies_Ods } from 'src/app/types/obj_strategies_ods.types';
+import { forkJoin, map } from 'rxjs';
+import { ObjControl } from './modal_objetivos.component';
+import { ChangeDetectorRef } from '@angular/core';
 
 @Component({
   selector: 'vex-creation-form',
@@ -65,6 +68,7 @@ export class DevelopmentPlanFormComponent implements OnInit {
   objetivoInstitucional: InstStrategicObj[];
   ods:ODS[];
   estrategias:Strategies[];
+  obj:any[]=[];
   constructor(
     private fb: FormBuilder,
     private upperLevelPlanService: UpperLevelPlanService,
@@ -87,8 +91,42 @@ export class DevelopmentPlanFormComponent implements OnInit {
     private objInstitucionalService:InstStrategicObjService,
     private odsService: OdsService,
     private strategiesService:StrategiesService,
+        private dialog: MatDialog,
+         private cdr: ChangeDetectorRef
+        
 
-  ) {
+
+  ) {this.obj=[];
+    /*this.myForm = this.fb.group({
+  
+      planDesarrolloForm3: this.fb.group({
+        objetivos: this.fb.array([
+          this.agregarObjetivo()
+
+        ])       }),
+      planDesarrolloForm4: this.fb.group({
+        actividades: this.fb.array([]),
+      }),
+    });*/
+     // Agrega un objetivo inicial
+
+
+  }
+  public formReady: boolean = false; // Bandera para indicar si el formulario está listo
+
+  public isLoading: boolean = true; // Inicializar como true para que el spinner aparezca al inicio
+
+  ngOnInit(): void {
+    this.loadData().subscribe(() => {
+      this.cargaFormularios();
+      this.formReady = true;
+    });
+    this.idGroup = Number(sessionStorage.getItem("invGroup"))
+    this.currentUser = this.authService.getUserName();
+    this.currentDate = this.datePipe.transform(new Date(), 'yyyy-MM-ddTHH:mm:ss');
+
+  }
+  cargaFormularios(){ 
     this.myForm = this.fb.group({
       planDesarrolloForm1: this.fb.group({
         planSuperior: this.planSuperiorControl,
@@ -104,25 +142,18 @@ export class DevelopmentPlanFormComponent implements OnInit {
       planDesarrolloForm2_2: this.fb.group({
         objInstitucional: this.objetivoInstitucionalControl,
         objGeneral: this.objGeneralControl,
-        objEstrategico: this.objEstrategicoControl,//eliminar este
+        //objEstrategico: this.objEstrategicoControl,//eliminar este
       }),
-      planDesarrolloForm3: this.fb.group({
-        objetivos: this.fb.array([]),
-      }),
+      planDesarrolloForm3: this.fb.array([
+        this.crearObjetivo() // Inicializamos con al menos un grupo en el FormArray
+      ]),
       planDesarrolloForm4: this.fb.group({
         actividades: this.fb.array([]),
       }),
     });
-    this.planSuperiorControl.setValue(this.planSuperior[0].idPlanNivelSuperior); // ID del plan que deseas seleccionar por defecto
-    this.marcoControl.setValue(this.marcoLegal[0].idMarcoLegal);        // ID del marco que deseas seleccionar por defecto
-    this.planNacionalControl.setValue(this.planNacional[0].idPlanNacional); // ID del plan nacional que deseas seleccionar por defecto
-  }
-
-  ngOnInit(): void {
-    this.loadData();
-    this.idGroup = Number(sessionStorage.getItem("invGroup"))
-    this.currentUser = this.authService.getUserName();
-    this.currentDate = this.datePipe.transform(new Date(), 'yyyy-MM-ddTHH:mm:ss');
+    this.planSuperiorControl.setValue([this.planSuperior[0].idPlanNivelSuperior]); // ID del plan que deseas seleccionar por defecto
+    this.marcoControl.setValue([this.marcoLegal[0].idMarcoLegal]);        // ID del marco que deseas seleccionar por defecto
+    this.planNacionalControl.setValue([this.planNacional[0].idPlanNacional]); // ID del plan nacional que deseas seleccionar por defecto
 
   }
 
@@ -145,72 +176,96 @@ export class DevelopmentPlanFormComponent implements OnInit {
     return this.myForm.get('planDesarrolloForm4') as FormGroup;
 
   }
-  loadData() {
-    this.upperLevelPlanService.getAll().subscribe((data) => {
-      this.planSuperior = data.filter((plan) => plan.estado === true);
-    });
-    this.legalFrameworkService.getAll().subscribe((data) => {
-      this.marcoLegal = data.filter((marco) => marco.estado === true);
-    });
-    this.nationalPlanService.getAll().subscribe((data) => {
-      this.planNacional = data.filter((plan) => plan.estado === true);
-    });
-    this.objInstitucionalService.getAll().subscribe((data)=>{
-      this.objetivoInstitucional = data.filter((obj)=>obj.estado==true);
-    })
-    this.strategiesService.getAll().subscribe((data)=>{
-      this.estrategias = data.filter((estrategia)=>estrategia.estado==true);
-    })
-    
-  }
-
-  addObjetivo() {
-    const objetivoGroup = this.fb.group({
-      nombre: ['', Validators.required],
-      estrategias: this.fb.array([]),
-    });
-    this.objetivos.push(objetivoGroup);
-  }
-
   get objetivos(): FormArray {
-    return this.myForm.get('planDesarrolloForm3.objetivos') as FormArray;
+    return this.myForm.get('planDesarrolloForm3') as FormArray;
   }
+  
+  
+  trackByFn(index: number, item: any): number {
+    return index; // O cualquier identificador único
+  }
+  
+  loadData() {
+    return forkJoin({
+      planSuperior: this.upperLevelPlanService.getAll(),
+      marcoLegal: this.legalFrameworkService.getAll(),
+      planNacional: this.nationalPlanService.getAll(),
+      objetivoInstitucional: this.objInstitucionalService.getAll(),
+      estrategias: this.strategiesService.getAll(),
+      ods:this.odsService.getAll(),
+    }).pipe(
+      map((response) => {
+        this.planSuperior = response.planSuperior.filter((plan) => plan.estado === true);
+        this.marcoLegal = response.marcoLegal.filter((marco) => marco.estado === true);
+        this.planNacional = response.planNacional.filter((plan) => plan.estado === true);
+        this.objetivoInstitucional = response.objetivoInstitucional.filter((obj) => obj.estado === true);
+        this.estrategias = response.estrategias.filter((estrategia) => estrategia.estado === true);
+        this.ods=response.ods;
+      })
+    );
+  }
+ objs:number[]=[1];
+ 
+ crearObjetivo(): FormGroup {
+  return this.fb.group({
+    objetivo: [''], // Campo objetivo dentro del FormGroup
+  });
+}
 
-  addEstrategia(objetivoIndex: number) {
-    const estrategiaGroup = this.fb.group({
-      descripcion: ['', Validators.required],
-      ods: ['', Validators.required],
-    });
-    this.getEstrategias(objetivoIndex).push(estrategiaGroup);
-  }
 
-  getEstrategias(objetivoIndex: number): FormArray {
-    return this.objetivos.at(objetivoIndex).get('estrategias') as FormArray;
+agregarObjetivo(): void {
+  if (this.objetivos) {
+    this.objetivos.push(this.crearObjetivo());
+  } else {
+    console.error('El FormArray "objetivos" no está definido.');
   }
+}
 
-  agregarActividad() {
-    const actividadGroup = this.fb.group({
-      objEspecifico: ['', Validators.required],
-      actividad: ['', Validators.required],
-      responsable: ['', Validators.required],
-      indicador: ['', Validators.required],
-      meta1: ['', Validators.required],
-      meta2: ['', Validators.required],
-      meta3: ['', Validators.required],
-      meta4: ['', Validators.required],
-      observaciones: ['', Validators.required],
-      financiamiento: [1.1, Validators.required],
-    });
-    this.actividades.push(actividadGroup);
+eliminarObjetivo(index: number): void {
+  if (this.objetivos.length > 1) {
+    this.objetivos.removeAt(index);
   }
+}
 
-  get actividades(): FormArray {
-    return this.myForm.get('planDesarrolloForm4.actividades') as FormArray;
-  }
+openDialogObj(index: number): void {
+  const objetivoActual = this.objetivos.at(index).value;
+  const objetivoInstitucional = this.myForm.get('planDesarrolloForm2_2').get('objInstitucional').value;
 
-  borrarActividad(index: number) {
-    this.actividades.removeAt(index);
-  }
+  const dialogRef = this.dialog.open(ObjControl, {
+    width: '50%',
+    height: '70%',
+    data: {
+      objetivoEspecifico: objetivoActual,
+      objetivoInstitucional: objetivoInstitucional,
+      estrategiasSeleccionadas: objetivoActual.estrategias || [],
+      odsSeleccionados: objetivoActual.ods || []
+    }
+  });
+
+  dialogRef.afterClosed().subscribe(result => {
+    if (result) {
+      // Agregar la estrategia y ODS al array
+      const currentObjetivo = this.objetivos.at(index);
+      currentObjetivo.patchValue({
+        estrategias: [...currentObjetivo.value.estrategias, ...result.estrategias],
+        ods: [...currentObjetivo.value.ods, ...result.ods]
+      });
+    }
+  });
+}
+
+  
+/*addObjetivo() {
+  const objetivoForm =this.fb.group({
+    objetivos: ['', Validators.required], // FormControl para el objetivo
+    estrategias: this.fb.array([]),       // FormArray para estrategias
+    ods: this.fb.array([])  
+  });
+  this.objetivos.push(objetivoForm);
+}*/
+
+
+ 
   guardarNormas(idPlanDesarrollo: number) {
     const planesNacionales = this.planNacionalControl.value;
     const planNivelSuperiores = this.planSuperiorControl.value;
@@ -312,21 +367,16 @@ export class DevelopmentPlanFormComponent implements OnInit {
     objetivos.forEach((obj: any) => {
       const objetivo: Objectives = {
         idObjetivo: 0, // Inicialmente 0, se asignará después
-        idPlanDesarrollo: idPlan,
+        //idPlanDesarrollo: idPlan,
         objetivo: obj.nombre,
         usuarioCreacion: this.currentUser,
         fechaCreacion: this.currentDate,
         usuarioModificacion: null,
         fechaModificacion: null,
       };
-
-      // Guarda el objetivo y espera la respuesta
       this.objService.createObjectivesForm(objetivo).subscribe(
         (response) => {
-          
-          const idObjetivo = response; // Asumiendo que la respuesta tiene el idObjetivo
-
-          // Ahora, itera sobre las estrategias y guárdalas
+          const idObjetivo = response; 
           obj.estrategias.forEach((estrategia: any) => {
             const estrategiaData: Strategies = {
               //descripcion: estrategia.descripcion,
@@ -371,10 +421,6 @@ export class DevelopmentPlanFormComponent implements OnInit {
         indicadorForma:"", 
         indicadorCondicional:"",
          indicadorAcumulativo:"",
-
-        //indicador: obj.indicador,
-        //responsable: obj.responsable,
-       // objetivoEspecifico: obj.objEspecifico,
         actividad: obj.actividad,
         meta1: obj.meta1,
         meta2: obj.meta2,

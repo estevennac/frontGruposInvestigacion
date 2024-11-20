@@ -133,9 +133,11 @@ import { ExternMembersGroup } from './pages/creation-form/creation-form/externMe
 import { InfPertinenciaComponent } from './pages/coordinador-inv/informePertinencia/infPertinencia.component';
 import { infBienesEquiposComponent } from './pages/coordinadorGI/informeBienesEquipos/infBienesEquipos.component';
 import { OdsControl } from './pages/administracion/ods/modal_ods.component';
+import { ObjControl } from './pages/coordinadorGI/plan_desarrollo/modal_objetivos.component';
 @NgModule({
   declarations: [
     MainComponent,
+    ObjControl,
     OdsControl,
     OdsComponent,
     ExternMembersGroup,
