@@ -37,9 +37,6 @@ header {
 
 
 
-
-
-
 .table-header {
   font-weight: bold;
   background-color: #f0f0f0;
@@ -257,5 +254,27 @@ button.custom-button:disabled {
 td {
   vertical-align: top; /* Alineación superior */
   padding: 1em; /* Espaciado interno en celdas */
+}
+
+.material-symbols-outlined{
+  font-variation-settings:
+  'FILL' 0,
+  'wght' 400,
+  'GRAD' 0,
+  'opsz' 24;
+  color: #fff;
+}
+
+.btn_add{
+  background-color: #007bff;
+}
+
+.btn_delete{
+  background-color: red;
+}
+
+.btn-obj{
+  background-color: #007bff;
+  color: #fff;
 }
 

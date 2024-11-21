@@ -34,7 +34,8 @@
                         <mat-option *ngFor="let u of members" [value]="u.id">
                           {{ u.nombre }}
                         </mat-option>
-                      </mat-select>                    <mat-error *ngIf="controlPanelForm.get('idResponsable').invalid && controlPanelForm.get('idResponsable').touched">
+                      </mat-select>                    
+                      <mat-error *ngIf="controlPanelForm.get('idResponsable').invalid && controlPanelForm.get('idResponsable').touched">
                         El campo es obligatorio.
                     </mat-error>
                 </mat-form-field>

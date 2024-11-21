@@ -1,3 +1,4 @@
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=add,delete" />
 <div class="cont">
   <div class="container-fluid">
     <div class="card">
@@ -172,9 +173,11 @@
                       <input matInput placeholder="Objetivo Específico"
                         formControlName="objetivo" />
                     </mat-form-field>
-                    <button type="button" mat-icon-button color="warn"
+                    <button class="btn_add" type="button" mat-icon-button
                       (click)="openDialogObj(i)">
-                      <mat-icon>add</mat-icon>
+                      <mat-icon class="material-symbols-outlined">
+                        add
+                      </mat-icon>
                     </button>
                   </td>
                   <td>
@@ -193,9 +196,9 @@
                     </ul>
                   </td>
                   <td>
-                    <button type="button" mat-icon-button
+                    <button class="btn_delete" type="button" mat-icon-button
                       (click)="eliminarObjetivo(i)">
-                      <mat-icon>delete</mat-icon>
+                      <mat-icon class=" material-symbols-outlined">delete</mat-icon>
                     </button>
                   </td>
                 </tr>
@@ -203,8 +206,7 @@
             </table>
 
             <!-- Botón para añadir nuevos objetivos -->
-            <button mat-button type="button" (click)="agregarObjetivo()">Añadir
-              Objetivo</button>
+            <button class="btn-obj" mat-button type="button" (click)="agregarObjetivo()">Añadir Objetivo</button>
 
             <div class="grid-item">
               <button type="button" mat-raised-button color="primary"
