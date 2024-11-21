@@ -1,4 +1,4 @@
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=add,delete" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=add,delete,edit" />
 <div class="cont">
   <div class="container-fluid">
     <div class="card">
@@ -206,7 +206,7 @@
             </table>
 
             <!-- Botón para añadir nuevos objetivos -->
-            <button class="btn-obj" mat-button type="button" (click)="agregarObjetivo()">Añadir Objetivo</button>
+            <button type="button" mat-raised-button color="primary" (click)="agregarObjetivo()">Añadir Objetivo</button>
 
             <div class="grid-item">
               <button type="button" mat-raised-button color="primary"
@@ -261,12 +261,13 @@
                   <td>{{ marco.get('financiamiento')?.value }}</td>
                   <td>{{ marco.get('observacion')?.value }}</td>
                   <td>
-                    <button type="button" (click)="openModalMarco(i)">
-                      <mat-icon>edit</mat-icon>
+                    <button class="btn_add" type="button" mat-icon-button
+                      (click)="openModalMarco(i)">
+                      <mat-icon class="material-symbols-outlined">edit</mat-icon>
                     </button>
-                    <button type="button" mat-icon-button color="warn"
+                    <button class="btn_delete" type="button" mat-icon-button
                       (click)="eliminarMarco(i)">
-                      <mat-icon>delete</mat-icon>
+                      <mat-icon class="material-symbols-outlined">delete</mat-icon>
                     </button>
                   </td>
                 </tr>
@@ -282,7 +283,7 @@
             <div class="grid-item">
               <button type="button" mat-raised-button color="primary"
                 matStepperPrevious>Regresar</button>
-              <button type="submit" mat-raised-button color="primary"
+              <button  type="submit" mat-raised-button color="primary"
                 [disabled]="!myForm.get('planDesarrolloForm4').valid">
                 Enviar
               </button>

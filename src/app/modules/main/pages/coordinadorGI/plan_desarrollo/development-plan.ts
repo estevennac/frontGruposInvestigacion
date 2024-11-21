@@ -70,6 +70,7 @@ export class DevelopmentPlanFormComponent implements OnInit {
   ods:ODS[];
   estrategias:Strategies[];
   obj:any[]=[];
+  usuarioNombre: {[key:number]: string}= {};
   constructor(
     private fb: FormBuilder,
     private upperLevelPlanService: UpperLevelPlanService,
@@ -252,15 +253,39 @@ getObjetivoEspecifico(posicion: number): string {
   const objetivo = this.objetivos.value[posicion];  // Usar la posición para acceder al arreglo
   return objetivo ? objetivo.objetivo : 'Objetivo no encontrado';  // Ajusta según el campo que quieras mostrar
 }
+/*
 getName(id: number): Observable<string> {
   //console.log('ID:', id);
- 
   return this.usuarioService.getById(id).pipe(
     map(data => data?.nombre || 'Usuario no encontrado'),  // Si no hay nombre, retorna "Usuario no encontrado"
     catchError(() => of('Usuario no encontrado'))  // Si hay un error (usuario no encontrado, etc.), retorna "Usuario no encontrado"
   );
-}
+}*/
 
+getName(id: number): Observable<string> {
+  if (!this.usuarioNombre) {
+    this.usuarioNombre = {};
+  }
+
+  if (this.usuarioNombre[id]) {
+    return of(this.usuarioNombre[id]);
+  }
+
+  //Solicitud al backend
+  return this.usuarioService.getById(id).pipe(
+    map((usuario) => {
+      const nombre = usuario?.nombre || 'Usuario no encontrado';
+      this.usuarioNombre[id] = nombre; // Almacena el resultado en usuarioNombre
+      return nombre;
+    }),
+    catchError(() => {
+      const errorNombre = 'Usuario no encontrado';
+      this.usuarioNombre[id] = errorNombre; // También almacena el mensaje de error
+      return of(errorNombre);
+    })
+  );
+
+}
 
 agregarMarco(): void {
   const dialogRef = this.dialog.open(ActControl, {
