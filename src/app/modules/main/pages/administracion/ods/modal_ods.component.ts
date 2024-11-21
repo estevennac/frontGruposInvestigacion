@@ -32,7 +32,9 @@ export class OdsControl implements OnInit {
 
         // Inicializar el formulario
         this.form = this.fb.group({
-            nombreOds: ['', Validators.required],
+            ods: ['', Validators.required],
+            descripcion: ['', Validators.required],
+
             estado: [1, Validators.required],
         });
 

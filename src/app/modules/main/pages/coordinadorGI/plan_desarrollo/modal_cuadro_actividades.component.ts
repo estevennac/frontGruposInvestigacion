@@ -5,127 +5,94 @@ import { error } from "console";
 import { AuthService } from "src/app/core/auth/services/auth.service";
 import { ControlPanelService } from "src/app/core/http/control-panel/control-panel.service";
 import { ControlPanelForm } from "src/app/types/controlPanel.types";
-
+import { InvMemberService } from "src/app/core/http/inv-member/inv-member.service";
+import { Usuario } from "src/app/types/usuario.types";
+import { InvGroupService } from "src/app/core/http/inv-group/inv-group.service";
+import { UsuarioService } from "src/app/core/http/usuario/usuario.service";
 @Component({
     selector: 'app-area',
     templateUrl: './modal_cuadro_actividades.component.html',
     styleUrls: ['../../../styles/modales.scss']
 })
-export class ActControl implements OnInit{
+export class ActControl implements OnInit {
     currentUser: string;
     currentDate: Date = new Date();
     controlPanelForm: FormGroup;
     isSaved: boolean = false;
     isLoading: boolean = false;
     isEditing: boolean = false;
-    controlPanel: ControlPanelForm []= [];
+    controlPanel: ControlPanelForm[] = [];
+    members: Usuario[] = [];
+    objetivos: any[] = [];
+    groupId: number;
+    coordId: number;
     constructor(
         private fb: FormBuilder,
         private authService: AuthService,
         public dialogRef: MatDialogRef<ActControl>,
         private controlPanelService: ControlPanelService,
+        private invMemberService: InvMemberService,
+        private invGroupService: InvGroupService,
+        private usuarioService: UsuarioService,
         @Inject(MAT_DIALOG_DATA) public data: any,
-    ){}
+    ) {
+        this.objetivos = data.objetivos;
+    }
 
     ngOnInit(): void {
         this.currentUser = this.authService.getUserName();
-        //
+        this.groupId = Number(sessionStorage.getItem("invGroup"));
+        this.loadData();
+        console.log(this.data.objetivos)
         this.controlPanelForm = this.fb.group({
-            idPlanDesarrollo:[null, Validators.required],
-            idObjetivoEspecifico:[null, Validators.required],
-            idResponsable:[null, Validators.required],
+            idPlanDesarrollo: [1, Validators.required],
+            idObjetivoEspecifico: [null, Validators.required],
+            idResponsable: [null, Validators.required],
             actividad: ['', Validators.required],
-            indicadorNombre:['', Validators.required],
-            indicadorTipo:['', Validators.required],
-            indicadorForma:['', Validators.required],
-            indicadorCondicional:['', Validators.required],
-            indicadorAcumulativo:['', Validators.required],
-            meta1:[null, Validators.required],
-            meta2:[null, Validators.required],
-            meta3:[null, Validators.required],
-            meta4:[null, Validators.required],
-            financiamiento:[null, Validators.required],
-            observacion:['', Validators.required]
+            indicadorNombre: ['', Validators.required],
+            indicadorTipo: ['', Validators.required],
+            indicadorForma: ['', Validators.required],
+            indicadorCondicional: ['', Validators.required],
+            indicadorAcumulativo: ['', Validators.required],
+            meta1: [null, Validators.required],
+            meta2: [null, Validators.required],
+            meta3: [null, Validators.required],
+            meta4: [null, Validators.required],
+            financiamiento: [null, Validators.required],
+            observacion: ['', Validators.required]
         });
 
     }
 
-    /*
-    loadData():void{
-        this.controlPanelService.getAll().subscribe((data) =>{
-           
+
+    loadData(): void {
+        this.invMemberService.getAllByGroupId(this.groupId).subscribe((data) => {
+            this.members = data;
+            console.log(this.members)
         })
-    }*/
+        this.invGroupService.getById(this.groupId).subscribe((data) => {
+            this.usuarioService.getById(data.idCoordinador).subscribe((data) => {
+                this.members.push(data)
+            })
+        })
+        console.log(this.members)
 
-    controlPanelData(controlPanel: ControlPanelForm): void{
-        this.controlPanelForm.patchValue({
-            idPlanDesarrollo: controlPanel.idPlanDesarrollo,
-            idObjetivoEspecifico:controlPanel.idObjetivoEspecifico,
-            idResponsable: controlPanel.idResponsable,
-            actividad: controlPanel.actividad,
-            indicadorNombre: controlPanel.indicadorNombre,
-            indicadorTipo: controlPanel.indicadorTipo,
-            indicadorForma: controlPanel.indicadorForma,
-            indicadorCondicional: controlPanel.indicadorCondicional,
-            indicadorAcumulativo: controlPanel.indicadorAcumulativo,
-            meta1: controlPanel.meta1,
-            meta2: controlPanel.meta2,
-            meta3: controlPanel.meta3,
-            meta4: controlPanel.meta4,
-            financiamiento: controlPanel.financiamiento,
-            observacion: controlPanel.observacion
-        });
     }
 
-    saveControlPanel():void {
-        if (this.controlPanelForm.valid){
-            this.isLoading = true;
 
-            if(this.isEditing){
-                this.updateControlPane();
-            }else{
-                this.createControlPanel();
-            }
+    saveControlPanel(): void {
+        if (this.controlPanelForm.valid) {
+            console.log(this.controlPanelForm.value)
+          this.dialogRef.close(this.controlPanelForm.value); // Devuelve los valores del formulario al componente padre
+        }else{
+            console.log("Formulario no válido")
+            console.log(this.controlPanelForm.value)
         }
-    }
+      }
 
-    createControlPanel(): void {
-        const controlPanelData: ControlPanelForm = this.controlPanelForm.value;
-        controlPanelData.fechaCreacion = this.currentDate;
-        controlPanelData.usuarioCreacion = this.currentUser;
-
-        this.controlPanelService.createControlPanelForm(controlPanelData).subscribe(
-            () => {
-                this.isSaved = true;
-                this.isLoading = false;
-                this.dialogRef.close(true);
-            },
-            (error) => {
-                this.isLoading = false;
-            }
-        );
-    }
-
-    updateControlPane(): void{
-        const updatedData: ControlPanelForm = this.controlPanelForm.value;
-        updatedData.fechaModificacion = this.currentDate;
-        updatedData.usuarioModificacion = this.currentUser;
-
-        this.controlPanelService.update(this.data.controlPanel.idPanelControl, updatedData).subscribe(
-            () => {
-                this.isSaved = true;
-                this.isLoading = false
-                this.dialogRef.close(true);
-            },
-            (error) =>{
-                this.isLoading = false;
-            }
-        );
-    }
-
-    onClickClose():void {
+    onClickClose(): void {
         this.dialogRef.close();
     }
-    
+
 
 }

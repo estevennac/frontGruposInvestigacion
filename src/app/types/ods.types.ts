@@ -1,5 +1,5 @@
 export interface ODS {
-    idOds: number;
+    id: number;
     descripcion: string;
     ods: string;
     estado?: boolean;

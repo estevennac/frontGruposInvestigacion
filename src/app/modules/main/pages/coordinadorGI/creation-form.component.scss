@@ -241,3 +241,21 @@ button.custom-button:disabled {
   background-color: rgba(0, 0, 0, 0.5); /* Fondo semitransparente */
   z-index: 1000; /* Asegurarse de que esté sobre otros elementos */
 }
+
+.estrategias-list,
+.ods-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.estrategias-list li,
+.ods-list li {
+  margin-bottom: 0.5em; /* Espaciado entre elementos */
+}
+
+td {
+  vertical-align: top; /* Alineación superior */
+  padding: 1em; /* Espaciado interno en celdas */
+}
+

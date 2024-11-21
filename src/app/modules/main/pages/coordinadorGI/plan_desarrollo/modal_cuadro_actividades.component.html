@@ -17,17 +17,24 @@
             <form [formGroup]="controlPanelForm" (ngSubmit)="saveControlPanel()">
 
                 <mat-form-field appearance="outline" class="full-width">
-                    <mat-label>Identificar del objetivo Específico</mat-label>
-                    <input matInput type="number" formControlName="idPlanDesarrollo" required>
-                    <mat-error *ngIf="controlPanelForm.get('idPlanDesarrollo').invalid && controlPanelForm.get('idPlanDesarrollo').touched">
-                        El campo es obligatorio.
-                    </mat-error>
+                    <mat-label>Objetivo Específico</mat-label>
+      <mat-select formControlName="idObjetivoEspecifico" required>
+        <mat-option *ngFor="let obj of objetivos; let i = index" [value]="i">
+          {{ obj.objetivo }}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="controlPanelForm.get('idObjetivoEspecifico').invalid && controlPanelForm.get('idObjetivoEspecifico').touched">
+        El objetivo es obligatorio.
+      </mat-error>
                 </mat-form-field>
 
                 <mat-form-field appearance="outline" class="full-width">
                     <mat-label>Identificador de Responsable</mat-label>
-                    <input matInput type="number" formControlName="idResponsable" required>
-                    <mat-error *ngIf="controlPanelForm.get('idResponsable').invalid && controlPanelForm.get('idResponsable').touched">
+                    <mat-select formControlName="idResponsable" required>
+                        <mat-option *ngFor="let u of members" [value]="u.id">
+                          {{ u.nombre }}
+                        </mat-option>
+                      </mat-select>                    <mat-error *ngIf="controlPanelForm.get('idResponsable').invalid && controlPanelForm.get('idResponsable').touched">
                         El campo es obligatorio.
                     </mat-error>
                 </mat-form-field>
@@ -51,24 +58,31 @@
 
                 <mat-form-field appearance="outline" class="full-width">
                     <mat-label>Indicador Tipo</mat-label>
-                    <input matInput type="text" formControlName="indicadorTipo" required>
+                    <mat-select formControlName="indicadorTipo" required>
+                      <mat-option value="numerico">Numérico</mat-option>
+                      <mat-option value="porcentual">Porcentual</mat-option>
+                    </mat-select>
                     <mat-error *ngIf="controlPanelForm.get('indicadorTipo').invalid && controlPanelForm.get('indicadorTipo').touched">
-                        El campo es obligatorio.
+                      El campo es obligatorio.
                     </mat-error>
                 </mat-form-field>
 
                 <mat-form-field appearance="outline" class="full-width">
                     <mat-label>Indicador Forma</mat-label>
-                    <input matInput type="text" formControlName="indicadorForma" required>
-                    <mat-error *ngIf="controlPanelForm.get('indicadorForma').invalid && controlPanelForm.get('indicadorForma').touched">
+                    <mat-select formControlName="indicadorForma" required>
+                        <mat-option value="acumulativo">Acumulativo</mat-option>
+                        <mat-option value="individual">Individual</mat-option>
+                      </mat-select>                    <mat-error *ngIf="controlPanelForm.get('indicadorForma').invalid && controlPanelForm.get('indicadorForma').touched">
                         El campo es obligatorio.
                     </mat-error>
                 </mat-form-field>
 
                 <mat-form-field appearance="outline" class="full-width">
                     <mat-label>Indicador Condicional</mat-label>
-                    <input matInput type="text" formControlName="indicadorCondicional" required>
-                    <mat-error *ngIf="controlPanelForm.get('indicadorCondicional').invalid && controlPanelForm.get('indicadorCondicional').touched">
+                    <mat-select formControlName="indicadorCondicional" required>
+                        <mat-option value="continuo">Continuo</mat-option>
+                        <mat-option value="discreto">Discreto</mat-option>
+                      </mat-select>                      <mat-error *ngIf="controlPanelForm.get('indicadorCondicional').invalid && controlPanelForm.get('indicadorCondicional').touched">
                         El campo es obligatorio.
                     </mat-error>
                 </mat-form-field>
@@ -85,22 +99,22 @@
                 <!--Inicio metas-->
                 <mat-form-field appearance="outline" class="full-width">
                     <mat-label>Meta 1</mat-label>
-                    <textarea matInput placeholder="" value="meta1"></textarea>
+                    <input matInput placeholder="" formControlName="meta1" type="number">
                 </mat-form-field>
                 
                 <mat-form-field appearance="outline" class="full-width">
                     <mat-label>Meta 2</mat-label>
-                    <textarea matInput placeholder="" value="meta2"></textarea>
+                    <input matInput placeholder="" formControlName="meta2" type="number">
                 </mat-form-field>
 
                 <mat-form-field appearance="outline" class="full-width">
                     <mat-label>Meta 3</mat-label>
-                    <textarea matInput placeholder="" value="meta3"></textarea>
+                    <input matInput placeholder="" formControlName="meta3" type="number">
                 </mat-form-field>
 
                 <mat-form-field appearance="outline" class="full-width">
                     <mat-label>Meta 4</mat-label>
-                    <textarea matInput placeholder="" value="meta4"></textarea>
+                    <input matInput placeholder="" formControlName="meta4" type="number">
                 </mat-form-field>
                 <!--Fin Metas-->
 
@@ -113,13 +127,13 @@
                 </mat-form-field>
 
                 <mat-form-field appearance="outline" class="full-width">
-                    <mat-label>Obervación</mat-label>
-                    <textarea matInput placeholder="" value="observacion"></textarea>
+                    <mat-label>Observación</mat-label>
+                    <textarea matInput placeholder="" formControlName="observacion"></textarea>
                 </mat-form-field>
 
                 <!-- Botón de guardar -->
                 <div class="button-container">
-                    <button mat-raised-button color="primary" type="submit" [disabled]="!controlPanelForm.valid">
+                    <button mat-raised-button color="primary" type="submit">
                         {{ isEditing ? 'Actualizar' : 'Guardar' }}
                     </button>
                 </div>

@@ -25,6 +25,7 @@ export class ObjControl implements OnInit {
     isEditing: boolean = false; // Variable para determinar si se está en modo edición
     estrategias:Strategies[]=[];
     ods:ODS[]=[];
+    objetivoEspecifico:string;
     constructor(
         private fb: FormBuilder,
         private authService: AuthService,
@@ -38,17 +39,19 @@ export class ObjControl implements OnInit {
     ngOnInit(): void {
         this.currentUser = this.authService.getUserName();
         this.loadData();
+        this.objetivoEspecifico=this.data.objetivoEspecifico.objetivo;
         // Inicializar el formulario
         this.form = this.fb.group({
-            estrategia: ['', Validators.required], // Estrategia seleccionada
-            ods: ['', Validators.required]          // ODS seleccionado
+            estrategia: [1, Validators.required], // Estrategia seleccionada
+            ods: [1, Validators.required]          // ODS seleccionado
           });
 
     }
     loadData(): void {
         this.strategieService.getByObj(this.data.objetivoInstitucional).subscribe((data) => {
           this.estrategias = data.filter(estrategia => estrategia.estado === true);
-          console.log(this.data.objetivoInstitucional)
+          console.log(this.data.objetivoEspecifico)
+
         });
         this.odsService.getAll().subscribe((data) => {
           this.ods = data;
@@ -56,24 +59,24 @@ export class ObjControl implements OnInit {
       }
     
 
-    onClickNo(obj): void {
-        this.dialogRef.close(obj);
-      }
-
+      save(): void {
+        const selectedEstrategiaId = this.form.value.estrategia;
+        const selectedOdsId = this.form.value.ods;
       
- 
+        const selectedEstrategia = this.estrategias.find(e => e.idEstrategia === selectedEstrategiaId);
+        const selectedOds = this.ods.find(o => o.id === selectedOdsId);
+      
+        const result = {
+          estrategias: [{ id: selectedEstrategiaId, descripcion: selectedEstrategia?.estrategia }],
+          ods: [{ id: selectedOdsId, descripcion: selectedOds?.ods }]
+        };
+      
+        this.dialogRef.close(result);
+      }
+      
+    
+      // Cerrar el modal sin guardar
       onClickClose(): void {
         this.dialogRef.close();
-      }
-      save(): void {
-        const selectedEstrategia = this.form.value.estrategia;
-        const selectedOds = this.form.value.ods;
-    
-        const result = {
-          estrategias: [selectedEstrategia],
-          ods: [selectedOds]
-        };
-    
-        this.dialogRef.close(result);
       }
 }

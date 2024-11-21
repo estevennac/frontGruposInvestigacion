@@ -34,10 +34,11 @@ import { OdsService } from 'src/app/core/http/ods/ods.service';
 import { ODS } from 'src/app/types/ods.types';
 import { ObjStrategiesODSService } from 'src/app/core/http/obj_strategies_ods/obj_strategies_ods.service';
 import { Objectives_Strategies_Ods } from 'src/app/types/obj_strategies_ods.types';
-import { forkJoin, map } from 'rxjs';
+import { catchError, forkJoin, map, Observable, of } from 'rxjs';
 import { ObjControl } from './modal_objetivos.component';
 import { ChangeDetectorRef } from '@angular/core';
-
+import { ActControl } from './modal_cuadro_actividades.component';
+import { UsuarioService } from 'src/app/core/http/usuario/usuario.service';
 @Component({
   selector: 'vex-creation-form',
   templateUrl: './development-plan.html',
@@ -92,7 +93,8 @@ export class DevelopmentPlanFormComponent implements OnInit {
     private odsService: OdsService,
     private strategiesService:StrategiesService,
         private dialog: MatDialog,
-         private cdr: ChangeDetectorRef
+         private cdr: ChangeDetectorRef,
+         private usuarioService: UsuarioService
         
 
 
@@ -147,9 +149,9 @@ export class DevelopmentPlanFormComponent implements OnInit {
       planDesarrolloForm3: this.fb.array([
         this.crearObjetivo() // Inicializamos con al menos un grupo en el FormArray
       ]),
-      planDesarrolloForm4: this.fb.group({
-        actividades: this.fb.array([]),
-      }),
+      planDesarrolloForm4: this.fb.array([      ]
+        
+      ),
     });
     this.planSuperiorControl.setValue([this.planSuperior[0].idPlanNivelSuperior]); // ID del plan que deseas seleccionar por defecto
     this.marcoControl.setValue([this.marcoLegal[0].idMarcoLegal]);        // ID del marco que deseas seleccionar por defecto
@@ -180,6 +182,9 @@ export class DevelopmentPlanFormComponent implements OnInit {
     return this.myForm.get('planDesarrolloForm3') as FormArray;
   }
   
+  get marco():FormArray{
+    return this.myForm.get('planDesarrolloForm4') as FormArray;
+  }
   
   trackByFn(index: number, item: any): number {
     return index; // O cualquier identificador único
@@ -209,6 +214,28 @@ export class DevelopmentPlanFormComponent implements OnInit {
  crearObjetivo(): FormGroup {
   return this.fb.group({
     objetivo: [''], // Campo objetivo dentro del FormGroup
+    estrategias: [[]],         // Inicializamos como un arreglo vacío
+    ods: [[]]   
+  });
+}
+
+crearMarco(): FormGroup {
+  return this.fb.group({
+    idPlanDesarrollo: [null, Validators.required],
+    idObjetivoEspecifico: [null, Validators.required],
+    idResponsable: [null, Validators.required],
+    actividad: ['', Validators.required],
+    indicadorNombre: ['', Validators.required],
+    indicadorTipo: ['', Validators.required],
+    indicadorForma: ['', Validators.required],
+    indicadorCondicional: ['', Validators.required],
+    indicadorAcumulativo: ['', Validators.required],
+    meta1: [null, Validators.required],
+    meta2: [null, Validators.required],
+    meta3: [null, Validators.required],
+    meta4: [null, Validators.required],
+    financiamiento: [null, Validators.required],
+    observacion: ['', Validators.required]
   });
 }
 
@@ -221,15 +248,63 @@ agregarObjetivo(): void {
   }
 }
 
+getObjetivoEspecifico(posicion: number): string {
+  const objetivo = this.objetivos.value[posicion];  // Usar la posición para acceder al arreglo
+  return objetivo ? objetivo.objetivo : 'Objetivo no encontrado';  // Ajusta según el campo que quieras mostrar
+}
+getName(id: number): Observable<string> {
+  //console.log('ID:', id);
+ 
+  return this.usuarioService.getById(id).pipe(
+    map(data => data?.nombre || 'Usuario no encontrado'),  // Si no hay nombre, retorna "Usuario no encontrado"
+    catchError(() => of('Usuario no encontrado'))  // Si hay un error (usuario no encontrado, etc.), retorna "Usuario no encontrado"
+  );
+}
+
+
+agregarMarco(): void {
+  const dialogRef = this.dialog.open(ActControl, {
+    width: '80%',
+    height: '90%',
+    data: {
+      objetivos: this.objetivos.value
+    }
+  });
+
+  // Cuando se cierra el modal, verificar si hay datos y agregar al FormArray
+  dialogRef.afterClosed().subscribe(result => {
+    if (result) {
+      // Aquí agregamos el nuevo marco al FormArray
+      const newMarco = this.crearMarco();
+      newMarco.patchValue(result);  // Asignar los valores que se ingresaron en el modal
+      this.marco.push(newMarco);    // Agregar el marco al FormArray
+
+      console.log('Nuevo marco agregado:', newMarco.value);
+      console.log(`cs:`, this.marco.value);
+
+    }
+  });
+}
+
 eliminarObjetivo(index: number): void {
   if (this.objetivos.length > 1) {
     this.objetivos.removeAt(index);
   }
 }
 
+eliminarMarco(index: number): void {
+  if (this.marco.length > 1) {
+    this.marco.removeAt(index);
+  } else {
+    console.error('No se puede eliminar el último marco');
+  }
+}
+
 openDialogObj(index: number): void {
   const objetivoActual = this.objetivos.at(index).value;
   const objetivoInstitucional = this.myForm.get('planDesarrolloForm2_2').get('objInstitucional').value;
+  
+  console.log('Objetivo institucional:', objetivoInstitucional); // Para depuración inicial
 
   const dialogRef = this.dialog.open(ObjControl, {
     width: '50%',
@@ -244,28 +319,60 @@ openDialogObj(index: number): void {
 
   dialogRef.afterClosed().subscribe(result => {
     if (result) {
-      // Agregar la estrategia y ODS al array
       const currentObjetivo = this.objetivos.at(index);
+
+      // Obtenemos los arrays actuales de estrategias y ODS
+      const currentEstrategias = currentObjetivo.value.estrategias || [];
+      const currentOds = currentObjetivo.value.ods || [];
+
+      // Agregamos los nuevos elementos seleccionados al final de los arreglos
+      const updatedEstrategias = [...currentEstrategias, ...result.estrategias];
+      const updatedOds = [...currentOds, ...result.ods];
+
+      // Actualizamos el objetivo con los nuevos datos acumulados
       currentObjetivo.patchValue({
-        estrategias: [...currentObjetivo.value.estrategias, ...result.estrategias],
-        ods: [...currentObjetivo.value.ods, ...result.ods]
+        estrategias: updatedEstrategias,
+        ods: updatedOds
       });
+
+      // Console log para verificar cómo se acumulan los datos
+      console.log(`Estado completo del Objetivo ${index + 1}:`, currentObjetivo.value);
+
     }
   });
 }
 
+openModalMarco(index: number): void {
+  const marcoActual = this.marco.at(index).value;
   
-/*addObjetivo() {
-  const objetivoForm =this.fb.group({
-    objetivos: ['', Validators.required], // FormControl para el objetivo
-    estrategias: this.fb.array([]),       // FormArray para estrategias
-    ods: this.fb.array([])  
+  const dialogRef = this.dialog.open(ActControl, {
+    width: '50%',
+    height: '70%',
+    data: marcoActual
   });
-  this.objetivos.push(objetivoForm);
-}*/
+
+  dialogRef.afterClosed().subscribe(result => {
+    if (result) {
+      const currentMarco = this.marco.at(index);
+      currentMarco.patchValue({
+        actividades: result.actividades,
+        responsable: result.responsable,
+        indicador: result.indicador,
+        1: result[1],
+        2: result[2],
+        3: result[3],
+        4: result[4],
+        financiamientoRequerido: result.financiamientoRequerido,
+        observaciones: result.observaciones
+      });
+
+      console.log('Marco actualizado:', currentMarco.value);
+    }
+  });
+}
 
 
- 
+
   guardarNormas(idPlanDesarrollo: number) {
     const planesNacionales = this.planNacionalControl.value;
     const planNivelSuperiores = this.planSuperiorControl.value;

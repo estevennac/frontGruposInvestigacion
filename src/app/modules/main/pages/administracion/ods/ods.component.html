@@ -25,11 +25,11 @@
           
           <!-- Filas de la tabla -->
           <tr *ngFor="let a of ods">
-            <td>{{ a.idOds }}</td>
+            <td>{{ a.id }}</td>
             <td>{{ a.ods }}</td>
             <td> {{a.descripcion }}</td>
             <td>
-              <button class="edit" mat-mini-fab (click)="edit(a.idOds)">
+              <button class="edit" mat-mini-fab (click)="edit(a.id)">
                 <i class="fas fa-edit"></i> 
               </button>
              

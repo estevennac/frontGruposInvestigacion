@@ -2,8 +2,11 @@
     <div class="container-fluid">
         <div class="back-button-container">
             <header style="display: flex;">
-                <h1>OBJETIVOS ESPECÍFICOS DEL PLAN DE DESARROLLO Y SU RELACIÓN CON LAS ESTRATEGIAS INSTITUCIONALES DEL OBJETIVO ESTRATÉGICO INSTITUCIONAL  Y LOS ODS</h1>
+                <h1>OBJETIVOS ESPECÍFICOS Y SU RELACIÓN CON ESTRATEGIAS INSTITUCIONALES Y LOS ODS</h1>
+
             </header>
+            <h1>OBJETIVOS ESPECÍFICO:{{objetivoEspecifico}}</h1>
+
         </div>
 
         <!-- Spinner de carga -->
@@ -14,15 +17,14 @@
         <!-- Formulario -->
         <div class="form-container" *ngIf="!isLoading">
             <form [formGroup]="form" (ngSubmit)="save()">
-                <mat-form-field appearance="outline" class="full-width">
+
+             <!--    <mat-form-field appearance="outline" class="full-width">
                     <mat-label>Objetivo Especifico</mat-label>
-                    <mat-error *ngIf="form.get('objetivo').invalid && form.get('objetivo').touched">
-                        El objetivo es obligatorio.
-                    </mat-error>
-                </mat-form-field>
+                   
+                </mat-form-field>-->
                 <mat-form-field appearance="outline" class="full-width">
                     <mat-label>Estrategias Institucionales</mat-label>
-                    <mat-select formControlName="idArea" required>
+                    <mat-select formControlName="estrategia" required>
                         <mat-option *ngFor="let st of estrategias" [value]="st.idEstrategia">
                           {{ st.estrategia }}
                         </mat-option>
@@ -33,8 +35,8 @@
                 </mat-form-field>
                 <mat-form-field appearance="outline" class="full-width">
                     <mat-label>Objetivo de Desarrollo Sostenible</mat-label>
-                    <mat-select formControlName="idODS" required>
-                        <mat-option *ngFor="let ods of ods" [value]="ods.idOds">
+                    <mat-select formControlName="ods" required>
+                        <mat-option *ngFor="let ods of ods" [value]="ods.id">
                           {{ ods.ods }}
                         </mat-option>
                       </mat-select>
