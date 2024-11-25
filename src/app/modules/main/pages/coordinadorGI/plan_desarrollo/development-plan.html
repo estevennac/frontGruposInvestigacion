@@ -152,6 +152,7 @@
         </mat-step>
 
         <!-- Step 3: Objetivos y Estrategias -->
+        <!--
         <mat-step [stepControl]="myForm.get('planDesarrolloForm3')">
           <ng-template matStepLabel>Objetivos específicos</ng-template>
           <div formGroupName="planDesarrolloForm3">
@@ -205,7 +206,7 @@
               </tbody>
             </table>
 
-            <!-- Botón para añadir nuevos objetivos -->
+            Botón para añadir nuevos objetivos 
             <button type="button" mat-raised-button color="primary" (click)="agregarObjetivo()">Añadir Objetivo</button>
 
             <div class="grid-item">
@@ -219,7 +220,76 @@
             </div>
           </div>
         </mat-step>
+        -->
 
+        <mat-step [stepControl]="myForm.get('planDesarrolloForm3')">
+          <ng-template matStepLabel>Objetivos específicos</ng-template>
+          <div formGroupName="planDesarrolloForm3">
+            <table>
+              <thead>
+                <tr>
+                  <th>Objetivos Específicos</th>
+                  <th>Estrategias Institucionales</th>
+                  <th>ODS Relacionado</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+              <tbody>
+                <ng-container *ngFor="let objetivo of objetivos.controls; let i = index; trackBy: trackByFn">
+                  <!-- Fila principal del objetivo (sin rowspan) -->
+                  <tr [formGroupName]="i">
+                    <td>
+                      <mat-form-field>
+                        <input matInput placeholder="Objetivo Específico" formControlName="objetivo" />
+                      </mat-form-field>
+                      <button class="btn_add" type="button" mat-icon-button (click)="openDialogObj(i)">
+                        <mat-icon class="material-symbols-outlined">add</mat-icon>
+                      </button>
+                    </td>
+                    <td>
+                      <!-- Aquí no mostramos las estrategias porque se listan en las filas siguientes -->
+                    </td>
+                    <td>
+                      <!-- Aquí no mostramos los ODS porque se listan en las filas siguientes -->
+                    </td>
+                    <td>
+                      <button class="btn_delete" type="button" mat-icon-button (click)="eliminarObjetivo(i)">
+                        <mat-icon class="material-symbols-outlined">delete</mat-icon>
+                      </button>
+                    </td>
+                  </tr>
+        
+                  <!-- Filas para cada estrategia -->
+                  <tr *ngFor="let estrategia of objetivo.value.estrategias; let j = index">
+                    <td></td> <!-- Deja vacío, porque ya se muestra en la fila del objetivo -->
+                    <td>
+                      <strong>{{ estrategia.id }}</strong>: {{ estrategia.descripcion }}
+                    </td>
+                    <td>
+                      <ul class="ods-list">
+                        <li *ngFor="let ods of objetivo.value.ods">
+                          <strong>{{ ods.id }}</strong>: {{ ods.descripcion }}
+                        </li>
+                      </ul>
+                    </td>
+                    <td></td> <!-- Dejamos vacío el botón de eliminar en estas filas -->
+                  </tr>
+                </ng-container>
+              </tbody>
+            </table>
+        
+            <!-- Botón para añadir nuevos objetivos -->
+            <button type="button" mat-raised-button color="primary" (click)="agregarObjetivo()">Añadir Objetivo</button>
+        
+            <div class="grid-item">
+              <button type="button" mat-raised-button color="primary" matStepperPrevious>Regresar</button>
+              <button type="button" mat-raised-button color="primary" [disabled]="!myForm.get('planDesarrolloForm3').valid" matStepperNext>
+                Siguiente
+              </button>
+            </div>
+          </div>
+        </mat-step>        
+        
         <!-- Step 4: Actividades -->
         <mat-step [stepControl]="planDesarrolloForm4">
           <ng-template matStepLabel>Marco de Control específicos</ng-template>
