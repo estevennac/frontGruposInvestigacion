@@ -30,6 +30,8 @@ import { AnnexesService } from 'src/app/core/http/annexes/annexes.service';
 import { ControlPanelService } from 'src/app/core/http/control-panel/control-panel.service';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser'; // Importa DomSanitizer y SafeResourceUrl
 import { DocumentsService } from 'src/app/core/http/documentos/documents.service';
+import { AcademicDomain } from 'src/app/types/academicDomain.types';
+import { Area } from 'src/app/types/area.types';
 @Component({
   selector: 'app-solicitud-componente',
   templateUrl: './mostrarSolicitud.component.html',
@@ -44,10 +46,9 @@ export class MostrarSolicitudForConsejo implements OnInit {
   planDesarrollo:DevelopmentPlanForms
   memberUser:Usuario[]=[];
   member:InvMemberForm[];
-  lineCrea:LineCreaCompleto;
-  line:Line;
-  acadCrea:AcadCreaCompleto;
-  creaArea:CreaAreaCompleto;
+  line:Line[];
+  acad:AcademicDomain[];
+  area:Area[];
   loadingData: boolean = true;
   invGroupId: number ;
   legalFramework: LegalFrameworkFilter;
@@ -161,14 +162,14 @@ export class MostrarSolicitudForConsejo implements OnInit {
   }
 
   obtenerSegmentosInvestigacion(id:number){
-    this.invGroup_linesService.getByReq(id).subscribe(data => {
-      this.lineCrea=data;
+    this.invGroup_linesService.getByGroup(id).subscribe(data => {
+      this.line=data;
     });
-    this.invGroup_academicDomainService.getByReq(id).subscribe(data=>{
-      this.acadCrea=data;
+    this.invGroup_academicDomainService.getByGroup(id).subscribe(data=>{
+      this.acad=data;
     });
-    this.invGroup_areaService.getByReq(id).subscribe(data=>{
-      this.creaArea=data;
+    this.invGroup_areaService.getByGroup(id).subscribe(data=>{
+      this.area=data;
     });
   }
   obtenerGrupo(id:number){

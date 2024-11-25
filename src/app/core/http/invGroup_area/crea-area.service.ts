@@ -3,6 +3,7 @@ import { environment } from 'src/environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { InvGroup_area,CreaAreaCompleto } from 'src/app/types/invGroup_area.types';
+import { Area } from 'src/app/types/area.types';
 
 @Injectable({
   providedIn: 'root'
@@ -24,7 +25,7 @@ export class InvGroup_areaService {
   createAreaCreaForm(formData: InvGroup_area): Observable<any> {
     return this.http.post(`${this.URL}/create`, formData);
   }
-  getByReq(id: number): Observable<CreaAreaCompleto> {
-    return this.http.get<CreaAreaCompleto>(`${this.URL}/byreq/${id}`);
+  getByGroup(id: number): Observable<Area[]> {
+    return this.http.get<Area[]>(`${this.URL}/byGroup/${id}`);
   }
 }

@@ -11,9 +11,6 @@ import { Usuario } from 'src/app/types/usuario.types';
 import { InvGroup_academicDomainService } from 'src/app/core/http/invGroup_academicDomain/invGroup_academicDomain.service';
 import { InvGroup_linesService } from 'src/app/core/http/InvGroup_line/invGroup_linesService.service';
 import { Line } from 'src/app/types/line.types';
-import { LineCreaCompleto } from 'src/app/types/invGroup_line';
-import { AcadCreaCompleto } from 'src/app/types/invGroup_academicDomain';
-import { CreaAreaCompleto } from 'src/app/types/invGroup_area.types';
 import { InvGroup_areaService } from 'src/app/core/http/invGroup_area/crea-area.service';
 import { DevelopmentPlanService } from 'src/app/core/http/develop-plan-form/develop-plan-form.service';
 import { DevelopmentPlanForms } from 'src/app/types/developPlanForm';
@@ -30,6 +27,10 @@ import { AnnexesService } from 'src/app/core/http/annexes/annexes.service';
 import { ControlPanelService } from 'src/app/core/http/control-panel/control-panel.service';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser'; // Importa DomSanitizer y SafeResourceUrl
 import { DocumentsService } from 'src/app/core/http/documentos/documents.service';
+import { AcademicDomain } from 'src/app/types/academicDomain.types';
+import { Area } from 'src/app/types/area.types';
+import { catchError, map, Observable, of } from 'rxjs';
+import { SpecificObjetivesService } from 'src/app/core/http/specific-objetives/specific-objetives.service';
 @Component({
   selector: 'app-solicitud-componente',
   templateUrl: './mostrarSolicitud.component.html',
@@ -44,9 +45,9 @@ export class MostrarSolicitudForDirector implements OnInit {
   planDesarrollo: DevelopmentPlanForms
   memberUser: Usuario[] = [];
   member: InvMemberForm[];
-  lineCrea: LineCreaCompleto;
-  acadCrea: AcadCreaCompleto;
-  creaArea: CreaAreaCompleto;
+  line: Line[];
+  acad: AcademicDomain[];
+  area: Area[];
 
   loadingData: boolean = true;
   invGroupId: number ;
@@ -78,7 +79,8 @@ export class MostrarSolicitudForDirector implements OnInit {
     private controlPanelService: ControlPanelService,
     private annexesService:AnnexesService,
     private documentsService: DocumentsService,
-    private sanitizer: DomSanitizer
+    private sanitizer: DomSanitizer,
+    private specificObjService: SpecificObjetivesService,
   ) { /*this.loadingData = true;*/ }
 
   ngOnInit(): void {
@@ -95,7 +97,7 @@ export class MostrarSolicitudForDirector implements OnInit {
       this.creationReqForm = navigationState.creationReqForm;
       this.invGroupId=this.creationReqForm.idGrupoInv;
       this.obtenerGrupo(this.creationReqForm.idGrupoInv)
-      this.obtenerSegmentosInvestigacion(this.creationReqForm.idPeticionCreacion);
+      this.obtenerSegmentosInvestigacion(this.creationReqForm.idGrupoInv);
       // Id del formulario de creación que deseas utilizar
       this.obtenerPlanDesarrollo(this.creationReqForm.idGrupoInv);
       this.obtenerAnexos(this.creationReqForm.idGrupoInv);
@@ -156,15 +158,15 @@ export class MostrarSolicitudForDirector implements OnInit {
     })
   }
   obtenerSegmentosInvestigacion(id: number) {
-    this.invGroup_linesService.getByReq(id).subscribe(data => {
-      this.lineCrea = data;
+    this.invGroup_linesService.getByGroup(id).subscribe(data => {
+      this.line = data;
 
     });
-    this.invGroup_academicDomainService.getByReq(id).subscribe(data => {
-      this.acadCrea = data;
+    this.invGroup_academicDomainService.getByGroup(id).subscribe(data => {
+      this.acad = data;
     });
-    this.invGroup_areaService.getByReq(id).subscribe(data => {
-      this.creaArea = data;
+    this.invGroup_areaService.getByGroup(id).subscribe(data => {
+      this.area = data;
     });
   }
   obtenerGrupo(id: number) {
@@ -250,5 +252,52 @@ validarGrupo(ruta: string) {
   // Concatenar "main/" con la variable ruta
   this.router.navigate([`main/${ruta}`], { state: { creationReqForm } });
 }
+usuarioNombre: { [key: number]: string } = {};
+objetivoEspecífico: { [key: number]: string } = {};
+getName(id: number): Observable<string> {
+  if (!this.usuarioNombre) {
+    this.usuarioNombre = {};
+  }
+  if (this.usuarioNombre[id]) {
+    return of(this.usuarioNombre[id]);
+  }
 
+  //Solicitud al backend
+  return this.userService.getById(id).pipe(
+    map((usuario) => {
+      const nombre = usuario?.nombre || 'Usuario no encontrado';
+      this.usuarioNombre[id] = nombre; // Almacena el resultado en usuarioNombre
+      return nombre;
+    }),
+    catchError(() => {
+      const errorNombre = 'Usuario no encontrado';
+      this.usuarioNombre[id] = errorNombre; // También almacena el mensaje de error
+      return of(errorNombre);
+    })
+  );
+
+}
+getObj(id: number): Observable<string> {
+  if (!this.objetivoEspecífico) {
+    this.objetivoEspecífico = {};
+  }
+  if (this.objetivoEspecífico[id]) {
+    return of(this.objetivoEspecífico[id]);
+  }
+
+  //Solicitud al backend
+  return this.specificObjService.getById(id).pipe(
+    map((obj) => {
+      const nombre = obj?.objetivo || 'Objetivo no encontrado';
+      this.objetivoEspecífico[id] = nombre; // Almacena el resultado en usuarioNombre
+      return nombre;
+    }),
+    catchError(() => {
+      const errorNombre = 'Objetivo no encontrado';
+      this.objetivoEspecífico[id] = errorNombre; // También almacena el mensaje de error
+      return of(errorNombre);
+    })
+  );
+
+}
 }

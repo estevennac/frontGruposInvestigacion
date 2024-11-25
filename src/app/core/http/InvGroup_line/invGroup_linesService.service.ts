@@ -3,7 +3,7 @@ import { environment } from 'src/environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { InvGroup_line,LineCreaCompleto } from 'src/app/types/invGroup_line';
-
+import { Line } from 'src/app/types/line.types';
 @Injectable({
   providedIn: 'root'
 })
@@ -25,7 +25,7 @@ export class InvGroup_linesService {
   createInvGroup_lineForm(formData: InvGroup_line): Observable<any> {
     return this.http.post(`${this.URL}/create`, formData);
   }
-  getByReq(id: number): Observable<LineCreaCompleto> {
-    return this.http.get<LineCreaCompleto>(`${this.URL}/byreq/${id}`);
+  getByGroup(id: number): Observable<Line[]> {
+    return this.http.get<Line[]>(`${this.URL}/byGroup/${id}`);
   }
 }

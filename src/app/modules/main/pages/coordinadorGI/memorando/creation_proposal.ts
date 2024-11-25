@@ -154,7 +154,7 @@ export class PropuestaGIComponent implements OnInit {
              idPeticionCreacion:data.idPeticionCreacion,
              idGrupoInv:data.idGrupoInv,
              alineacionEstrategica: data.alineacionEstrategica,
-              estado:"c", 
+              estado:"4", 
               usuarioCreacionPeticion:data.usuarioCreacionPeticion,
               fechaCreacionPeticion:data.fechaCreacionPeticion,
               usuarioModificacionPeticion:this.currentUser,

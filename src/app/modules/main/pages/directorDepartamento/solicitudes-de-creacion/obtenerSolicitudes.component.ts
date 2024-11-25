@@ -49,7 +49,7 @@ export class SolicitudesForDirectorComponent implements OnInit {
     }
 
     filtrarSolicitudes() {
-        this.solicitudesFiltradas = this.creationReq.filter((solicitud) => solicitud.estado === 'c');
+        this.solicitudesFiltradas = this.creationReq.filter((solicitud) => solicitud.estado === '4');
         this.solicitudesFiltradas2 = this.creationReq.filter((solicitud) => solicitud.estado==='C');
         this.noSolicitudesPendientes = this.solicitudesFiltradas.length === 0;
         this.noSolicitudesPendientes2 = this.solicitudesFiltradas2.length === 0;

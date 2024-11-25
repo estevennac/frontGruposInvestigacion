@@ -3,6 +3,7 @@ import { environment } from 'src/environments/environment';
 import { InvGroup_academicDomain,AcadCreaCompleto } from 'src/app/types/invGroup_academicDomain';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { AcademicDomain } from 'src/app/types/academicDomain.types';
 
 @Injectable({
   providedIn: 'root'
@@ -24,8 +25,8 @@ export class InvGroup_academicDomainService {
   createAcadCreaForm(formData: InvGroup_academicDomain): Observable<any> {
     return this.http.post(`${this.URL}/create`, formData);
   }
-  getByReq(id: number): Observable<AcadCreaCompleto> {
-    return this.http.get<AcadCreaCompleto>(`${this.URL}/byreq/${id}`);
+  getByGroup(id: number): Observable<AcademicDomain[]> {
+    return this.http.get<AcademicDomain[]>(`${this.URL}/byGroup/${id}`);
   }
 }
 

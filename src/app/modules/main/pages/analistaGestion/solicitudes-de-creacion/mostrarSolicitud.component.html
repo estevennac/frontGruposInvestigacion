@@ -69,25 +69,25 @@
           <tr>
             <td style="border:solid 0.5px #dce0e2 ;">6</td>
             <td style="border:solid 0.5px #dce0e2 ;">Dominios Académicos</td>
-            <td style="border:solid 0.5px #dce0e2 ;" *ngIf="acadCrea"
+            <td style="border:solid 0.5px #dce0e2 ;" *ngIf="acad"
               style="border: solid 0.5px #dce0e2;">
-              <div *ngFor="let ac of acadCrea.dominio">{{
+              <div *ngFor="let ac of acad">{{
                 ac.nombreDominioAcademico }}</div></td>
           </tr>
           <tr>
             <td style="border:solid 0.5px #dce0e2 ;">7</td>
             <td style="border:solid 0.5px #dce0e2 ;">Áreas de Investigación</td>
-            <td style="border:solid 0.5px #dce0e2 ;" *ngIf="creaArea"
+            <td style="border:solid 0.5px #dce0e2 ;" *ngIf="area"
               style="border: solid 0.5px #dce0e2;">
-              <div *ngFor="let ca of creaArea.area">{{ ca.nombreArea
+              <div *ngFor="let ca of area">{{ ca.nombreArea
                 }}</div></td>
           </tr>
           <tr>
             <td style="border:solid 0.5px #dce0e2 ;">8</td>
             <td style="border:solid 0.5px #dce0e2 ;">Líneas </td>
-            <td style="border:solid 0.5px #dce0e2 ;" *ngIf="lineCrea"
+            <td style="border:solid 0.5px #dce0e2 ;" *ngIf="line"
               style="border: solid 0.5px #dce0e2;">
-              <div *ngFor="let lc of lineCrea.linea">{{ lc.nombreLinea
+              <div *ngFor="let lc of line">{{ lc.nombreLinea
                 }}</div></td>
           </tr>
           <!-- Agrega más filas según sea necesario -->

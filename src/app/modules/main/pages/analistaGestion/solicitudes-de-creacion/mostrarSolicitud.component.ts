@@ -17,6 +17,8 @@ import { CreaAreaCompleto } from 'src/app/types/invGroup_area.types';
 import { InvGroup_areaService } from 'src/app/core/http/invGroup_area/crea-area.service';
 import { DevelopmentPlanService } from 'src/app/core/http/develop-plan-form/develop-plan-form.service';
 import { DevelopmentPlanForms } from 'src/app/types/developPlanForm';
+import { AcademicDomain } from 'src/app/types/academicDomain.types';
+import { Area } from 'src/app/types/area.types';
 @Component({
   selector: 'app-solicitud-componente',
   templateUrl: './mostrarSolicitud.component.html',
@@ -31,10 +33,9 @@ export class MostrarSolicitudForAnalista implements OnInit {
   planDesarrollo:DevelopmentPlanForms
   memberUser:Usuario[]=[];
   member:InvMemberForm[];
-  lineCrea:LineCreaCompleto;
-  line:Line;
-  acadCrea:AcadCreaCompleto;
-  creaArea:CreaAreaCompleto;
+  line:Line[];
+  acad:AcademicDomain[];
+  area:Area[];
   loadingData: boolean = true;
   constructor(
     private route: ActivatedRoute,
@@ -76,16 +77,16 @@ export class MostrarSolicitudForAnalista implements OnInit {
     })
   }
   obtenerSegmentosInvestigacion(id:number){
-    this.invGroup_linesService.getByReq(id).subscribe(data => {
-      this.lineCrea=data;
+    this.invGroup_linesService.getByGroup(id).subscribe(data => {
+      this.line=data;
       this.loadingData = false;
     });
-    this.acadCreaService.getByReq(id).subscribe(data=>{
-      this.acadCrea=data;
+    this.acadCreaService.getByGroup(id).subscribe(data=>{
+      this.acad=data;
       this.loadingData = false;
     });
-    this.invGroup_areaService.getByReq(id).subscribe(data=>{
-      this.creaArea=data;
+    this.invGroup_areaService.getByGroup(id).subscribe(data=>{
+      this.area=data;
       this.loadingData = false;
     });
   }

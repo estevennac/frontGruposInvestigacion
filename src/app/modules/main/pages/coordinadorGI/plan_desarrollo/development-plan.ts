@@ -39,6 +39,8 @@ import { ObjControl } from './modal_objetivos.component';
 import { ChangeDetectorRef } from '@angular/core';
 import { ActControl } from './modal_cuadro_actividades.component';
 import { UsuarioService } from 'src/app/core/http/usuario/usuario.service';
+import { SpecificObjetives } from 'src/app/types/specificObjetives.types';
+import { SpecificObjetivesService } from 'src/app/core/http/specific-objetives/specific-objetives.service';
 @Component({
   selector: 'vex-creation-form',
   templateUrl: './development-plan.html',
@@ -67,10 +69,11 @@ export class DevelopmentPlanFormComponent implements OnInit {
   currentUser: string;
   currentDate: any;
   objetivoInstitucional: InstStrategicObj[];
-  ods:ODS[];
-  estrategias:Strategies[];
-  obj:any[]=[];
-  usuarioNombre: {[key:number]: string}= {};
+  ods: ODS[];
+  estrategias: Strategies[];
+  obj: any[] = [];
+  usuarioNombre: { [key: number]: string } = {};
+  specificObjetives: SpecificObjetives[] = [];
   constructor(
     private fb: FormBuilder,
     private upperLevelPlanService: UpperLevelPlanService,
@@ -90,33 +93,16 @@ export class DevelopmentPlanFormComponent implements OnInit {
     private controlPanelService: ControlPanelService,
     private creationReqService: CreationReqService,
     private invGroupService: InvGroupService,
-    private objInstitucionalService:InstStrategicObjService,
+    private objInstitucionalService: InstStrategicObjService,
     private odsService: OdsService,
-    private strategiesService:StrategiesService,
-        private dialog: MatDialog,
-         private cdr: ChangeDetectorRef,
-         private usuarioService: UsuarioService
-        
-
-
-  ) {this.obj=[];
-    /*this.myForm = this.fb.group({
-  
-      planDesarrolloForm3: this.fb.group({
-        objetivos: this.fb.array([
-          this.agregarObjetivo()
-
-        ])       }),
-      planDesarrolloForm4: this.fb.group({
-        actividades: this.fb.array([]),
-      }),
-    });*/
-     // Agrega un objetivo inicial
-
-
-  }
+    private strategiesService: StrategiesService,
+    private dialog: MatDialog,
+    private cdr: ChangeDetectorRef,
+    private usuarioService: UsuarioService,
+    private specificObjetivesService: SpecificObjetivesService,
+    private objStrategiesODSService: ObjStrategiesODSService
+  ) { this.obj = []; }
   public formReady: boolean = false; // Bandera para indicar si el formulario está listo
-
   public isLoading: boolean = true; // Inicializar como true para que el spinner aparezca al inicio
 
   ngOnInit(): void {
@@ -129,7 +115,8 @@ export class DevelopmentPlanFormComponent implements OnInit {
     this.currentDate = this.datePipe.transform(new Date(), 'yyyy-MM-ddTHH:mm:ss');
 
   }
-  cargaFormularios(){ 
+  //Estado inicial de cargar los formularios 
+  cargaFormularios() {
     this.myForm = this.fb.group({
       planDesarrolloForm1: this.fb.group({
         planSuperior: this.planSuperiorControl,
@@ -145,19 +132,15 @@ export class DevelopmentPlanFormComponent implements OnInit {
       planDesarrolloForm2_2: this.fb.group({
         objInstitucional: this.objetivoInstitucionalControl,
         objGeneral: this.objGeneralControl,
-        //objEstrategico: this.objEstrategicoControl,//eliminar este
       }),
       planDesarrolloForm3: this.fb.array([
-        this.crearObjetivo() // Inicializamos con al menos un grupo en el FormArray
+        this.crearObjetivo() 
       ]),
-      planDesarrolloForm4: this.fb.array([      ]
-        
-      ),
+      planDesarrolloForm4: this.fb.array([]),
     });
-    this.planSuperiorControl.setValue([this.planSuperior[0].idPlanNivelSuperior]); // ID del plan que deseas seleccionar por defecto
-    this.marcoControl.setValue([this.marcoLegal[0].idMarcoLegal]);        // ID del marco que deseas seleccionar por defecto
-    this.planNacionalControl.setValue([this.planNacional[0].idPlanNacional]); // ID del plan nacional que deseas seleccionar por defecto
-
+    this.planSuperiorControl.setValue([this.planSuperior[0].idPlanNivelSuperior]); 
+    this.marcoControl.setValue([this.marcoLegal[0].idMarcoLegal]);        
+    this.planNacionalControl.setValue([this.planNacional[0].idPlanNacional]);
   }
 
   get planDesarrolloForm1() {
@@ -177,20 +160,18 @@ export class DevelopmentPlanFormComponent implements OnInit {
   }
   get planDesarrolloForm4() {
     return this.myForm.get('planDesarrolloForm4') as FormGroup;
-
   }
   get objetivos(): FormArray {
     return this.myForm.get('planDesarrolloForm3') as FormArray;
   }
-  
-  get marco():FormArray{
+  get marco(): FormArray {
     return this.myForm.get('planDesarrolloForm4') as FormArray;
   }
-  
+
   trackByFn(index: number, item: any): number {
-    return index; // O cualquier identificador único
+    return index; 
   }
-  
+//Cargar Data inicial para poder iniciar los Formularios con Datos
   loadData() {
     return forkJoin({
       planSuperior: this.upperLevelPlanService.getAll(),
@@ -198,7 +179,7 @@ export class DevelopmentPlanFormComponent implements OnInit {
       planNacional: this.nationalPlanService.getAll(),
       objetivoInstitucional: this.objInstitucionalService.getAll(),
       estrategias: this.strategiesService.getAll(),
-      ods:this.odsService.getAll(),
+      ods: this.odsService.getAll(),
     }).pipe(
       map((response) => {
         this.planSuperior = response.planSuperior.filter((plan) => plan.estado === true);
@@ -206,198 +187,217 @@ export class DevelopmentPlanFormComponent implements OnInit {
         this.planNacional = response.planNacional.filter((plan) => plan.estado === true);
         this.objetivoInstitucional = response.objetivoInstitucional.filter((obj) => obj.estado === true);
         this.estrategias = response.estrategias.filter((estrategia) => estrategia.estado === true);
-        this.ods=response.ods;
+        this.ods = response.ods;
       })
     );
   }
- objs:number[]=[1];
- 
- crearObjetivo(): FormGroup {
-  return this.fb.group({
-    objetivo: [''], // Campo objetivo dentro del FormGroup
-    estrategias: [[]],         // Inicializamos como un arreglo vacío
-    ods: [[]]   
-  });
-}
-
-crearMarco(): FormGroup {
-  return this.fb.group({
-    idPlanDesarrollo: [null, Validators.required],
-    idObjetivoEspecifico: [null, Validators.required],
-    idResponsable: [null, Validators.required],
-    actividad: ['', Validators.required],
-    indicadorNombre: ['', Validators.required],
-    indicadorTipo: ['', Validators.required],
-    indicadorForma: ['', Validators.required],
-    indicadorCondicional: ['', Validators.required],
-    indicadorAcumulativo: ['', Validators.required],
-    meta1: [null, Validators.required],
-    meta2: [null, Validators.required],
-    meta3: [null, Validators.required],
-    meta4: [null, Validators.required],
-    financiamiento: [null, Validators.required],
-    observacion: ['', Validators.required]
-  });
-}
-
-
-agregarObjetivo(): void {
-  if (this.objetivos) {
-    this.objetivos.push(this.crearObjetivo());
-  } else {
-    console.error('El FormArray "objetivos" no está definido.');
-  }
-}
-
-getObjetivoEspecifico(posicion: number): string {
-  const objetivo = this.objetivos.value[posicion];  // Usar la posición para acceder al arreglo
-  return objetivo ? objetivo.objetivo : 'Objetivo no encontrado';  // Ajusta según el campo que quieras mostrar
-}
-/*
-getName(id: number): Observable<string> {
-  //console.log('ID:', id);
-  return this.usuarioService.getById(id).pipe(
-    map(data => data?.nombre || 'Usuario no encontrado'),  // Si no hay nombre, retorna "Usuario no encontrado"
-    catchError(() => of('Usuario no encontrado'))  // Si hay un error (usuario no encontrado, etc.), retorna "Usuario no encontrado"
-  );
-}*/
-
-getName(id: number): Observable<string> {
-  if (!this.usuarioNombre) {
-    this.usuarioNombre = {};
+//campo de objetivos especificos - Agregar con ODS y estrategias institucionales
+  crearObjetivo(): FormGroup {
+    return this.fb.group({
+      objetivo: [''], 
+      estrategias: [[]],    
+      ods: [[]]
+    });
   }
 
-  if (this.usuarioNombre[id]) {
-    return of(this.usuarioNombre[id]);
-  }
-
-  //Solicitud al backend
-  return this.usuarioService.getById(id).pipe(
-    map((usuario) => {
-      const nombre = usuario?.nombre || 'Usuario no encontrado';
-      this.usuarioNombre[id] = nombre; // Almacena el resultado en usuarioNombre
-      return nombre;
-    }),
-    catchError(() => {
-      const errorNombre = 'Usuario no encontrado';
-      this.usuarioNombre[id] = errorNombre; // También almacena el mensaje de error
-      return of(errorNombre);
-    })
-  );
-
-}
-
-agregarMarco(): void {
-  const dialogRef = this.dialog.open(ActControl, {
-    width: '80%',
-    height: '90%',
-    data: {
-      objetivos: this.objetivos.value
+  agregarObjetivo(): void {
+    if (this.objetivos) {
+      this.objetivos.push(this.crearObjetivo());
+    } else {
+      console.error('El FormArray "objetivos" no está definido.');
     }
-  });
+  }
 
-  // Cuando se cierra el modal, verificar si hay datos y agregar al FormArray
-  dialogRef.afterClosed().subscribe(result => {
-    if (result) {
-      // Aquí agregamos el nuevo marco al FormArray
-      const newMarco = this.crearMarco();
-      newMarco.patchValue(result);  // Asignar los valores que se ingresaron en el modal
-      this.marco.push(newMarco);    // Agregar el marco al FormArray
+  getObjetivoEspecifico(posicion: number): string {
+    const objetivo = this.objetivos.value[posicion];  // Usar la posición para acceder al arreglo
+    return objetivo ? objetivo.objetivo : 'Objetivo no encontrado';  // Ajusta según el campo que quieras mostrar
+  }
 
-      console.log('Nuevo marco agregado:', newMarco.value);
-      console.log(`cs:`, this.marco.value);
-
+  eliminarObjetivo(index: number): void {
+    if (this.objetivos.length > 1) {
+      this.objetivos.removeAt(index);
     }
-  });
-}
-
-eliminarObjetivo(index: number): void {
-  if (this.objetivos.length > 1) {
-    this.objetivos.removeAt(index);
   }
-}
-
-eliminarMarco(index: number): void {
-  if (this.marco.length > 1) {
-    this.marco.removeAt(index);
-  } else {
-    console.error('No se puede eliminar el último marco');
+  openDialogObj(index: number): void {
+    const objetivoActual = this.objetivos.at(index).value;
+    const objetivoInstitucional = this.myForm.get('planDesarrolloForm2_2').get('objInstitucional').value;
+    console.log('Objetivo institucional:', objetivoInstitucional); // Para depuración inicial
+    const dialogRef = this.dialog.open(ObjControl, {
+      width: '50%',
+      height: '70%',
+      data: {
+        objetivoEspecifico: objetivoActual,
+        objetivoInstitucional: objetivoInstitucional,
+        estrategiasSeleccionadas: objetivoActual.estrategias || [],
+        odsSeleccionados: objetivoActual.ods || []
+      }
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        const currentObjetivo = this.objetivos.at(index);
+        const currentEstrategias = currentObjetivo.value.estrategias || [];
+        const currentOds = currentObjetivo.value.ods || [];
+        const updatedEstrategias = [...currentEstrategias, ...result.estrategias];
+        const updatedOds = [...currentOds, ...result.ods];
+        currentObjetivo.patchValue({
+          estrategias: updatedEstrategias,
+          ods: updatedOds
+        });
+        console.log(`Estado completo del Objetivo ${index + 1}:`, currentObjetivo.value);
+      }
+    });
   }
-}
 
-openDialogObj(index: number): void {
-  const objetivoActual = this.objetivos.at(index).value;
-  const objetivoInstitucional = this.myForm.get('planDesarrolloForm2_2').get('objInstitucional').value;
+  crearMarco(): FormGroup {
+    return this.fb.group({
+      idPlanDesarrollo: [null, Validators.required],
+      idObjetivoEspecifico: [null, Validators.required],
+      idResponsable: [null, Validators.required],
+      actividad: ['', Validators.required],
+      indicadorNombre: ['', Validators.required],
+      indicadorTipo: ['', Validators.required],
+      indicadorForma: ['', Validators.required],
+      indicadorCondicional: ['', Validators.required],
+      indicadorAcumulativo: ['', Validators.required],
+      meta1: [null, Validators.required],
+      meta2: [null, Validators.required],
+      meta3: [null, Validators.required],
+      meta4: [null, Validators.required],
+      financiamiento: [null, Validators.required],
+      observacion: ['', Validators.required]
+    });
+  }
+
+  getName(id: number): Observable<string> {
+    if (!this.usuarioNombre) {
+      this.usuarioNombre = {};
+    }
+    if (this.usuarioNombre[id]) {
+      return of(this.usuarioNombre[id]);
+    }
+
+    //Solicitud al backend
+    return this.usuarioService.getById(id).pipe(
+      map((usuario) => {
+        const nombre = usuario?.nombre || 'Usuario no encontrado';
+        this.usuarioNombre[id] = nombre; // Almacena el resultado en usuarioNombre
+        return nombre;
+      }),
+      catchError(() => {
+        const errorNombre = 'Usuario no encontrado';
+        this.usuarioNombre[id] = errorNombre; // También almacena el mensaje de error
+        return of(errorNombre);
+      })
+    );
+
+  }
+
+  agregarMarco(): void {
+    const dialogRef = this.dialog.open(ActControl, {
+      width: '80%',
+      height: '90%',
+      data: {
+        objetivos: this.objetivos.value
+      }
+    });
+
+    // Cuando se cierra el modal, verificar si hay datos y agregar al FormArray
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        // Aquí agregamos el nuevo marco al FormArray
+        const newMarco = this.crearMarco();
+        newMarco.patchValue(result);  // Asignar los valores que se ingresaron en el modal
+        this.marco.push(newMarco);    // Agregar el marco al FormArray
+
+        console.log('Nuevo marco agregado:', newMarco.value);
+        console.log(`cs:`, this.marco.value);
+
+      }
+    });
+  }
+  eliminarMarco(index: number): void {
+    if (this.marco.length > 1) {
+      this.marco.removeAt(index);
+    } else {
+      console.error('No se puede eliminar el último marco');
+    }
+  }
+
   
-  console.log('Objetivo institucional:', objetivoInstitucional); // Para depuración inicial
+  openModalMarco(index: number): void {
+    const marcoActual = this.marco.at(index).value;
 
-  const dialogRef = this.dialog.open(ObjControl, {
-    width: '50%',
-    height: '70%',
-    data: {
-      objetivoEspecifico: objetivoActual,
-      objetivoInstitucional: objetivoInstitucional,
-      estrategiasSeleccionadas: objetivoActual.estrategias || [],
-      odsSeleccionados: objetivoActual.ods || []
-    }
-  });
+    const dialogRef = this.dialog.open(ActControl, {
+      width: '50%',
+      height: '70%',
+      data: marcoActual
+    });
 
-  dialogRef.afterClosed().subscribe(result => {
-    if (result) {
-      const currentObjetivo = this.objetivos.at(index);
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        const currentMarco = this.marco.at(index);
+        currentMarco.patchValue({
+          actividades: result.actividades,
+          responsable: result.responsable,
+          indicador: result.indicador,
+          1: result[1],
+          2: result[2],
+          3: result[3],
+          4: result[4],
+          financiamientoRequerido: result.financiamientoRequerido,
+          observaciones: result.observaciones
+        });
 
-      // Obtenemos los arrays actuales de estrategias y ODS
-      const currentEstrategias = currentObjetivo.value.estrategias || [];
-      const currentOds = currentObjetivo.value.ods || [];
+        console.log('Marco actualizado:', currentMarco.value);
+      }
+    });
+  }
 
-      // Agregamos los nuevos elementos seleccionados al final de los arreglos
-      const updatedEstrategias = [...currentEstrategias, ...result.estrategias];
-      const updatedOds = [...currentOds, ...result.ods];
-
-      // Actualizamos el objetivo con los nuevos datos acumulados
-      currentObjetivo.patchValue({
-        estrategias: updatedEstrategias,
-        ods: updatedOds
+  //Envio del Formulario------------------------------
+  HandleSubmit() {
+    if (this.myForm.valid) {
+      this.guardarPlanBase();
+      console.log('Objetivos:', this.myForm.value.planDesarrolloForm3.objetivos);
+      console.log('Cuadro de Mando Actividades:', this.myForm.value.planDesarrolloForm4.actividades);
+      this.snackBar.open('Solicitudes Enviados correctamente.', 'Cerrar', {
+        duration: 3000,
       });
-
-      // Console log para verificar cómo se acumulan los datos
-      console.log(`Estado completo del Objetivo ${index + 1}:`, currentObjetivo.value);
-
-    }
-  });
-}
-
-openModalMarco(index: number): void {
-  const marcoActual = this.marco.at(index).value;
-  
-  const dialogRef = this.dialog.open(ActControl, {
-    width: '50%',
-    height: '70%',
-    data: marcoActual
-  });
-
-  dialogRef.afterClosed().subscribe(result => {
-    if (result) {
-      const currentMarco = this.marco.at(index);
-      currentMarco.patchValue({
-        actividades: result.actividades,
-        responsable: result.responsable,
-        indicador: result.indicador,
-        1: result[1],
-        2: result[2],
-        3: result[3],
-        4: result[4],
-        financiamientoRequerido: result.financiamientoRequerido,
-        observaciones: result.observaciones
+    } else {
+      console.log('Objetivos:', this.myForm.value);
+      this.snackBar.open('Por favor, complete todos los campos requeridos.', 'Cerrar', {
+        duration: 3000,
       });
-
-      console.log('Marco actualizado:', currentMarco.value);
     }
-  });
-}
-
-
-
+  }
+  guardarPlanBase() {
+    const DevPlan: DevelopmentPlanForms = {
+      idPlanDesarrollo: 0,
+      idGrupoInv: this.idGroup,
+      idObjetivoInst: this.myForm.value.planDesarrolloForm2_2.objInstitucional,
+      tipo: "c",
+      estado: "e",
+      alcance: this.myForm.value.planDesarrolloForm2.alcance,
+      contexto: this.myForm.value.planDesarrolloForm2_1.contexto,
+      objGeneral: this.myForm.value.planDesarrolloForm2_2.objGeneral,
+      usuarioCreacionUsuario: this.currentUser,
+      fechaCreacionUsuario: this.currentDate,
+      usuarioModificacionUsuario: null,
+      fechaModificacionUsuario: null
+    }
+    this.developmentPlanService.create(DevPlan).subscribe(
+      (response) => {
+        this.guardarNormas(response);
+        this.ejecutarGuardado(response);
+        this.actualizarEstados();
+        setTimeout(() => {
+          this.router.navigateByUrl('main/crea');
+        }, 8000);
+      },
+      (error) => {
+        console.error('Error al crear el plan de desarrollo:', error); // Manejo de errores
+      }
+    )
+  }
   guardarNormas(idPlanDesarrollo: number) {
     const planesNacionales = this.planNacionalControl.value;
     const planNivelSuperiores = this.planSuperiorControl.value;
@@ -457,173 +457,173 @@ openModalMarco(index: number): void {
     } else {
 
     }
-    //this.deveNationalService.createDevelopNatiForm()
   }
-  guardarPlanBase() {
-    const DevPlan: DevelopmentPlanForms = {
-      idPlanDesarrollo: 0,
-      idGrupoInv: this.idGroup,
-      idObjetivoInst:1,
-      tipo: "c",
-      estado: "e",
-      alcance: this.myForm.value.planDesarrolloForm2.alcance,
-      contexto: this.myForm.value.planDesarrolloForm2_1.contexto,
-      objGeneral: this.myForm.value.planDesarrolloForm2_2.objGeneral,
-      objEstrategico: this.myForm.value.planDesarrolloForm2_2.objEstrategico,
-      usuarioCreacionUsuario: this.currentUser,
-      fechaCreacionUsuario: this.currentDate,
-      usuarioModificacionUsuario: null,
-      fechaModificacionUsuario: null
+  idMap: { [key: number]: number } = {}; // Este mapa guardará el id de cada objetivo asociado con su posición
+
+  async ejecutarGuardado(idPlan: number): Promise<void> {
+    try {
+      // Ejecutar guardarObj primero
+      await this.guardarObj();
+      console.log('Objetivos guardados exitosamente. Continuando con el guardado del panel de control.');
+  
+      // Después de guardarObj, ejecutar guardarControl
+      await this.guardarControl(idPlan);
+      console.log('Panel de control guardado exitosamente.');
+    } catch (error) {
+      console.error('Error en el proceso de guardado:', error);
     }
-    this.developmentPlanService.create(DevPlan).subscribe(
-      (response) => {
-        // console.log('Respuesta del servidor:', response); // Imprimir la respuesta en la consola
-        //this.idPlanDesarrollo=response;
-        setTimeout(() => {
-          this.router.navigateByUrl('main/crea');
-        }, 8000);
-        this.guardarNormas(response);
-        this.guardarObj(response);
-        this.guardarControl(response);
-        this.actualizarEstados();
-
-      },
-      (error) => {
-        console.error('Error al crear el plan de desarrollo:', error); // Manejo de errores
-      }
-    )
-    }
-  guardarObj(idPlan: number) {
-    const objetivos = this.myForm.value.planDesarrolloForm3.objetivos;
-
-    objetivos.forEach((obj: any) => {
-      const objetivo: Objectives = {
-        idObjetivo: 0, // Inicialmente 0, se asignará después
-        //idPlanDesarrollo: idPlan,
-        objetivo: obj.nombre,
-        usuarioCreacion: this.currentUser,
-        fechaCreacion: this.currentDate,
-        usuarioModificacion: null,
-        fechaModificacion: null,
-      };
-      this.objService.createObjectivesForm(objetivo).subscribe(
-        (response) => {
-          const idObjetivo = response; 
-          obj.estrategias.forEach((estrategia: any) => {
-            const estrategiaData: Strategies = {
-              //descripcion: estrategia.descripcion,
-              idEstrategia: 0,
-              estrategia: estrategia.descripcion,
-              
-              idObjetivo: idObjetivo, // Relaciona la estrategia con el objetivo creado
-              usuarioCreacion: this.currentUser,
-              fechaCreacion: this.currentDate,
-              usuarioModificacion: null,
-              fechaModificacion: null,
-            };
-
-            // Guarda la estrategia
-            this.strategieService.createStrategiesForm(estrategiaData).subscribe(
-              (estrategiaResponse) => {
-                console.log('Estrategia creada:', estrategiaResponse); // Maneja la respuesta aquí
-              },
-              (error) => {
-                console.error('Error al crear la estrategia:', error); // Manejo de errores
-              }
-            );
-          });
-        },
-        (error) => {
-          console.error('Error al crear el objetivo:', error); // Manejo de errores
+  }
+  
+  async guardarObj(): Promise<void> { 
+    const objetivos = this.objetivos.value.map((obj: any, index: number) => ({
+      index, // Guardar el índice para referencia
+      objetivo: obj.objetivo,
+      estrategias: obj.estrategias || [],
+      ods: obj.ods || [] // Incluimos ODS
+    }));
+  
+    this.idMap = {}; // Aseguramos que el mapa esté vacío antes de empezar
+  
+    try {
+      for (const obj of objetivos) {
+        // Crear el objetivo específico
+        const objetivo: SpecificObjetives = {
+          idObjetivo: 0,
+          objetivo: obj.objetivo,
+          usuarioCreacion: this.currentUser,
+          fechaCreacion: this.currentDate,
+          usuarioModificacion: null,
+          fechaModificacion: null,
+        };
+  
+        // Guardar el objetivo y obtener su ID
+        const response = await this.specificObjetivesService.createSpecificObjetive(objetivo).toPromise();
+        this.idMap[obj.index] = response;  // Asociamos el ID con la posición del arreglo
+        const idObjetivo = response;
+  
+        // Validar que las estrategias y ODS tengan el mismo tamaño
+        if (obj.estrategias.length !== obj.ods.length) {
+          throw new Error(
+            `El número de estrategias y ODS no coincide para el objetivo en la posición ${obj.index}`
+          );
         }
-      );
-    });
-  }
-  guardarControl(idPlan: number) {
-    const control = this.myForm.value.planDesarrolloForm4.actividades;
-
-    control.forEach((obj: any) => {
-      const act: ControlPanelForm = {
-        idPlanDesarrollo: idPlan,
-        idPanelControl: 0,
-        idObjetivoEspecifico:0, 
-        idResponsable:0, 
-        indicadorNombre:"", 
-        indicadorTipo:"",
-        indicadorForma:"", 
-        indicadorCondicional:"",
-         indicadorAcumulativo:"",
-        actividad: obj.actividad,
-        meta1: obj.meta1,
-        meta2: obj.meta2,
-        meta3: obj.meta3,
-        meta4: obj.meta4,
-        financiamiento: obj.financiamiento,
-        observacion: obj.observaciones,
-        usuarioCreacion: this.currentUser,
-        fechaCreacion: this.currentDate,
-        usuarioModificacion: null,
-        fechaModificacion: null
-      };
-
-      // Guarda el objetivo y espera la respuesta
-      this.controlPanelService.createControlPanelForm(act).subscribe(
-        (response) => {
-          console.log(response, "Creado")
-
-        });
-    })
-  }
-
-  HandleSubmit() {
-    if (this.myForm.valid) {
-      this.guardarPlanBase();
-      console.log('Objetivos:', this.myForm.value.planDesarrolloForm3.objetivos);
-      console.log('Cuadro de Mando Actividades:', this.myForm.value.planDesarrolloForm4.actividades);
-      this.snackBar.open('Solicitudes Enviados correctamente.', 'Cerrar', {
-        duration: 3000,
-      });
-     
-     
-
-    } else {
-      this.snackBar.open('Por favor, complete todos los campos requeridos.', 'Cerrar', {
-        duration: 3000,
-      });
+  
+        // Guardar estrategias y ODS conjuntamente por su posición
+        for (let i = 0; i < obj.estrategias.length; i++) {
+          const estrategia = obj.estrategias[i];
+          const odsItem = obj.ods[i];
+  
+          const obj_strategy_ods: Objectives_Strategies_Ods = {
+            idEstrategia: estrategia.id,
+            idObjetivoEspecifico: idObjetivo,
+            idODS: odsItem.id,
+            usuarioCreacion: this.currentUser,
+            fechaCreacion: this.currentDate,
+            usuarioModificacion: null,
+            fechaModificacion: null,
+          };
+  
+          await this.objStrategiesODSService.create(obj_strategy_ods).toPromise();
+        }
+      }
+  
+      console.log('Todos los objetivos, estrategias y ODS se guardaron correctamente en orden:', this.idMap);
+    } catch (error) {
+      console.error('Error al guardar objetivos, estrategias y ODS:', error);
+      throw error; // Propagamos el error para manejarlo en el flujo principal
     }
   }
-  actualizarEstados(){
-    
-    this.creationReqService.getByGroup(this.idGroup).subscribe(data=>{
-      const creationReq:CreationReqForm={
-         idPeticionCreacion:data.idPeticionCreacion,
-         idGrupoInv:data.idGrupoInv,
-         alineacionEstrategica: data.alineacionEstrategica,
-          estado:"M", 
-          usuarioCreacionPeticion:data.usuarioCreacionPeticion,
-          fechaCreacionPeticion:data.fechaCreacionPeticion,
-          usuarioModificacionPeticion:this.currentUser,
-          fechaModificacionPeticion:this.currentDate
+  
+  async guardarControl(idPlan: number): Promise<void> {
+    const control = this.myForm.value.planDesarrolloForm4;
+  
+    // Verificar que el mapa de IDs esté disponible
+    if (!this.idMap || Object.keys(this.idMap).length === 0) {
+      console.error('No se han generado los IDs de los objetivos. Asegúrate de guardar los objetivos primero.');
+      return;
+    }
+  
+    try {
+      // Guardar cada control de panel
+      for (const obj of control) {
+        // Buscar el ID de objetivo específico correspondiente
+        const objetivoIndex = obj.idObjetivoEspecifico; // Índice del objetivo que vino del formulario
+        const idObjetivoEspecifico = this.idMap[objetivoIndex]; // Obtener el ID generado para ese objetivo
+  
+        if (idObjetivoEspecifico === undefined) {
+          console.error(`No se encontró un ID para el objetivo en la posición ${objetivoIndex}`);
+          continue; // Continuamos con el siguiente registro si no se encuentra un ID
+        }
+  
+        // Crear el objeto de ControlPanelForm con el ID correspondiente
+        const act: ControlPanelForm = {
+          idPlanDesarrollo: idPlan, // Suponiendo que tienes este ID en tu formulario
+          idPanelControl: 0, // ID generado por el backend
+          idObjetivoEspecifico: idObjetivoEspecifico, // Asociar el ID del objetivo
+          idResponsable: obj.idResponsable, // Deberías tener esto en tu formulario
+          indicadorNombre: obj.indicadorNombre,
+          indicadorTipo: obj.indicadorTipo,
+          indicadorForma: obj.indicadorForma,
+          indicadorCondicional: obj.indicadorCondicional,
+          indicadorAcumulativo: obj.indicadorAcumulativo,
+          actividad: obj.actividad,
+          meta1: obj.meta1,
+          meta2: obj.meta2,
+          meta3: obj.meta3,
+          meta4: obj.meta4,
+          financiamiento: obj.financiamiento,
+          observacion: obj.observacion,
+          usuarioCreacion: this.currentUser,
+          fechaCreacion: this.currentDate,
+          usuarioModificacion: null,
+          fechaModificacion: null
+        };
+  
+        // Guarda el control de panel y espera la respuesta
+        await this.controlPanelService.createControlPanelForm(act).toPromise();
+        console.log("Panel de control creado:", act);
       }
-      this.creationReqService.update(data.idPeticionCreacion,creationReq).subscribe(
-        ()=>{
+  
+      console.log('Todos los paneles de control fueron guardados correctamente.');
+  
+    } catch (error) {
+      console.error('Error al guardar los paneles de control:', error);
+      throw error; // Propagamos el error para manejarlo en el flujo principal
+    }
+  }
+  
+
+ 
+  actualizarEstados() {
+    this.creationReqService.getByGroup(this.idGroup).subscribe(data => {
+      const creationReq: CreationReqForm = {
+        idPeticionCreacion: data.idPeticionCreacion,
+        idGrupoInv: data.idGrupoInv,
+        alineacionEstrategica: data.alineacionEstrategica,
+        estado: "3",
+        usuarioCreacionPeticion: data.usuarioCreacionPeticion,
+        fechaCreacionPeticion: data.fechaCreacionPeticion,
+        usuarioModificacionPeticion: this.currentUser,
+        fechaModificacionPeticion: this.currentDate
+      }
+      this.creationReqService.update(data.idPeticionCreacion, creationReq).subscribe(
+        () => {
         });
     })
-    this.invGroupService.getById(this.idGroup).subscribe(data=>{
-      const invGroup:InvGroupForm={
-        idGrupoInv:this.idGroup,
-        idCoordinador:data.idCoordinador,
-        nombreGrupoInv:data.nombreGrupoInv,
-        estadoGrupoInv:"ppropuesta",
-        acronimoGrupoinv:data.acronimoGrupoinv,
-        usuarioCreacion:data.usuarioCreacion,
-        fechaCreacion:data.fechaCreacion,
-        usuarioModificacion:this.currentUser,
-        fechaModificacion:this.currentDate
-
+    this.invGroupService.getById(this.idGroup).subscribe(data => {
+      const invGroup: InvGroupForm = {
+        idGrupoInv: this.idGroup,
+        idCoordinador: data.idCoordinador,
+        nombreGrupoInv: data.nombreGrupoInv,
+        estadoGrupoInv: "ppropuesta",
+        acronimoGrupoinv: data.acronimoGrupoinv,
+        usuarioCreacion: data.usuarioCreacion,
+        fechaCreacion: data.fechaCreacion,
+        usuarioModificacion: this.currentUser,
+        fechaModificacion: this.currentDate
       }
-      this.invGroupService.update(this.idGroup,invGroup).subscribe(
-        ()=>{
+      this.invGroupService.update(this.idGroup, invGroup).subscribe(
+        () => {
         });
     })
   }

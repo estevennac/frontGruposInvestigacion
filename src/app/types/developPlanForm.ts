@@ -7,7 +7,7 @@ export interface DevelopmentPlanForms {
     alcance:string;
     contexto:string;
     objGeneral:string;
-    objEstrategico:string;
+    //objEstrategico:string;
     usuarioCreacionUsuario: string;
     fechaCreacionUsuario: Date;
     usuarioModificacionUsuario: string;

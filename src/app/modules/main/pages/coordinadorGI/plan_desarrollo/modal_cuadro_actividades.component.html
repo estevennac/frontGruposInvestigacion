@@ -60,8 +60,8 @@
                 <mat-form-field appearance="outline" class="full-width">
                     <mat-label>Indicador Tipo</mat-label>
                     <mat-select formControlName="indicadorTipo" required>
-                      <mat-option value="numerico">Numérico</mat-option>
-                      <mat-option value="porcentual">Porcentual</mat-option>
+                      <mat-option value="n">Numérico</mat-option>
+                      <mat-option value="p">Porcentual</mat-option>
                     </mat-select>
                     <mat-error *ngIf="controlPanelForm.get('indicadorTipo').invalid && controlPanelForm.get('indicadorTipo').touched">
                       El campo es obligatorio.
@@ -69,11 +69,9 @@
                 </mat-form-field>
 
                 <mat-form-field appearance="outline" class="full-width">
-                    <mat-label>Indicador Forma</mat-label>
-                    <mat-select formControlName="indicadorForma" required>
-                        <mat-option value="acumulativo">Acumulativo</mat-option>
-                        <mat-option value="individual">Individual</mat-option>
-                      </mat-select>                    <mat-error *ngIf="controlPanelForm.get('indicadorForma').invalid && controlPanelForm.get('indicadorForma').touched">
+                    <mat-label>Indicador Formula</mat-label>
+                    <input matInput type="text" formControlName="indicadorForma" required>
+                  <mat-error *ngIf="controlPanelForm.get('indicadorForma').invalid && controlPanelForm.get('indicadorForma').touched">
                         El campo es obligatorio.
                     </mat-error>
                 </mat-form-field>
@@ -81,8 +79,8 @@
                 <mat-form-field appearance="outline" class="full-width">
                     <mat-label>Indicador Condicional</mat-label>
                     <mat-select formControlName="indicadorCondicional" required>
-                        <mat-option value="continuo">Continuo</mat-option>
-                        <mat-option value="discreto">Discreto</mat-option>
+                        <mat-option value="c">Continuo</mat-option>
+                        <mat-option value="d">Discreto</mat-option>
                       </mat-select>                      <mat-error *ngIf="controlPanelForm.get('indicadorCondicional').invalid && controlPanelForm.get('indicadorCondicional').touched">
                         El campo es obligatorio.
                     </mat-error>
@@ -90,8 +88,10 @@
                 
                 <mat-form-field appearance="outline" class="full-width">
                     <mat-label>Indicador Acumulativo</mat-label>
-                    <input matInput type="text" formControlName="indicadorAcumulativo" required>
-                    <mat-error *ngIf="controlPanelForm.get('indicadorAcumulativo').invalid && controlPanelForm.get('indicadorAcumulativo').touched">
+                    <mat-select formControlName="indicadorAcumulativo" required>
+                        <mat-option value="s">Si</mat-option>
+                        <mat-option value="n">No</mat-option>
+                      </mat-select>                          <mat-error *ngIf="controlPanelForm.get('indicadorAcumulativo').invalid && controlPanelForm.get('indicadorAcumulativo').touched">
                         El campo es obligatorio.
                     </mat-error>
                 </mat-form-field>

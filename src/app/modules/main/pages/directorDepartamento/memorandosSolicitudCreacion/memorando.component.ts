@@ -156,7 +156,7 @@ export class CargaMemoDirComponent implements OnInit {
          idPeticionCreacion:data.idPeticionCreacion,
          idGrupoInv:data.idGrupoInv,
          alineacionEstrategica: data.alineacionEstrategica,
-          estado:"i", 
+          estado:"5", 
           usuarioCreacionPeticion:data.usuarioCreacionPeticion,
           fechaCreacionPeticion:data.fechaCreacionPeticion,
           usuarioModificacionPeticion:this.currentUser,

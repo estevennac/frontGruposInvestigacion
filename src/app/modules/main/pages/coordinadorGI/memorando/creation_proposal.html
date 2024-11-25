@@ -12,7 +12,7 @@
             <input id="fileInput" type="file" (change)="onFileSelected($event)" accept=".pdf" />
           </div>
         </div>
-        <button class="boton" type="submit" [disabled]="!selectedFile">Enviar Baremo</button>
+        <button class="boton" type="submit" [disabled]="!selectedFile">Enviar</button>
         <div *ngIf="selectedFile" class="file-info">
           <span>{{ selectedFile.name }} </span>
           <i class="{{ getFileIcon(selectedFile.type) }}"></i>
