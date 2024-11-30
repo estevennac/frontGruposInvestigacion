@@ -14,7 +14,6 @@
     <table>
       <thead style="position: sticky; top: 0;">
         <tr>
-          <th>ID</th>
           <th>Nombre</th>
           <th>Estado</th>
           <th>Acciones</th>
@@ -23,7 +22,6 @@
       <tbody>
         <!-- Filas de la tabla -->
         <tr *ngFor="let lf of legalFramework">
-          <td>{{ lf.idMarcoLegal }}</td>
           <td>{{ lf.nombre }}</td>
           <td> {{lf.estado ? 'Activo' : 'Inactivo'}}</td>
 

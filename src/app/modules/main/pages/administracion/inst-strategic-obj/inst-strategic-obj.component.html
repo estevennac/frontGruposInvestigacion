@@ -15,7 +15,6 @@
       <table>
         <thead style="position: sticky; top: 0;">
           <tr>
-            <th>ID</th>
             <th>Objetivo</th>
             <th>Estado</th>
             <th>Acciones</th>
@@ -25,7 +24,6 @@
           
           <!-- Filas de la tabla -->
         <tr *ngFor="let obj of instStrategicObj">
-            <td>{{ obj.idObjetivoEstrategico }}</td>
             <td>{{ obj.objetivo }}</td>
             <td> {{obj.estado ? 'Activo' : 'Inactivo'}}</td>
             <td>

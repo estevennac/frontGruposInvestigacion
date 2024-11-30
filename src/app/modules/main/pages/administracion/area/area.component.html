@@ -15,7 +15,6 @@
     <table>
       <thead style="position: sticky; top: 0;">
         <tr>
-          <th>ID</th>
           <th>Nombre</th>
           <th>Estado</th>
           <th>Acciones</th>
@@ -25,7 +24,6 @@
         
         <!-- Filas de la tabla -->
         <tr *ngFor="let a of area">
-          <td>{{ a.idArea }}</td>
           <td>{{ a.nombreArea }}</td>
           <td> {{a.estado ? 'Activo' : 'Inactivo'}}</td>
           <td>
