@@ -134,12 +134,12 @@ export class DevelopmentPlanFormComponent implements OnInit {
         objGeneral: this.objGeneralControl,
       }),
       planDesarrolloForm3: this.fb.array([
-        this.crearObjetivo() 
+        this.crearObjetivo()
       ]),
       planDesarrolloForm4: this.fb.array([]),
     });
-    this.planSuperiorControl.setValue([this.planSuperior[0].idPlanNivelSuperior]); 
-    this.marcoControl.setValue([this.marcoLegal[0].idMarcoLegal]);        
+    this.planSuperiorControl.setValue([this.planSuperior[0].idPlanNivelSuperior]);
+    this.marcoControl.setValue([this.marcoLegal[0].idMarcoLegal]);
     this.planNacionalControl.setValue([this.planNacional[0].idPlanNacional]);
   }
 
@@ -169,9 +169,9 @@ export class DevelopmentPlanFormComponent implements OnInit {
   }
 
   trackByFn(index: number, item: any): number {
-    return index; 
+    return index;
   }
-//Cargar Data inicial para poder iniciar los Formularios con Datos
+  //Cargar Data inicial para poder iniciar los Formularios con Datos
   loadData() {
     return forkJoin({
       planSuperior: this.upperLevelPlanService.getAll(),
@@ -191,11 +191,11 @@ export class DevelopmentPlanFormComponent implements OnInit {
       })
     );
   }
-//campo de objetivos especificos - Agregar con ODS y estrategias institucionales
+  //campo de objetivos especificos - Agregar con ODS y estrategias institucionales
   crearObjetivo(): FormGroup {
     return this.fb.group({
-      objetivo: [''], 
-      estrategias: [[]],    
+      objetivo: [''],
+      estrategias: [[]],
       ods: [[]]
     });
   }
@@ -217,6 +217,9 @@ export class DevelopmentPlanFormComponent implements OnInit {
     if (this.objetivos.length > 1) {
       this.objetivos.removeAt(index);
     }
+  }
+  getRowspan(estrategias: any[], ods: any[]): number {
+    return Math.max(estrategias.length, ods.length);
   }
   openDialogObj(index: number): void {
     const objetivoActual = this.objetivos.at(index).value;
@@ -266,6 +269,22 @@ export class DevelopmentPlanFormComponent implements OnInit {
       financiamiento: [null, Validators.required],
       observacion: ['', Validators.required]
     });
+  }
+
+  esFormularioValido(): boolean {
+    // Verifica si el formulario es válido
+    if (!this.myForm.get('planDesarrolloForm3').valid) {
+      return false;
+    }
+
+    // Verifica cada objetivo para asegurar que tenga al menos una estrategia
+    for (const objetivo of this.objetivos.controls) {
+      if (!objetivo.value.objetivo || objetivo.value.estrategias.length === 0) {
+        return false; // Si un objetivo no tiene descripción o estrategias, el formulario no es válido
+      }
+    }
+
+    return true; // Todo está lleno y válido
   }
 
   getName(id: number): Observable<string> {
@@ -323,7 +342,7 @@ export class DevelopmentPlanFormComponent implements OnInit {
     }
   }
 
-  
+
   openModalMarco(index: number): void {
     const marcoActual = this.marco.at(index).value;
 
@@ -355,6 +374,7 @@ export class DevelopmentPlanFormComponent implements OnInit {
 
   //Envio del Formulario------------------------------
   HandleSubmit() {
+    this.formReady = true;
     if (this.myForm.valid) {
       this.guardarPlanBase();
       console.log('Objetivos:', this.myForm.value.planDesarrolloForm3.objetivos);
@@ -364,6 +384,7 @@ export class DevelopmentPlanFormComponent implements OnInit {
       });
     } else {
       console.log('Objetivos:', this.myForm.value);
+      this.formReady = false;
       this.snackBar.open('Por favor, complete todos los campos requeridos.', 'Cerrar', {
         duration: 3000,
       });
@@ -390,6 +411,7 @@ export class DevelopmentPlanFormComponent implements OnInit {
         this.ejecutarGuardado(response);
         this.actualizarEstados();
         setTimeout(() => {
+          this.formReady = false;
           this.router.navigateByUrl('main/crea');
         }, 8000);
       },
@@ -465,7 +487,7 @@ export class DevelopmentPlanFormComponent implements OnInit {
       // Ejecutar guardarObj primero
       await this.guardarObj();
       console.log('Objetivos guardados exitosamente. Continuando con el guardado del panel de control.');
-  
+
       // Después de guardarObj, ejecutar guardarControl
       await this.guardarControl(idPlan);
       console.log('Panel de control guardado exitosamente.');
@@ -473,17 +495,17 @@ export class DevelopmentPlanFormComponent implements OnInit {
       console.error('Error en el proceso de guardado:', error);
     }
   }
-  
-  async guardarObj(): Promise<void> { 
+
+  async guardarObj(): Promise<void> {
     const objetivos = this.objetivos.value.map((obj: any, index: number) => ({
       index, // Guardar el índice para referencia
       objetivo: obj.objetivo,
       estrategias: obj.estrategias || [],
       ods: obj.ods || [] // Incluimos ODS
     }));
-  
+
     this.idMap = {}; // Aseguramos que el mapa esté vacío antes de empezar
-  
+
     try {
       for (const obj of objetivos) {
         // Crear el objetivo específico
@@ -495,24 +517,24 @@ export class DevelopmentPlanFormComponent implements OnInit {
           usuarioModificacion: null,
           fechaModificacion: null,
         };
-  
+
         // Guardar el objetivo y obtener su ID
         const response = await this.specificObjetivesService.createSpecificObjetive(objetivo).toPromise();
         this.idMap[obj.index] = response;  // Asociamos el ID con la posición del arreglo
         const idObjetivo = response;
-  
+
         // Validar que las estrategias y ODS tengan el mismo tamaño
         if (obj.estrategias.length !== obj.ods.length) {
           throw new Error(
             `El número de estrategias y ODS no coincide para el objetivo en la posición ${obj.index}`
           );
         }
-  
+
         // Guardar estrategias y ODS conjuntamente por su posición
         for (let i = 0; i < obj.estrategias.length; i++) {
           const estrategia = obj.estrategias[i];
           const odsItem = obj.ods[i];
-  
+
           const obj_strategy_ods: Objectives_Strategies_Ods = {
             idEstrategia: estrategia.id,
             idObjetivoEspecifico: idObjetivo,
@@ -522,39 +544,39 @@ export class DevelopmentPlanFormComponent implements OnInit {
             usuarioModificacion: null,
             fechaModificacion: null,
           };
-  
+
           await this.objStrategiesODSService.create(obj_strategy_ods).toPromise();
         }
       }
-  
+
       console.log('Todos los objetivos, estrategias y ODS se guardaron correctamente en orden:', this.idMap);
     } catch (error) {
       console.error('Error al guardar objetivos, estrategias y ODS:', error);
       throw error; // Propagamos el error para manejarlo en el flujo principal
     }
   }
-  
+
   async guardarControl(idPlan: number): Promise<void> {
     const control = this.myForm.value.planDesarrolloForm4;
-  
+
     // Verificar que el mapa de IDs esté disponible
     if (!this.idMap || Object.keys(this.idMap).length === 0) {
       console.error('No se han generado los IDs de los objetivos. Asegúrate de guardar los objetivos primero.');
       return;
     }
-  
+
     try {
       // Guardar cada control de panel
       for (const obj of control) {
         // Buscar el ID de objetivo específico correspondiente
         const objetivoIndex = obj.idObjetivoEspecifico; // Índice del objetivo que vino del formulario
         const idObjetivoEspecifico = this.idMap[objetivoIndex]; // Obtener el ID generado para ese objetivo
-  
+
         if (idObjetivoEspecifico === undefined) {
           console.error(`No se encontró un ID para el objetivo en la posición ${objetivoIndex}`);
           continue; // Continuamos con el siguiente registro si no se encuentra un ID
         }
-  
+
         // Crear el objeto de ControlPanelForm con el ID correspondiente
         const act: ControlPanelForm = {
           idPlanDesarrollo: idPlan, // Suponiendo que tienes este ID en tu formulario
@@ -578,22 +600,22 @@ export class DevelopmentPlanFormComponent implements OnInit {
           usuarioModificacion: null,
           fechaModificacion: null
         };
-  
+
         // Guarda el control de panel y espera la respuesta
         await this.controlPanelService.createControlPanelForm(act).toPromise();
         console.log("Panel de control creado:", act);
       }
-  
+
       console.log('Todos los paneles de control fueron guardados correctamente.');
-  
+
     } catch (error) {
       console.error('Error al guardar los paneles de control:', error);
       throw error; // Propagamos el error para manejarlo en el flujo principal
     }
   }
-  
 
- 
+
+
   actualizarEstados() {
     this.creationReqService.getByGroup(this.idGroup).subscribe(data => {
       const creationReq: CreationReqForm = {

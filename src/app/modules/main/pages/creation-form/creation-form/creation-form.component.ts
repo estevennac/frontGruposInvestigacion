@@ -69,6 +69,7 @@ export class CreationFormComponent implements OnInit {
   currentUser: string;
   currentDate: any;
   currentUserId:number;
+  isSaved: boolean = false;
   public isLoading: boolean = true; // Inicializar como true para que el spinner aparezca al inicio
 
   constructor(
@@ -261,21 +262,23 @@ export class CreationFormComponent implements OnInit {
     });
   }
 
- 
- /* loadUser(user: string, token: string) {
-   this.usuarioService.getUserApp(user, token).subscribe((data) => {
-      //console.log("informacion api",data);
-    }
-
-    )
-  }*/
 
   //borrar investigadores de la lista al agregar miembros em caso de que estos hayan sido mal descritos
   borrarInvestigador(index: number) {
     this.selectedUsers.splice(index, 1); 
+    this.investigadores.splice(index, 1);
+    this.userIdSelect.splice(index, 1);
+    delete this.selectedFileByUser[index];
+    //console.log(this.selectedFileByUser);
+    console.log(this.userIdSelect);
   }
   borrarInvestigadorExtern(index: number) {
     this.selectedUsersExterns.splice(index, 1); 
+    this.investigadoresExterns.splice(index, 1);
+    this.userIdSelect.splice(index, 1);  
+    console.log(this.userIdSelect);
+
+    delete this.selectedFileByUserExtern[index];
   }
   agregarInvestigador() {
     (this.myForm.get('grupoInv3').get('investigadores') as FormArray).push(
@@ -291,16 +294,13 @@ export class CreationFormComponent implements OnInit {
 
   }
 
-  eliminarInvestigador() {
-    const index = this.investigadores.length - 1; // Obtener el índice del último investigador
-    (this.myForm.get('grupoInv3').get('investigadores') as FormArray).removeAt(index); // Eliminar el investigador en el índice
-    this.investigadores.pop(); // Eliminar el último índice
-  }
 
   eliminarInvestigadorExtern() {
     const index = this.investigadoresExterns.length - 1; // Obtener el índice del último investigador
     (this.myForm.get('grupoInv3').get('investigadoresExterns') as FormArray).removeAt(index); // Eliminar el investigador en el índice
     this.investigadoresExterns.pop(); // Eliminar el último índice
+    delete this.selectedFileByUserExtern[index];
+
   }
 
   // !!!REVISSAR SI SE UTLIZARA ESTOS ANEXOS 
@@ -424,20 +424,7 @@ verificarDocumentosCargados(): void {
         (response) => {
           this.reqFormResponse = response;
           // Mostrar toast de éxito
-          this.snackBar.open('Enviado con éxito', 'Cerrar', {
-            duration: 2000, // Duración del toast en milisegundos
-          });
-          // Recargar la página después de 3 segundos
           
-          setTimeout(() => {
-            window.location.reload();
-          }, 8000);
-
-          /*this.savedMessage = 'Formulario guardado con éxito';
-          setTimeout(() => {
-            this.router.navigateByUrl('main/principal');
-          }, 100);
-          */
           const idGrupoCreado = this.reqFormResponse;
           const reqFormData: CreationReqForm = {
             idPeticionCreacion: null,
@@ -459,9 +446,15 @@ verificarDocumentosCargados(): void {
               this.saveArea(idGrupoCreado);
               this.saveLine(idGrupoCreado);
               this.saveMember(idGrupoCreado);
-              //this.saveAnexos(idGrupoCreado, this.currentUser, this.currentDate);
-              // Guardar reqFormResponse en el localStorage
               localStorage.setItem('reqFormResponse', JSON.stringify(reqFormResponse));
+              this.loadingData = false;
+            this.snackBar.open('Enviado con éxito', 'Cerrar', {
+              duration: 4000, // Duración del toast en milisegundos
+            });
+  
+            setTimeout(() => {
+              window.location.reload();
+            }, 8000);
             },
             (reqFormError) => {
               console.error('Error al crear el registro en CreationReqForm:', reqFormError);
@@ -572,6 +565,7 @@ verificarDocumentosCargados(): void {
             fechaModificacion: null
           }
           this.userRolService.createUserRol(userRol).subscribe((response) => {
+            
           },
             (error) => {
               console.error('El usuario ya tiene el rol:', error);

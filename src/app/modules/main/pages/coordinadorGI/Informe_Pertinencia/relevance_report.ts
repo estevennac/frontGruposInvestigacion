@@ -3,7 +3,6 @@ import { Annexes } from 'src/app/types/annexes.types';
 import { AnnexesService } from 'src/app/core/http/annexes/annexes.service';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/core/auth/services/auth.service';
-import { DatePipe } from '@angular/common';
 import { DocumentsService } from 'src/app/core/http/documentos/documents.service';
 import { InvGroupService } from 'src/app/core/http/inv-group/inv-group.service';
 import { CreationReqService } from 'src/app/core/http/creation-req/creation-req.service';

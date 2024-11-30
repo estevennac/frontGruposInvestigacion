@@ -3,6 +3,20 @@
 .cont{
   padding: 8px;
 }
+.list {
+  width: 100%; /* Ancho fijo para el div */
+  flex: 1; /* Hace que los divs se estiren por igual */
+  border-bottom: solid 1px #dbdbdb;
+  padding: 5px; /* Ajusta el padding según lo necesites */
+  overflow: hidden; /* Oculta el contenido desbordado */
+ // white-space: nowrap; /* Previene que el texto se divida en múltiples líneas */
+  text-overflow: ellipsis; /* Agrega "..." al final del texto truncado */
+  height: 80px; /* Altura fija para el div */
+}
+
+.strategies{
+  padding: 0px;
+}
 .container-fluid{
   padding: 17px;
   background-color: #fff;

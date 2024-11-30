@@ -60,7 +60,6 @@ export class MostrarSolicitudForDirector implements OnInit {
   pdfUrlInforme: SafeResourceUrl | undefined;
   pdfUrl: SafeResourceUrl | undefined;
   pdfUrlCV: any []=[];
-
   constructor(
     private route: ActivatedRoute,
     private solicitudService: CreationReqService,
@@ -215,6 +214,7 @@ export class MostrarSolicitudForDirector implements OnInit {
     this.invMemberService.getAllByGroupId(id).subscribe(
       (data)=>{
         this.memberUser=data;
+        console.log("data members",data);
         this.loadingData = false;
       this.obtenerCV(id)  ;
       } 
@@ -223,7 +223,8 @@ export class MostrarSolicitudForDirector implements OnInit {
   obtenerCV(id: number) {
     this.memberUser.forEach(element => {
       console.log(element.usuario)
-      this.annexesService.getByGroupType(id, element.usuario).subscribe((data) => {
+      const id_CV="hojaDeVida_"+element.id;
+      this.annexesService.getByGroupType(id, "hojaDeVida_"+element.id).subscribe((data) => {
         console.log('ann', data);
           this.documentsService.getDocument(this.token, data[0].rutaAnexo, data[0].nombreAnexo)
           .subscribe({

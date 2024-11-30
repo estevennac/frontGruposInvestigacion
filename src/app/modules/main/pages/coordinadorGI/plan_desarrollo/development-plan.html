@@ -1,4 +1,5 @@
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=add,delete,edit" />
+<link rel="stylesheet"
+  href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=add,delete,edit" />
 <div class="cont">
   <div class="container-fluid">
     <div class="card">
@@ -54,15 +55,18 @@
                   </mat-select>
                 </mat-form-field>
               </div>
+              <div class="grid-item">
+                <div>
+                  <button type="button" mat-raised-button color="primary"
+                    [disabled]="!marcoControl.value?.length || !planNacionalControl.value?.length! || !planSuperiorControl.value?.length"
+                    matStepperNext>
+                    Siguiente
+                  </button></div>
+              </div>
             </div>
+
           </div>
-          <div class="grid-item">
-            <button type="button" mat-raised-button color="primary"
-              [disabled]="!marcoControl.value?.length || !planNacionalControl.value?.length! || !planSuperiorControl.value?.length"
-              matStepperNext>
-              Siguiente
-            </button>
-          </div>
+
         </mat-step>
 
         <!-- Step 2_1:Contexto -->
@@ -70,22 +74,24 @@
           <ng-template matStepLabel>Contexto</ng-template>
 
           <div formGroupName="planDesarrolloForm2_1">
-            <h2>CONTEXTO</h2>
             <mat-form-field appearance="fill">
               <mat-label>CONTEXTO</mat-label>
               <textarea matInput formControlName="contexto" class="textarea"
                 rows="10" required></textarea>
             </mat-form-field>
             <div class="grid-container">
+              <div class="grid-item"></div>
+
               <div class="grid-item">
-                <button type="button" mat-raised-button color="primary"
-                  matStepperPrevious>Regresar</button>
-                <button type="button" mat-raised-button color="primary"
-                  [disabled]="!myForm.get('planDesarrolloForm2_1').valid"
-                  matStepperNext>
-                  Siguiente
-                </button>
-              </div>
+                <div>
+                  <button type="button" mat-raised-button color="primary"
+                    matStepperPrevious>Regresar</button>
+                  <button type="button" mat-raised-button color="primary"
+                    [disabled]="!myForm.get('planDesarrolloForm2_1').valid"
+                    matStepperNext>
+                    Siguiente
+                  </button>
+                </div> </div>
             </div>
           </div>
         </mat-step>
@@ -93,7 +99,6 @@
         <mat-step [stepControl]="planDesarrolloForm2">
           <ng-template matStepLabel>Alcance</ng-template>
           <div formGroupName="planDesarrolloForm2">
-            <h2>ALCANCE</h2>
             <mat-form-field appearance="fill">
               <mat-label>ALCANCE</mat-label>
               <textarea matInput formControlName="alcance" class="textarea"
@@ -101,13 +106,16 @@
             </mat-form-field>
             <div class="grid-container">
               <div class="grid-item">
-                <button type="button" mat-raised-button color="primary"
-                  matStepperPrevious>Regresar</button>
-                <button type="button" mat-raised-button color="primary"
-                  [disabled]="!myForm.get('planDesarrolloForm2').valid"
-                  matStepperNext>
-                  Siguiente
-                </button>
+              </div>
+              <div class="grid-item">
+                <div>
+                  <button type="button" mat-raised-button color="primary"
+                    matStepperPrevious>Regresar</button>
+                  <button type="button" mat-raised-button color="primary"
+                    [disabled]="!myForm.get('planDesarrolloForm2').valid"
+                    matStepperNext>
+                    Siguiente
+                  </button></div>
               </div>
             </div>
           </div>
@@ -117,42 +125,41 @@
           <ng-template matStepLabel>Objetivos</ng-template>
 
           <div formGroupName="planDesarrolloForm2_2">
+            <mat-form-field appearance="fill">
+              <mat-label>Objetivo Estratégico Institucional</mat-label>
+              <mat-select [formControl]="objetivoInstitucionalControl"
+                required>
+                <mat-option *ngFor="let obj of objetivoInstitucional"
+                  [value]="obj.idObjetivoEstrategico">
+                  {{ obj.objetivo }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+            <mat-form-field appearance="fill">
+              <mat-label>OBJETIVO GENERAL</mat-label>
+              <textarea matInput formControlName="objGeneral"
+                class="textarea" rows="10" required></textarea>
+            </mat-form-field>
             <div class="grid-container">
               <div class="grid-item">
-                <mat-form-field appearance="fill">
-                  <mat-label>Objetivo Estratégico Institucional</mat-label>
-                  <mat-select [formControl]="objetivoInstitucionalControl"
-                    required>
-                    <mat-option *ngFor="let obj of objetivoInstitucional"
-                      [value]="obj.idObjetivoEstrategico">
-                      {{ obj.objetivo }}
-                    </mat-option>
-                  </mat-select>
-                </mat-form-field>
+
               </div>
-              <div class="grid-item">
-                <h2>Objetivo General</h2>
-                <mat-form-field appearance="fill">
-                  <mat-label>OBJETIVO GENERAL</mat-label>
-                  <textarea matInput formControlName="objGeneral"
-                    class="textarea" rows="10" required></textarea>
-                </mat-form-field></div>
 
               <div class="grid-item">
-                <button type="button" mat-raised-button color="primary"
-                  matStepperPrevious>Regresar</button>
-                <button type="button" mat-raised-button color="primary"
-                  [disabled]="!myForm.get('planDesarrolloForm2_2').valid"
-                  matStepperNext>
-                  Siguiente
-                </button>
+                <div>
+                  <button type="button" mat-raised-button color="primary"
+                    matStepperPrevious>Regresar</button>
+                  <button type="button" mat-raised-button color="primary"
+                    [disabled]="!myForm.get('planDesarrolloForm2_2').valid"
+                    matStepperNext>
+                    Siguiente
+                  </button></div>
               </div>
             </div>
           </div>
         </mat-step>
 
         <!-- Step 3: Objetivos y Estrategias -->
-        <!--
         <mat-step [stepControl]="myForm.get('planDesarrolloForm3')">
           <ng-template matStepLabel>Objetivos específicos</ng-template>
           <div formGroupName="planDesarrolloForm3">
@@ -171,8 +178,8 @@
                   [formGroupName]="i">
                   <td>
                     <mat-form-field>
-                      <input matInput placeholder="Objetivo Específico"
-                        formControlName="objetivo" />
+                      <textarea matInput placeholder="Objetivo Específico"
+                        formControlName="objetivo" rows="5"></textarea>
                     </mat-form-field>
                     <button class="btn_add" type="button" mat-icon-button
                       (click)="openDialogObj(i)">
@@ -180,116 +187,51 @@
                         add
                       </mat-icon>
                     </button>
+
                   </td>
-                  <td>
-                    <ul class="estrategias-list">
-                      <li *ngFor="let estrategia of objetivo.value.estrategias">
-                        <strong>{{ estrategia.id }}</strong>: {{
-                        estrategia.descripcion }}
-                      </li>
-                    </ul>
+                  <td class="strategies">
+                    <div class="list"
+                      *ngFor="let estrategia of objetivo.value.estrategias">
+                      {{ estrategia.descripcion }}<br>
+                    </div>
                   </td>
-                  <td>
-                    <ul class="ods-list">
-                      <li *ngFor="let ods of objetivo.value.ods">
-                        <strong>{{ ods.id }}</strong>: {{ ods.descripcion }}
-                      </li>
-                    </ul>
+                  <td class="strategies">
+                    <div class="list" *ngFor="let ods of objetivo.value.ods">
+                      {{ ods.descripcion }}<br>
+                    </div>
                   </td>
                   <td>
                     <button class="btn_delete" type="button" mat-icon-button
                       (click)="eliminarObjetivo(i)">
-                      <mat-icon class=" material-symbols-outlined">delete</mat-icon>
+                      <mat-icon
+                        class=" material-symbols-outlined">delete</mat-icon>
                     </button>
                   </td>
                 </tr>
               </tbody>
             </table>
+            <!-- Botón para añadir nuevos objetivos -->
+            <button type="button" mat-raised-button color="primary"
+              (click)="agregarObjetivo()">Añadir Objetivo</button>
+            <div class="grid-container">
 
-            Botón para añadir nuevos objetivos 
-            <button type="button" mat-raised-button color="primary" (click)="agregarObjetivo()">Añadir Objetivo</button>
+              <div class="grid-item">
+              </div>
 
-            <div class="grid-item">
-              <button type="button" mat-raised-button color="primary"
-                matStepperPrevious>Regresar</button>
-              <button type="button" mat-raised-button color="primary"
-                [disabled]="!myForm.get('planDesarrolloForm3').valid"
-                matStepperNext>
-                Siguiente
-              </button>
+              <div class="grid-item">
+                <div>
+                  <button type="button" mat-raised-button color="primary"
+                    matStepperPrevious>Regresar</button>
+                  <button type="button" mat-raised-button color="primary"
+                    [disabled]="!esFormularioValido()"
+                    matStepperNext>
+                    Siguiente
+                  </button></div>
+              </div>
             </div>
           </div>
         </mat-step>
-        -->
 
-        <mat-step [stepControl]="myForm.get('planDesarrolloForm3')">
-          <ng-template matStepLabel>Objetivos específicos</ng-template>
-          <div formGroupName="planDesarrolloForm3">
-            <table>
-              <thead>
-                <tr>
-                  <th>Objetivos Específicos</th>
-                  <th>Estrategias Institucionales</th>
-                  <th>ODS Relacionado</th>
-                  <th>Acciones</th>
-                </tr>
-              </thead>
-              <tbody>
-                <ng-container *ngFor="let objetivo of objetivos.controls; let i = index; trackBy: trackByFn">
-                  <!-- Fila principal del objetivo (sin rowspan) -->
-                  <tr [formGroupName]="i">
-                    <td>
-                      <mat-form-field>
-                        <input matInput placeholder="Objetivo Específico" formControlName="objetivo" />
-                      </mat-form-field>
-                      <button class="btn_add" type="button" mat-icon-button (click)="openDialogObj(i)">
-                        <mat-icon class="material-symbols-outlined">add</mat-icon>
-                      </button>
-                    </td>
-                    <td>
-                      <!-- Aquí no mostramos las estrategias porque se listan en las filas siguientes -->
-                    </td>
-                    <td>
-                      <!-- Aquí no mostramos los ODS porque se listan en las filas siguientes -->
-                    </td>
-                    <td>
-                      <button class="btn_delete" type="button" mat-icon-button (click)="eliminarObjetivo(i)">
-                        <mat-icon class="material-symbols-outlined">delete</mat-icon>
-                      </button>
-                    </td>
-                  </tr>
-        
-                  <!-- Filas para cada estrategia -->
-                  <tr *ngFor="let estrategia of objetivo.value.estrategias; let j = index">
-                    <td></td> <!-- Deja vacío, porque ya se muestra en la fila del objetivo -->
-                    <td>
-                      <strong>{{ estrategia.id }}</strong>: {{ estrategia.descripcion }}
-                    </td>
-                    <td>
-                      <ul class="ods-list">
-                        <li *ngFor="let ods of objetivo.value.ods">
-                          <strong>{{ ods.id }}</strong>: {{ ods.descripcion }}
-                        </li>
-                      </ul>
-                    </td>
-                    <td></td> <!-- Dejamos vacío el botón de eliminar en estas filas -->
-                  </tr>
-                </ng-container>
-              </tbody>
-            </table>
-        
-            <!-- Botón para añadir nuevos objetivos -->
-            <button type="button" mat-raised-button color="primary" (click)="agregarObjetivo()">Añadir Objetivo</button>
-        
-            <div class="grid-item">
-              <button type="button" mat-raised-button color="primary" matStepperPrevious>Regresar</button>
-              <button type="button" mat-raised-button color="primary" [disabled]="!myForm.get('planDesarrolloForm3').valid" matStepperNext>
-                Siguiente
-              </button>
-            </div>
-          </div>
-        </mat-step>        
-        
         <!-- Step 4: Actividades -->
         <mat-step [stepControl]="planDesarrolloForm4">
           <ng-template matStepLabel>Marco de Control específicos</ng-template>
@@ -321,7 +263,8 @@
                     }}</td>
                   <!-- Asegúrate de usar los nombres de campo correctos -->
                   <td>{{ marco.get('actividad')?.value }}</td>
-                  <td>{{ getName(marco.get('idResponsable')?.value) | async }}</td>
+                  <td>{{ getName(marco.get('idResponsable')?.value) | async
+                    }}</td>
 
                   <td>{{ marco.get('indicadorNombre')?.value }}</td>
                   <td>{{ marco.get('meta1')?.value }}</td>
@@ -333,31 +276,36 @@
                   <td>
                     <button class="btn_add" type="button" mat-icon-button
                       (click)="openModalMarco(i)">
-                      <mat-icon class="material-symbols-outlined">edit</mat-icon>
+                      <mat-icon
+                        class="material-symbols-outlined">edit</mat-icon>
                     </button>
                     <button class="btn_delete" type="button" mat-icon-button
                       (click)="eliminarMarco(i)">
-                      <mat-icon class="material-symbols-outlined">delete</mat-icon>
+                      <mat-icon
+                        class="material-symbols-outlined">delete</mat-icon>
                     </button>
                   </td>
                 </tr>
               </tbody>
             </table>
-
             <!-- Botón para agregar un nuevo marco -->
             <button type="button" mat-raised-button color="primary"
               (click)="agregarMarco()">
               Agregar Marco
             </button>
+            <div class="grid-container">
+              <div class="grid-item">
+              </div>
 
-            <div class="grid-item">
-              <button type="button" mat-raised-button color="primary"
-                matStepperPrevious>Regresar</button>
-              <button  type="submit" mat-raised-button color="primary"
-                [disabled]="!myForm.get('planDesarrolloForm4').valid">
-                Enviar
-              </button>
-            </div> </div>
+              <div class="grid-item">
+                <div>
+                  <button type="button" mat-raised-button color="primary"
+                    matStepperPrevious>Regresar</button>
+                  <button type="submit" mat-raised-button color="primary"
+                    [disabled]="!myForm.get('planDesarrolloForm4').valid">
+                    Enviar
+                  </button></div>
+              </div> </div></div>
         </mat-step>
 
       </mat-stepper>

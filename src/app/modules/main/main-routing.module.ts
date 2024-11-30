@@ -273,12 +273,6 @@ component:CargaMemoConsejoComponent
 path:'memo-solicitud-V',
 component:CargaMemoVicAComponent
   },
- 
- /* {
-
-    path:'dialog-test',
-    component:DialogService
-  }*/
   {
     path:'rol-gestion',
     component:GestionRolesComponent
@@ -410,8 +404,6 @@ component:ActaTecComponent},
   path:'strategiesInst',
   component:StrategiesComponent
 }
-
-
 ];
 
 

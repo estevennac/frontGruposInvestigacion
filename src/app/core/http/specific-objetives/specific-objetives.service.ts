@@ -20,6 +20,10 @@ export class SpecificObjetivesService {
     return this.http.get<SpecificObjetives>(`${this.URL}/${id}`);
   }
 
+  getByPlan(id: number): Observable<SpecificObjetives[]>{
+    return this.http.get<SpecificObjetives[]>(`${this.URL}/bydev/${id}`);
+  }
+
   createSpecificObjetive(formData: SpecificObjetives): Observable<any>{
     return this.http.post(`${this.URL}/create`,formData);
   }
@@ -27,5 +31,4 @@ export class SpecificObjetivesService {
   update(id: number, formData: SpecificObjetives): Observable<SpecificObjetives>{
     return this.http.put<SpecificObjetives>(`${this.URL}/update/${id}`,formData);
   }
-
 }

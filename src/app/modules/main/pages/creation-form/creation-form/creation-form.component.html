@@ -1,6 +1,11 @@
+<div *ngIf="loadingData" class="loading-spinner-overlay">
+    <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
+</div>
 <div class="cont">
+  
     <div class="container-fluid">
         <div class="card" *ngIf="!loadingData">
+           
 <!-- Aparece Unicamente cuando se debe cargar el formulario de creación de grupo de investigación -->
             <header *ngIf="!invGroupExists">
                 <h1>FORMULARIO DE SOLICITUD DE CREACIÓN DE GRUPO DE
@@ -297,7 +302,7 @@
                                             class="form-control"
                                             placeholder="Ingrese el acronimo">
                                     </mat-form-field>
-                                </div>
+                                </div><div class="grid-item"></div>
                                 <div class="grid-item">
                                     <div>
                                         <button type="button" mat-raised-button
@@ -447,11 +452,6 @@
 
                                 <div *ngIf="selectedUsers.length > 0">
 
-                                    <header>
-                                        <h1>Miembros del Grupo de
-                                            Investigación:</h1>
-
-                                    </header>
                                     <table>
                                         <thead>
                                             <tr>
@@ -492,7 +492,7 @@
                                 <div *ngIf="selectedUsersExterns.length > 0">
 
                                     <header>
-                                        <h1>Ivestigadores Externos:</h1>
+                                        <h1>Investigadores Externos:</h1>
 
                                     </header>
                                     <table>
@@ -543,7 +543,7 @@
 <button type="button" mat-raised-button color="primary" type="submit" matStepperNext
         [disabled]="selectedUsers.length === 0 || !documentosCompletosCargados">Enviar</button>
 
-                                        
+       
                                 </div>
                             </div>
 

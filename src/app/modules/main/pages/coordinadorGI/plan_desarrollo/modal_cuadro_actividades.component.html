@@ -50,7 +50,7 @@
 
                 <!--Inicio Indicador -->
                 <mat-form-field appearance="outline" class="full-width">
-                    <mat-label>Indicador Nombre</mat-label>
+                    <mat-label> Nombre del Indicador </mat-label>
                     <input matInput type="text" formControlName="indicadorNombre" required>
                     <mat-error *ngIf="controlPanelForm.get('indicadorNombre').invalid && controlPanelForm.get('indicadorNombre').touched">
                         El campo es obligatorio.
@@ -58,7 +58,7 @@
                 </mat-form-field>
 
                 <mat-form-field appearance="outline" class="full-width">
-                    <mat-label>Indicador Tipo</mat-label>
+                    <mat-label>Tipo de Indicador </mat-label>
                     <mat-select formControlName="indicadorTipo" required>
                       <mat-option value="n">Numérico</mat-option>
                       <mat-option value="p">Porcentual</mat-option>
@@ -69,7 +69,7 @@
                 </mat-form-field>
 
                 <mat-form-field appearance="outline" class="full-width">
-                    <mat-label>Indicador Formula</mat-label>
+                    <mat-label>Formula del Indicador </mat-label>
                     <input matInput type="text" formControlName="indicadorForma" required>
                   <mat-error *ngIf="controlPanelForm.get('indicadorForma').invalid && controlPanelForm.get('indicadorForma').touched">
                         El campo es obligatorio.
@@ -77,7 +77,7 @@
                 </mat-form-field>
 
                 <mat-form-field appearance="outline" class="full-width">
-                    <mat-label>Indicador Condicional</mat-label>
+                    <mat-label>Condicional Indicador </mat-label>
                     <mat-select formControlName="indicadorCondicional" required>
                         <mat-option value="c">Continuo</mat-option>
                         <mat-option value="d">Discreto</mat-option>
