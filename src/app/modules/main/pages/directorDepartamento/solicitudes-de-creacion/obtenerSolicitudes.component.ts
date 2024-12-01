@@ -106,9 +106,9 @@ export class SolicitudesForDirectorComponent implements OnInit {
     }
 
     getNombreCoordinador(idGrupo: number): string {
-       //console.log(this.coordinador);
+       console.log(this.coordinador);
         const coordinador = this.coordinador.find(coordinador=>coordinador.idGroup===idGrupo)
-        return coordinador ? `${coordinador.usuario.nombre} ${coordinador.usuario.apellido}` : 'Nombre desconocido';    }
+        return coordinador ? `${coordinador.usuario.nombre}` : 'Nombre desconocido';    }
 validar(id:number)
 {
     //console.log("grupo seleccionado",id)
