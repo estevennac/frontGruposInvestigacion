@@ -215,7 +215,7 @@
         
           <div class="section">
             <h3>6. OBJETIVO ESTRATÉGICO INSTITUCIONAL</h3>
-            <p></p>
+            <p>{{objInstitucional.objetivo}}</p>
           </div>
           <!-- 7. Objetivos Específicos y Relación con ODS -->
           <div class="section">
@@ -229,17 +229,17 @@
                 </tr>
               </thead>
               <tbody>
-                <tr *ngFor="let obj of objStrategies">
+                <tr *ngFor="let obj of specificObj">
                   <td>{{ obj.obj.objetivo }}</td>
                   <td>
-                    <tr *ngFor="let estrategia of obj.str">
-                      {{ estrategia.estrategia }}
-                    </tr>
+                    <div class="list" *ngFor="let estrategia of obj.strategies">
+                      {{ estrategia.estrategia }}<br>
+                    </div>
                   </td>
                   <td>
-                    <tr *ngFor="let estrategia of obj.str">
-                     
-                    </tr>
+                    <div class="list" *ngFor="let ods of obj.ods">
+                     {{ ods.ods }}<br>
+                    </div>
                   </td>
                 </tr>
               </tbody>
@@ -259,6 +259,7 @@
                   <th>Indicador</th>
                   <th colspan="4" class="metas-header">Metas Anuales</th>
                   <th>Financiamiento Requerido</th>
+                  <th>Observaciones</th>
                 </tr>
                 <tr >
                   <th></th>
@@ -270,15 +271,15 @@
                   <th class="metas-header">2</th>
                   <th class="metas-header">3</th>
                   <th class="metas-header">4</th>
-                  <th></th>
+                  <th></th><th></th>
                 </tr>
               </thead>
               <tbody>
                 <tr *ngFor="let item of controlPanel; let i = index">
                   <td>{{ i + 1 }}</td>
-                 <td>{{getObj(item.idObjetivoEspecifico)}}</td>
-                 <td>{{item.actividad}}</td>
-                 <td>{{getName(item.idResponsable)}}</td>
+                  <td>{{ getObj(item.idObjetivoEspecifico) | async }}</td>
+                  <td>{{item.actividad}}</td>
+                 <td>{{getName(item.idResponsable)| async }}</td>
                  <td>{{item.indicadorNombre}}</td>
                   <td>{{ item.meta1 }}</td>
                   <td>{{ item.meta2 }}</td>
@@ -303,13 +304,14 @@
           <div class="grid-container">
             <div class="grid-item"></div>
             <div class="grid-item">
+              <div>
               <button type="button" mat-raised-button color="primary"
                 matStepperPrevious>Regresar</button>
               <button type="button" mat-raised-button color="primary"
                 matStepperNext>
                 Siguiente
               </button>
-            </div> </div>
+            </div> </div></div>
         </mat-step>
 
         <mat-step>
@@ -321,55 +323,62 @@
           <div class="grid-container">
             <div class="grid-item"></div>
             <div class="grid-item">
+              <div>
               <button type="button" mat-raised-button color="primary"
                 matStepperPrevious>Regresar</button>
               <button type="button" mat-raised-button color="primary"
                 matStepperNext>
                 Siguiente
-              </button>
+              </button></div>
             </div> </div>
           
         </mat-step>
         <mat-step>
           <ng-template matStepLabel>Hojas de Vida de los miembros del grupo</ng-template>
-          <div *ngFor="let pdfUrl of pdfUrlCV;  let i = index">
-            <h1>Hoja de Vida de {{memberUser[i].nombre}} </h1>
-            <iframe [src]="pdfUrl" width="100%" height="600px"></iframe>
+          <div *ngFor="let member of memberUser">
+            <h1>Hoja de Vida de {{ member.nombre }}</h1>
+            <iframe
+              *ngIf="pdfUrlsCV[member.id]"
+              [src]="pdfUrlsCV[member.id]"
+              width="100%"
+              height="600px"
+            ></iframe>
+            <p *ngIf="!pdfUrlsCV[member.id]">Cargando hoja de vida...</p>
           </div>
           <div class="grid-container">
             <div class="grid-item"></div>
-            <div class="grid-item" style="width: 100%;display: flex;
-          justify-content: right;
-          align-items: right;" *ngIf="creationReqForm || invGroup || usuario">
-              <button type="button" mat-raised-button color="primary"
-                matStepperPrevious>Regresar</button>
-                <button type="button" mat-raised-button color="primary"  *ngIf="pdfUrlInforme" 
-                matStepperNext>
-                Siguiente
+            <div
+              class="grid-item"
+              *ngIf="creationReqForm || invGroup || usuario"
+            >
+              <div>
+                <button type="button" mat-raised-button color="primary" matStepperPrevious>
+                  Regresar
+                </button>
+                <button
+                  type="button"
+                  mat-raised-button
+                  color="primary"
+                  *ngIf="pdfUrlInforme"
+                  matStepperNext
+                >
+                  Siguiente
+                </button>
+              </div>
+              <button
+                type="button"
+                mat-raised-button
+                color="primary"
+                matStepperPrevious
+                (click)="validarGrupo('memo-solicitud')"
+                *ngIf="!pdfUrlInforme"
+              >
+                Validar Grupo
               </button>
-                <button type="button" mat-raised-button color="primary"
-                matStepperPrevious   (click)="validarGrupo('memo-solicitud')" *ngIf="!pdfUrlInforme" style="background-color: rgb(17, 70, 17);">Validar Grupo</button>
-            </div> </div>
-          
-          
-        </mat-step>
-
-        <mat-step *ngIf="pdfUrlInforme">
-          <ng-template matStepLabel>Informe de Pertinencia</ng-template>
-          <div *ngIf="pdfUrlInforme">
-            <iframe [src]="pdfUrlInforme" width="100%" height="600px"></iframe>
-
+            </div>
           </div>
-          <div class="grid-container">
-            <div class="grid-item"></div>
-            <div class="grid-item">
-              <button type="button" mat-raised-button color="primary"
-                matStepperPrevious>Regresar</button>
-              <button type="button" mat-raised-button color="primary"
-              matStepperPrevious   (click)="validarGrupo('memoDIR_VITT')" *ngIf="pdfUrlInforme" style="background-color: rgb(17, 70, 17);">Validar Grupo</button>
-            </div> </div>
-          
         </mat-step>
+        
       </mat-stepper>
       <div >
         

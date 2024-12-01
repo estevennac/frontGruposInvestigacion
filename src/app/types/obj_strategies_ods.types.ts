@@ -1,3 +1,6 @@
+import { ODS } from "./ods.types";
+import { Strategies } from "./strategies.types";
+import { SpecificObjetives } from "./specificObjetives.types";
 export interface Objectives_Strategies_Ods {
     idEstrategia: number;
     idObjetivoEspecifico: number;
@@ -6,4 +9,10 @@ export interface Objectives_Strategies_Ods {
     fechaCreacion: Date;
     usuarioModificacion: string;
     fechaModificacion: Date;
+}
+
+export interface ObjectiveCompleteOds{
+    obj:SpecificObjetives ;
+    ods:ODS[];
+    strategies:Strategies[];
 }

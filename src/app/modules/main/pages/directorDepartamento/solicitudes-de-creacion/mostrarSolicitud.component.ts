@@ -21,7 +21,6 @@ import { DeveLegaService } from 'src/app/core/http/deve-lega/deve-lega.service';
 import { DeveNationalService } from 'src/app/core/http/deve-national/deve-national.service'; 
 import { DeveUppeService } from 'src/app/core/http/deve-uppe/deve-uppe.service';
 import { ObjStrategiesComplete } from 'src/app/types/strategies.types';
-import { StrategiesService } from 'src/app/core/http/strategies/strategies.service';
 import { ControlPanelForm } from 'src/app/types/controlPanel.types';
 import { AnnexesService } from 'src/app/core/http/annexes/annexes.service';
 import { ControlPanelService } from 'src/app/core/http/control-panel/control-panel.service';
@@ -29,8 +28,12 @@ import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser'; // Im
 import { DocumentsService } from 'src/app/core/http/documentos/documents.service';
 import { AcademicDomain } from 'src/app/types/academicDomain.types';
 import { Area } from 'src/app/types/area.types';
-import { catchError, map, Observable, of } from 'rxjs';
+import { catchError, map, Observable, of,forkJoin } from 'rxjs';
 import { SpecificObjetivesService } from 'src/app/core/http/specific-objetives/specific-objetives.service';
+import { InstStrategicObj } from 'src/app/types/InstStrategicObj.types';
+import { InstStrategicObjService } from 'src/app/core/http/instStrategicObj/inst-strategic-obj.service';
+import { ObjectiveCompleteOds } from 'src/app/types/obj_strategies_ods.types';
+import { ObjStrategiesODSService } from 'src/app/core/http/obj_strategies_ods/obj_strategies_ods.service';
 @Component({
   selector: 'app-solicitud-componente',
   templateUrl: './mostrarSolicitud.component.html',
@@ -56,6 +59,7 @@ export class MostrarSolicitudForDirector implements OnInit {
   upperLevelPlan: UpperLevelPlanFilter;
   objStrategies:ObjStrategiesComplete[]=[];
   controlPanel:ControlPanelForm[]=[];
+  specificObj:ObjectiveCompleteOds[]=[];
   token:string;
   pdfUrlInforme: SafeResourceUrl | undefined;
   pdfUrl: SafeResourceUrl | undefined;
@@ -74,21 +78,19 @@ export class MostrarSolicitudForDirector implements OnInit {
     private deveLegaService: DeveLegaService, 
     private deveUppeService: DeveUppeService,
     private deveNatiService: DeveNationalService,
-    private strategiesService: StrategiesService,
     private controlPanelService: ControlPanelService,
     private annexesService:AnnexesService,
     private documentsService: DocumentsService,
     private sanitizer: DomSanitizer,
     private specificObjService: SpecificObjetivesService,
+private instStrategicService:InstStrategicObjService,
+private objStrategiesODSService:ObjStrategiesODSService,
   ) { /*this.loadingData = true;*/ }
 
   ngOnInit(): void {
-
     this.solicitudCreacion()
     this.token=sessionStorage.getItem('access_token');
-
   }
-
   solicitudCreacion() {
     this.loadingData = true;
     const navigationState = history.state;
@@ -97,7 +99,6 @@ export class MostrarSolicitudForDirector implements OnInit {
       this.invGroupId=this.creationReqForm.idGrupoInv;
       this.obtenerGrupo(this.creationReqForm.idGrupoInv)
       this.obtenerSegmentosInvestigacion(this.creationReqForm.idGrupoInv);
-      // Id del formulario de creación que deseas utilizar
       this.obtenerPlanDesarrollo(this.creationReqForm.idGrupoInv);
       this.obtenerAnexos(this.creationReqForm.idGrupoInv);
     } else {
@@ -127,6 +128,14 @@ export class MostrarSolicitudForDirector implements OnInit {
   this.planDesarrollo = data[0];
   console.log("pd",data)
   this.obtenerExtras(data[0].idPlanDesarrollo)
+  this.cargarObjInstitucional(data[0].idObjetivoInst)
+    })
+  }
+objInstitucional:InstStrategicObj;
+  cargarObjInstitucional(id:number){
+    this.instStrategicService.getById(id).subscribe((data)=>{
+      this.objInstitucional=data;
+      console.log(data)
     })
   }
   obtenerExtras(id: number) {
@@ -145,16 +154,19 @@ export class MostrarSolicitudForDirector implements OnInit {
       console.log(data)
 
     })
-    this.strategiesService.getByPlan(id).subscribe((data) => {
-      this.objStrategies = data;
-      console.log(data)
-
-    })
+   
     this.controlPanelService.getByPlan(id).subscribe((data) => {
       this.controlPanel = data;
       console.log(data)
+    })
+
+    this.objStrategiesODSService.getByPlan(id).subscribe((data)=>{
+      this.specificObj=data;
+      console.log(data)
+      this.loadingData = false;
 
     })
+
   }
   obtenerSegmentosInvestigacion(id: number) {
     this.invGroup_linesService.getByGroup(id).subscribe(data => {
@@ -215,37 +227,35 @@ export class MostrarSolicitudForDirector implements OnInit {
       (data)=>{
         this.memberUser=data;
         console.log("data members",data);
-        this.loadingData = false;
       this.obtenerCV(id)  ;
       } 
     )
   }
-  obtenerCV(id: number) {
-    this.memberUser.forEach(element => {
-      console.log(element.usuario)
-      const id_CV="hojaDeVida_"+element.id;
-      this.annexesService.getByGroupType(id, "hojaDeVida_"+element.id).subscribe((data) => {
-        console.log('ann', data);
-          this.documentsService.getDocument(this.token, data[0].rutaAnexo, data[0].nombreAnexo)
-          .subscribe({
-            next: (blob) => {
-              const pdfBlob = new Blob([blob], { type: 'application/pdf' });
-              const url = window.URL.createObjectURL(pdfBlob);
-              
-              // Guardar la URL en el arreglo
-              const safeUrl = this.sanitizer.bypassSecurityTrustResourceUrl(url);
-              this.pdfUrlCV.push(safeUrl); // Agregar la URL segura al arreglo
-              
-              console.log('PDF URL guardada:', safeUrl);
-            },
-            error: (err) => {
-              console.error('Error al cargar el documento:', err);
-            }
-          });
-        
-      });
+  pdfUrlsCV: { [key: number]: SafeResourceUrl } = {}; // Mapeo de ID del miembro a URL del PDF
+
+obtenerCV(id: number) {
+  this.memberUser.forEach((member) => {
+    const id_CV = "hojaDeVida_" + member.id;
+    this.annexesService.getByGroupType(id, id_CV).subscribe((data) => {
+      this.documentsService
+        .getDocument(this.token, data[0].rutaAnexo, data[0].nombreAnexo)
+        .subscribe({
+          next: (blob) => {
+            const pdfBlob = new Blob([blob], { type: 'application/pdf' });
+            const url = window.URL.createObjectURL(pdfBlob);
+            const safeUrl = this.sanitizer.bypassSecurityTrustResourceUrl(url);
+
+            // Asocia el URL seguro al ID del miembro
+            this.pdfUrlsCV[member.id] = safeUrl;
+          },
+          error: (err) => {
+            console.error("Error al cargar el documento:", err);
+          },
+        });
     });
-  }
+  });
+}
+
 validarGrupo(ruta: string) {
   const navigationState = history.state;
   const creationReqForm = navigationState.creationReqForm;
@@ -284,14 +294,17 @@ getObj(id: number): Observable<string> {
   }
   if (this.objetivoEspecífico[id]) {
     return of(this.objetivoEspecífico[id]);
+    
   }
 
   //Solicitud al backend
   return this.specificObjService.getById(id).pipe(
+    
     map((obj) => {
       const nombre = obj?.objetivo || 'Objetivo no encontrado';
       this.objetivoEspecífico[id] = nombre; // Almacena el resultado en usuarioNombre
       return nombre;
+      
     }),
     catchError(() => {
       const errorNombre = 'Objetivo no encontrado';

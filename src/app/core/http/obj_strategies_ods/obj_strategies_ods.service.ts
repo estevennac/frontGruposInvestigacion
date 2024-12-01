@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Objectives_Strategies_Ods } from 'src/app/types/obj_strategies_ods.types';
+import { ObjectiveCompleteOds, Objectives_Strategies_Ods } from 'src/app/types/obj_strategies_ods.types';
 @Injectable({
   providedIn: 'root'
 })
@@ -19,6 +19,9 @@ export class ObjStrategiesODSService {
 
   getById(id: number): Observable<Objectives_Strategies_Ods> {
     return this.http.get<Objectives_Strategies_Ods>(`${this.URL}/${id}`);
+  }
+  getByPlan(id:number): Observable<ObjectiveCompleteOds[]>{
+    return this.http.get<ObjectiveCompleteOds[]>(`${this.URL}/developmentPlan/${id}`);
   }
 
   create(formData: Objectives_Strategies_Ods): Observable<any> {
