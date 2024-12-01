@@ -15,7 +15,6 @@
       <table>
         <thead style="position: sticky; top: 0;">
           <tr>
-            <th>ID</th>
             <th>Nombre</th>
             <th>Área</th> <!-- Nueva columna para mostrar el área -->
             <th>Estado</th>
@@ -25,7 +24,6 @@
         <tbody>
           <!-- Filas de la tabla -->
           <tr *ngFor="let lin of line">
-            <td>{{ lin.idLinea }}</td>
             <td>{{ lin.nombreLinea }}</td>
             <td>{{ lin.nombreArea }}</td> <!-- Mostrar el nombre del área -->
             <td>{{ lin.estado ? 'Activo' : 'Inactivo' }}</td>

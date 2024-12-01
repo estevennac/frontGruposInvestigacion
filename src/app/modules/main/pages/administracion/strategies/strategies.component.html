@@ -15,10 +15,8 @@
       <table>
         <thead style="position: sticky; top: 0;">
           <tr>
-            <th>ID</th>
             <th>Objetivo</th>
             <th>Estrategias</th>
-        
             <th>Estado</th>
             <th>Acciones</th>
           </tr>
@@ -27,7 +25,6 @@
           
           <!-- Filas de la tabla -->
           <tr *ngFor="let s of strategies">
-            <td>{{ s.idEstrategia }}</td>
             <td>{{ s.objetivo}}</td>
             <td>{{ s.estrategia }}</td>
             

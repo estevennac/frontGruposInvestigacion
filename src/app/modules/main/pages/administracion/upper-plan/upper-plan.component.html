@@ -15,17 +15,14 @@
       <table>
         <thead style="position: sticky; top: 0;">
           <tr>
-            <th>ID</th>
             <th>Nombre</th>
             <th>Estado</th>
-
             <th>Acciones</th>
           </tr>
         </thead>
         <tbody>
           <!-- Filas de la tabla -->
           <tr *ngFor="let p of upperLevelPlan">
-            <td>{{ p.idPlanNivelSuperior }}</td>
             <td>{{ p.nombre }}</td>
             <td>{{ p.estado ? 'Activo' : 'Inactivo' }}</td>
 
