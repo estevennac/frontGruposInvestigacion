@@ -23,7 +23,8 @@ export class CargaMemoDirComponent implements OnInit {
   currentDate: Date = new Date();
     currentUser: string;
     groupId: number;
-    token: string
+    token: string;
+    loading: boolean = false;
   constructor(
     private annexesService:AnnexesService,
     private router:Router,
@@ -81,9 +82,6 @@ export class CargaMemoDirComponent implements OnInit {
               const year = this.currentDate.getFullYear();
               const month = ('0' + (this.currentDate.getMonth() + 1)).slice(-2);
               const day = ('0' + this.currentDate.getDate()).slice(-2);
-              const hours = ('0' + this.currentDate.getHours()).slice(-2);
-              const minutes = ('0' + this.currentDate.getMinutes()).slice(-2);
-              const seconds = ('0' + this.currentDate.getSeconds()).slice(-2);
               const customFileName = `memo_informe_pertinencia_GI_${this.groupId}_${year}-${month}-${day}.pdf`;
 
               const archivoRenombrado = new File([file], customFileName, { type: file.type });
@@ -115,6 +113,7 @@ export class CargaMemoDirComponent implements OnInit {
 
   onSubmit() {
     if (this.selectedFile) {
+      this.loading = true;
       const fileToUpload = this.selectedFile;
       const sistema = 'publicaciones'
       this.documentService.saveDocument(this.token, fileToUpload, sistema).subscribe(response => {
@@ -137,6 +136,7 @@ export class CargaMemoDirComponent implements OnInit {
             this.matSnackBar.open('Solicitudes Enviados correctamente.', 'Cerrar', {
                 duration: 3000,
               });
+              this.loading = false;
             this.router.navigateByUrl('main/coord2');
           }, 1000);
         })

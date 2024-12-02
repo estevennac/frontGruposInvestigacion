@@ -1,11 +1,15 @@
+<div *ngIf="loading" class="loading-spinner-overlay">
+  <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
+</div>
 <div class="container-fluid">
   <div class="card">
   <header>
-    <h1>Enviar Solicitud de conformación de Grupo de Investigación</h1>
+    <h1>Solicitar informe de pertinencia académica del GI al Coordinador de Investigación</h1>
   </header>
   <main>
-    <p>Solicitar un informe de pertinencia académica del GI al Coordinador de Investigación.
-    </p>
+    <br>
+    <p>Se debe adjuntar el memorando para solicitar el informe al Coordinador de Investigación</p>
+    <br>
     <form (submit)="onSubmit()">
       <div class="drag-drop" (drop)="onDrop($event)" (dragover)="onDragOver($event)">
         <p>Arrastra y suelta el documento aquí o haz clic para seleccionarlo.</p>

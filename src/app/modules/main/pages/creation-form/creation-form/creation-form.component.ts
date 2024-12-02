@@ -30,7 +30,7 @@ import { ChecklistService } from 'src/app/core/http/checklist/checklist.service'
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { DocumentsService } from 'src/app/core/http/documentos/documents.service';
 import { Usuario } from 'src/app/types/usuario.types';
-
+import { ProgressComponent } from 'src/@vex/components/progress/progress.component';
 @Component({
   selector: 'vex-creation-form',
   templateUrl: './creation-form.component.html',
@@ -71,7 +71,7 @@ export class CreationFormComponent implements OnInit {
   currentUserId:number;
   isSaved: boolean = false;
   public isLoading: boolean = true; // Inicializar como true para que el spinner aparezca al inicio
-
+  idGrupo:number;
   constructor(
     private builder: FormBuilder,
     private snackBar: MatSnackBar,
@@ -100,6 +100,7 @@ export class CreationFormComponent implements OnInit {
     this.currentUser=this.authService.getUserName();
     this.currentDate = new Date();
     this.currentUserId=Number(sessionStorage.getItem("userId"));
+    this.idGrupo=Number(sessionStorage.getItem("invGroup"));
     this.checkInvGroupInSessionStorage();
     this.areasControl.valueChanges.subscribe((selectedAreas: any[]) => {
       this.updateLineasByAreas(selectedAreas);

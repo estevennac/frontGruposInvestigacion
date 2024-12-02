@@ -1,0 +1,65 @@
+<div class="container" *ngIf="!loading; else loadingTemplate">
+    <h1>Informe de Pertinencia del Grupo de Investigación</h1>
+    <h2>Grupo: {{ report?.idGrupo }}</h2>
+    <h3>Universidad de las Fuerzas Armadas ESPE</h3>
+  
+    <!-- Antecedentes -->
+    <div class="section">
+      <h2>1. Antecedentes</h2>
+      <ul>
+        <li>Número de memorando: <strong>{{ report?.numeroMemo }}</strong></li>
+        <li *ngIf="report?.formularioCreacion === 1">Formulario de creación completado.</li>
+        <li *ngIf="report?.planDesarrollo === 1">Plan de desarrollo disponible.</li>
+        <li *ngIf="report?.documentosAdicionales === 1">Documentación adicional presente.</li>
+      </ul>
+    </div>
+  
+    <!-- Objetivo -->
+    <div class="section">
+      <h2>2. Objetivo</h2>
+      <p>{{ report?.objetivos }}</p>
+    </div>
+  
+    <!-- Desarrollo -->
+    <div class="section">
+      <h2>3. Desarrollo</h2>
+      <ul>
+        <li *ngIf="report?.planEstrategico === 1">Pertinencia académica al Plan Estratégico.</li>
+        <li *ngIf="report?.pertinenciaAcademicaAporte === 1">Aporte a dominios y áreas de investigación.</li>
+        <li *ngIf="report?.coordinador === 1">Coordinador cumple con requisitos.</li>
+        <li *ngIf="report?.miembros === 1">Miembros cumplen con requisitos.</li>
+        <li *ngIf="report?.objetivosPlanDesarrollo === 1">Relevancia de la creación con base en objetivos del Plan de Desarrollo.</li>
+      </ul>
+    </div>
+  
+    <!-- Conclusiones -->
+    <div class="section">
+      <h2>4. Conclusiones</h2>
+      <p>{{ report?.conclusiones }}</p>
+    </div>
+  
+    <!-- Recomendaciones -->
+    <div class="section">
+      <h2>5. Recomendaciones</h2>
+      <p>{{ report?.recomendaciones }}</p>
+    </div>
+  
+    <!-- Firma -->
+    <div class="signature">
+      <div>
+        <span>Nombre<br>Coordinador de Investigación</span>
+      </div>
+      <div>
+        <span>Nombre<br>Director del Departamento</span>
+      </div>
+    </div>
+  
+    <div class="footer">
+      Fecha: Sangolquí, {{ currentDate | date:'longDate' }}
+    </div>
+  </div>
+  
+  <ng-template #loadingTemplate>
+    <div class="loading">Cargando información...</div>
+  </ng-template>
+  

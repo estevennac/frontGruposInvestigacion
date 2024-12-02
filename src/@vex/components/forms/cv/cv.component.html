@@ -1,0 +1,17 @@
+
+<div
+style="width: 100%;display: flex;justify-self: center;justify-items: center;justify-content: center; align-items: center;"
+*ngIf="loadingData">
+<mat-spinner diameter="150" color="primary"
+        class="overlay-spinner"></mat-spinner> </div>
+<div  *ngIf="!loadingData">
+        <div *ngFor="let member of memberUser">
+    <h1>Hoja de Vida de {{ member.nombre }}</h1>
+    <iframe
+      *ngIf="pdfUrlsCV[member.id]"
+      [src]="pdfUrlsCV[member.id]"
+      width="100%"
+      height="600px"
+    ></iframe>
+    <p *ngIf="!pdfUrlsCV[member.id]">Cargando hoja de vida...</p>
+  </div></div>

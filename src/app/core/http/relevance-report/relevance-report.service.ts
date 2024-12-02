@@ -21,6 +21,10 @@ export class RelevanceReportService {
     return this.http.get<RelevanceReport>(`${this.URL}/${id}`);
   }
 
+  getByGroup(id: number): Observable<RelevanceReport>{
+    return this.http.get<RelevanceReport>(`${this.URL}/group/${id}`);
+  }
+
   createRelevanceReport(formData: RelevanceReport): Observable<any>{
     return this.http.post(`${this.URL}/create`,formData);
   }

@@ -5,7 +5,7 @@
   
     <div class="container-fluid">
         <div class="card" *ngIf="!loadingData">
-           
+
 <!-- Aparece Unicamente cuando se debe cargar el formulario de creación de grupo de investigación -->
             <header *ngIf="!invGroupExists">
                 <h1>FORMULARIO DE SOLICITUD DE CREACIÓN DE GRUPO DE
@@ -55,6 +55,7 @@
                             Investigación</h1>
                     </header>
                 </div>
+             
                 
                 <div class="presentacionGrupo"
                     *ngIf=" !loadingData  && grupo.estadoGrupoInv==='revDirDep' || grupo.estadoGrupoInv==='revInfPer' "
@@ -145,6 +146,13 @@
                     <h1>Grupo de Investigación {{grupo.nombreGrupoInv}}</h1>
                 </div>
                     </div>
+
+                    <div class="presentacionGrupo"
+                    *ngIf=" !loadingData  && grupo.estadoGrupoInv==='revDirDep' || grupo.estadoGrupoInv==='solInfPer' "
+                    style="text-align: center;">
+                    <app-progress [id]="idGrupo"></app-progress>
+
+                </div>
 
         <!-- FASE DE CREACIÓN DEL GRUPO DE INVESTIGACIÓN (FORMULARIO CUANDO SE ENVÍA LA SOLICITUD POR PRIMERA VEZ) -->
         <div class="container-fluid" *ngIf="!invGroupExists">

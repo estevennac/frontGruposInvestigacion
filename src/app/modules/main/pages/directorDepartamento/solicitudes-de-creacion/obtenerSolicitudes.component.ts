@@ -50,7 +50,7 @@ export class SolicitudesForDirectorComponent implements OnInit {
 
     filtrarSolicitudes() {
         this.solicitudesFiltradas = this.creationReq.filter((solicitud) => solicitud.estado === '4');
-        this.solicitudesFiltradas2 = this.creationReq.filter((solicitud) => solicitud.estado === 'C');
+        this.solicitudesFiltradas2 = this.creationReq.filter((solicitud) => solicitud.estado === '6');
         this.noSolicitudesPendientes = this.solicitudesFiltradas.length === 0;
         this.noSolicitudesPendientes2 = this.solicitudesFiltradas2.length === 0;
         if (this.solicitudesFiltradas.length === 0 || this.solicitudesFiltradas2.length === 0) {
@@ -113,6 +113,18 @@ export class SolicitudesForDirectorComponent implements OnInit {
         this.solicitudService.getById(id).subscribe(
             (creationReqForm: CreationReqForm) => {
                 this.router.navigate(['main/solicitud-dir'], { state: { creationReqForm } });
+            },
+
+            (error) => {
+                console.error('Error al obtener los detalles de la Solicitud', error);
+            }
+        )
+    }
+    validar2(id: number) {
+        //console.log("grupo seleccionado",id)
+        this.solicitudService.getById(id).subscribe(
+            (creationReqForm: CreationReqForm) => {
+                this.router.navigate(['main/solDir2'], { state: { creationReqForm } });
             },
 
             (error) => {

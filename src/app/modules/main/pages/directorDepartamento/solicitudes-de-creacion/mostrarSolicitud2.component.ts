@@ -10,10 +10,10 @@ import { DocumentsService } from 'src/app/core/http/documentos/documents.service
 
 @Component({
   selector: 'app-solicitud-componente',
-  templateUrl: './mostrarSolicitud.component.html',
+  templateUrl: './mostrarSolicitud2.component.html',
   styleUrls: ['./obtenerSolicitudes.component.scss']
 })
-export class MostrarSolicitudForDirector implements OnInit {
+export class MostrarSolicitudForDirector2 implements OnInit {
 
   id: number;
 idPlanDesarrollo: number;

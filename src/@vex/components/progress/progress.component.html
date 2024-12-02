@@ -1,0 +1,9 @@
+<div class="process-container">
+    <div *ngFor="let step of steps; let i = index" class="step-container">
+      <!-- Paso -->
+      <div class="step" [ngClass]="step.state">{{ step.label }}</div>
+      <!-- Línea -->
+      <div *ngIf="i < steps.length - 1" class="line"></div>
+    </div>
+  </div>
+  

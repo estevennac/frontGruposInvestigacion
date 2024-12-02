@@ -83,10 +83,18 @@ import { CargaMemoVicIComponent } from './pages/vicerectorDeInvestigacion/resolu
 import { MostrarSolicitudForVicerectorI } from './pages/vicerectorDeInvestigacion/resoluciones copy/solicitudes-de-creacion/mostrarSolicitud.component';
 import { InstStrategicObjComponent } from './pages/administracion/inst-strategic-obj/inst-strategic-obj.component';
 import { StrategiesComponent } from './pages/administracion/strategies/strategies.component';
+import { InfPertinenciaComponent } from './pages/coordinador-inv/informePertinencia/infPertinencia.component';
+import { MostrarSolicitudForDirector2 } from './pages/directorDepartamento/solicitudes-de-creacion/mostrarSolicitud2.component';
 const routes: Routes = [
   {
     path: 'principal',
     component: MainComponent
+  },{
+path:'informePertinencia',
+component:InfPertinenciaComponent
+  },{
+    path: 'solDir2',
+    component: MostrarSolicitudForDirector2
   },
   {
 path: 'ods',

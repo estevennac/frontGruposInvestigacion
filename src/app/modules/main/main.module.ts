@@ -135,8 +135,20 @@ import { infBienesEquiposComponent } from './pages/coordinadorGI/informeBienesEq
 import { OdsControl } from './pages/administracion/ods/modal_ods.component';
 import { ObjControl } from './pages/coordinadorGI/plan_desarrollo/modal_objetivos.component';
 import { ActControl } from './pages/coordinadorGI/plan_desarrollo/modal_cuadro_actividades.component';
+import{ProgressComponent} from 'src/@vex/components/progress/progress.component';
+import { CreationRequestFormComponent } from 'src/@vex/components/forms/creationRequest/creationRequestForm.component';
+import { DevelopPlanFormComponent } from 'src/@vex/components/forms/developmentPlanForm/developmentPlanForm.component';
+import { CvComponent } from 'src/@vex/components/forms/cv/cv.component';
+import { InformePertinenciaComponent } from 'src/@vex/components/forms/relevanceReport/relevanceReport.component';
+import { MostrarSolicitudForDirector2 } from './pages/directorDepartamento/solicitudes-de-creacion/mostrarSolicitud2.component';
 @NgModule({
   declarations: [
+    ProgressComponent,
+    MostrarSolicitudForDirector2,
+    InformePertinenciaComponent,
+    CvComponent,
+    DevelopPlanFormComponent,
+    CreationRequestFormComponent,
     MainComponent,
     ActControl,
     ObjControl,

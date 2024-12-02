@@ -10,6 +10,22 @@
   border: solid 1px #e9e9e9;
   border-radius: 5px;
 }
+.adjust-text {
+  white-space: normal;
+}
+
+.loading-spinner-overlay {
+  position: fixed; /* Para que el div esté posicionado en relación a la pantalla */
+  top: 0;
+  left: 0;
+  width: 100vw; /* Abarca todo el ancho de la pantalla */
+  height: 100vh; /* Abarca todo el alto de la pantalla */
+  display: flex; /* Centra el contenido usando flexbox */
+  justify-content: center; /* Centra horizontalmente */
+  align-items: center; /* Centra verticalmente */
+  background-color: rgba(0, 0, 0, 0.5); /* Fondo semitransparente */
+  z-index: 1000; /* Asegúrate de que esté encima de otros elementos */
+}
 .multiline-label {
   white-space: normal; /* Permite el ajuste de texto en líneas múltiples */
   word-wrap: break-word; /* Rompe las palabras si es necesario para evitar que se salgan del área */

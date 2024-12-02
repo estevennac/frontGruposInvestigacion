@@ -34,114 +34,7 @@
         <mat-step>
           <ng-template matStepLabel>Solicitud de Creación del Grupo de
             Investigación</ng-template>
-          <div class="encabezado">
-            <div class="box"> <img
-                src="../../../../../../assets/img/espe/logo-espe.png"
-                alt="Imagen"></div>
-            <div class="box">UNIVERSIDAD DE LAS FUERZAS ARMADAS –
-              ESPE<br /><br />
-
-              VICERRECTORADO DE INVESTIGACIÓN, INNOVACIÓN Y TRANSFERENCIA
-              TECNOLÓGICA <br />
-              SOLICITUD DE CREACIÓN DE GRUPO DE INVESTIGACIÓN <br />
-            </div>
-            <div class="box">
-              Fecha:
-              <div *ngIf="creationReqForm">
-
-                {{creationReqForm.fechaCreacionPeticion | date}}
-              </div>
-            </div>
-          </div>
-
-          <table *ngIf="creationReqForm || invGroup || usuario" class="table"
-            style="text-align: left;border: solid 0.5px #dce0e2 ;width: 90%;margin-left: 5%; border-radius: 30px;">
-            <thead>
-
-            </thead>
-            <tbody>
-              <tr *ngIf="invGroup">
-                <td style="border:solid 0.5px #dce0e2 ;"> 1</td>
-                <td style="border:solid 0.5px #dce0e2 ;">Nombre del Grupo
-                  (cualquier idioma)</td>
-                <td style="border:solid 0.5px #dce0e2 ;">{{
-                  invGroup.nombreGrupoInv
-                  }}</td>
-              </tr>
-
-              <tr *ngIf="invGroup">
-                <td style="border:solid 0.5px #dce0e2 ;">2</td>
-                <td style="border:solid 0.5px #dce0e2 ;">Acrónimo</td>
-                <td style="border:solid 0.5px #dce0e2 ;">{{
-                  invGroup.acronimoGrupoinv }}</td>
-              </tr>
-
-              <tr>
-                <td style="border:solid 0.5px #dce0e2 ;">3</td>
-                <td style="border:solid 0.5px #dce0e2 ;">Dominios
-                  Académicos</td>
-                <td style="border:solid 0.5px #dce0e2 ;" *ngIf="acad"
-                  style="border: solid 0.5px #dce0e2;">
-                  <div *ngFor="let ac of acad">{{
-                    ac.nombreDominioAcademico }}</div></td>
-              </tr>
-              <tr>
-                <td style="border:solid 0.5px #dce0e2 ;">4</td>
-                <td style="border:solid 0.5px #dce0e2 ;">Áreas de
-                  Investigación</td>
-                <td style="border:solid 0.5px #dce0e2 ;" *ngIf="area"
-                  style="border: solid 0.5px #dce0e2;">
-                  <div *ngFor="let ca of area">{{ ca.nombreArea
-                    }}</div></td>
-              </tr>
-              <tr>
-                <td style="border:solid 0.5px #dce0e2 ;">5</td>
-                <td style="border:solid 0.5px #dce0e2 ;">Líneas </td>
-                <td style="border:solid 0.5px #dce0e2 ;" *ngIf="line"
-                  style="border: solid 0.5px #dce0e2;">
-                  <div *ngFor="let lc of line">{{ lc.nombreLinea
-                    }}</div></td>
-              </tr>
-
-              <tr *ngIf="creationReqForm">
-                <td style="border:solid 0.5px #dce0e2 ;">7</td>
-                <td style="border:solid 0.5px #dce0e2 ;">Alineación
-                  Estratégica</td>
-                <td style="border:solid 0.5px #dce0e2 ;">{{
-                  creationReqForm.alineacionEstrategica }}</td>
-              </tr>
-
-              <tr>
-                <td style="border:solid 0.5px #dce0e2 ;">9</td>
-                <td style="border:solid 0.5px #dce0e2 ;">Nombre de los
-                  integrantes</td>
-                <td *ngIf="memberUser && memberUser.length > 0"
-                  style="border: solid 0.5px #dce0e2;">
-                  <div *ngFor="let member of memberUser">{{ member.nombre }}</div>
-                </td>
-
-              </tr>
-
-              <tr *ngIf="usuario" style="border:solid 0.5px #dce0e2 ;">
-                <td style="width: 5%; border:solid 0.5px #dce0e2 ;">11</td>
-                <td style="width: 30%;border:solid 0.5px #dce0e2 ;">Nombre del
-                  Coordinador del Grupo</td>
-                <td style="width: 65%; border:solid 0.5px #dce0e2  ;">{{
-                  usuario.nombre }} </td>
-              </tr>
-
-              <!-- <tr *ngIf="invGroup">
-            <td style="border:solid 0.5px #dce0e2 ;">4</td>
-            <td style="border:solid 0.5px #dce0e2 ;">Nombre del Grupo (en otro
-              Idioma)</td>
-            <td style="border:solid 0.5px #dce0e2 ;">{{
-              invGroup.nombreOlGrupoInv }}</td>
-          </tr>
-          -->
-
-              <!-- Agrega más filas según sea necesario -->
-            </tbody>
-          </table>
+          <app-creation-request-form [id]="creationReqForm.idPeticionCreacion"></app-creation-request-form>
           <div *ngIf="!creationReqForm && !invGroup && !usuario">
             <p>No se encontraron detalles disponibles.</p>
           </div>
@@ -161,160 +54,10 @@
         </mat-step>
         <mat-step>
           <ng-template matStepLabel>Plan de Desarrollo</ng-template>
-        
+          <app-developmentPlanForm-component [id]="creationReqForm.idGrupoInv"></app-developmentPlanForm-component>
+
           <!-- 1. Encabezado -->
-          <div class="encabezado">
-            <div class="box">
-              <img src="../../../../../../assets/img/espe/logo-espe.png" alt="Imagen">
-            </div>
-            <div class="box">
-              UNIVERSIDAD DE LAS FUERZAS ARMADAS – ESPE<br />
-              VICERRECTORADO DE INVESTIGACIÓN, INNOVACIÓN Y TRANSFERENCIA TECNOLÓGICA<br />
-              PLAN DE DESARROLLO DEL GRUPO DE INVESTIGACIÓN
-            </div>
-            <div class="box">
-              Fecha: <br />
-              <div *ngIf="planDesarrollo">
-                {{planDesarrollo.fechaCreacionUsuario | date}}
-              </div>
-            </div>
-          </div>
         
-          <!-- 2. NOMBRE DEL GRUPO DE INVESTIGACIÓN -->
-          <div class="section">
-            <h3>1. NOMBRE DEL GRUPO DE INVESTIGACIÓN</h3>
-              <p style="text-indent: 40px;">{{ invGroup.nombreGrupoInv }}</p>
-          </div>
-        
-          <!-- 3. Referencias -->
-          <div class="section">
-            <h3>2. REFERENCIAS</h3>
-            <ul style="text-indent: 40px;" *ngIf="upperLevelPlan  && legalFramework && nationalPlan">
-              <li >a.    Plan del Nivel Superior</li>
-              <li *ngFor="let plan of upperLevelPlan.planDeNivelSuperior"  style="text-indent: 60px;">
-                <ul>
-                  <li>{{ plan.nombre }}</li>
-                </ul>
-              </li>
-              <br/>
-              <li *ngIf="legalFramework">b.   Marco Legal específico del nivel</li>
-              <li *ngFor="let legal of legalFramework.marcoLegal; let i = index"  style="text-indent: 80px;">
-                <ul>
-                 
-                  <li>{{ i+1 }}. {{ legal.nombre }}</li>
-                </ul>
-              </li>
-              <br/>
-              <li *ngIf="nationalPlan">c.  Plan de Creación de Oportunidades - PNBV (2021 – 2025)</li>
-              <li *ngFor="let nat of nationalPlan.planNacional"  style="text-indent: 60px;">
-                <ul>
-                  <li>{{ nat.numeroPolitica }}: {{ nat.descripcion }}</li>
-                </ul>
-              </li>
-            </ul>
-          </div>
-        
-          <!-- 4. Contexto -->
-          <div class="section">
-            <h3>3. CONTEXTO</h3>
-            <p>{{ planDesarrollo.contexto }}</p>
-          </div>
-        
-          <!-- 5. Alcance -->
-          <div class="section">
-            <h3>4. ALCANCE</h3>
-            <p>{{ planDesarrollo.alcance }}</p>
-          </div>
-        
-          <!-- 6. Objetivo General del Plan de Desarrollo -->
-          <div class="section">
-            <h3>5. OBJETIVO GENERAL DEL PLAN DE DESARROLLO</h3>
-            <p>{{ planDesarrollo.objGeneral }}</p>
-          </div>
-        
-          <div class="section">
-            <h3>6. OBJETIVO ESTRATÉGICO INSTITUCIONAL</h3>
-            <p></p>
-          </div>
-          <!-- 7. Objetivos Específicos y Relación con ODS -->
-          <div class="section">
-            <h3>7. OBJETIVOS ESPECÍFICOS DEL PLAN DE DESARROLLO Y SU RELACIÓN CON LAS ESTRATEGIAS INSTITUCIONALES DEL OBJETIVO ESTRATÉGICO INSTITUCIONAL  Y LOS ODS</h3>
-            <table class="table tPlan">
-              <thead>
-                <tr>
-                  <th>Objetivo Específico</th>
-                  <th>Estrategias Institucionales</th>
-                  <th>ODS Relacionado</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let obj of objStrategies">
-                  <td>{{ obj.obj.objetivo }}</td>
-                  <td>
-                    <tr *ngFor="let estrategia of obj.str">
-                      {{ estrategia.estrategia }}
-                    </tr>
-                  </td>
-                  <td>
-                    <tr *ngFor="let estrategia of obj.str">
-                    
-                    </tr>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        
-          <!-- 8. Cuadro de Mando Específico del Grupo de Investigación -->
-          <div class="section">
-            <h3>8. CUADRO DE MANDO ESPECÍFICO DEL GRUPO DE INVESTIGACIÓN</h3>
-            <table class="table tPlan">
-              <thead>
-                <tr>
-                  <th>No.</th>
-                  <th>Objetivo Específico</th>
-                  <th>Actividades</th>
-                  <th>Responsable</th>
-                  <th>Indicador</th>
-                  <th colspan="4" class="metas-header">Metas Anuales</th>
-                  <th>Financiamiento Requerido</th>
-                </tr>
-                <tr>
-                  <th></th>
-                  <th></th>
-                  <th></th>
-                  <th></th>
-                  <th></th>
-                  <th class="metas-header">1</th>
-                  <th class="metas-header">2</th>
-                  <th class="metas-header">3</th>
-                  <th class="metas-header">4</th>
-                  <th></th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let item of controlPanel; let i = index">
-                  <td>{{ i + 1 }}</td>
-                 
-                  <td>{{ item.meta1 }}</td>
-                  <td>{{ item.meta2 }}</td>
-                  <td>{{ item.meta3 }}</td>
-                  <td>{{ item.meta4 }}</td>
-                  <td>{{ item.financiamiento }}</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        
-          <!-- 9. Firmas de Responsabilidad -->
-          <!--<div class="section">
-            <h3>9. FIRMAS DE RESPONSABILIDAD</h3>
-            <p>Lugar y Fecha: Sangolquí, ………………….</p>
-            <p>Elaborado por:</p>
-            <p>______________________________<br />Coordinador de Grupo de Investigación<br />CI: ……………………. </p>
-            <p>Aprobado por:</p>
-            <p>____________________________________<br />Vicerrector de Investigación Innovación y Transferencia de Tecnología<br />CI: ……………………. </p>
-          </div>-->
           <div class="grid-container">
             <div class="grid-item"></div>
             <div class="grid-item">
@@ -347,10 +90,8 @@
         </mat-step>
         <mat-step>
           <ng-template matStepLabel>Hojas de Vida de los miembros del grupo</ng-template>
-          <div *ngFor="let pdfUrl of pdfUrlCV;  let i = index">
-            <h1>Hoja de Vida de {{memberUser[i].nombre}}</h1>
-            <iframe [src]="pdfUrl" width="100%" height="600px"></iframe>
-          </div>
+          <app-cv-component [id]="creationReqForm.idGrupoInv"></app-cv-component>
+
           <div class="grid-container">
             <div class="grid-item"></div>
             <div class="grid-item" style="width: 100%;display: flex;
@@ -363,7 +104,7 @@
                 Siguiente
               </button>
                 <button type="button" mat-raised-button color="primary"
-                matStepperPrevious   (click)="validarGrupo('memo-registro')" *ngIf="!pdfUrlInforme" style="background-color: rgb(17, 70, 17);">Validar Grupo</button>
+                matStepperPrevious   (click)="validarGrupo('informePertinencia')" *ngIf="!pdfUrlInforme" style="background-color: rgb(17, 70, 17);">Validar Grupo</button>
             </div> </div>
           
           
