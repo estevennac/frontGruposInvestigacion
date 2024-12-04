@@ -141,9 +141,13 @@ import { DevelopPlanFormComponent } from 'src/@vex/components/forms/developmentP
 import { CvComponent } from 'src/@vex/components/forms/cv/cv.component';
 import { InformePertinenciaComponent } from 'src/@vex/components/forms/relevanceReport/relevanceReport.component';
 import { MostrarSolicitudForDirector2 } from './pages/directorDepartamento/solicitudes-de-creacion/mostrarSolicitud2.component';
+import { GruposControlComponent } from './pages/administracion/grupos-investigacion/grupos-investigacion.component';
+import { DetalleGIComponent } from './pages/administracion/grupos-investigacion/detalle-gi.component';
 @NgModule({
   declarations: [
     ProgressComponent,
+    DetalleGIComponent,
+    GruposControlComponent,
     MostrarSolicitudForDirector2,
     InformePertinenciaComponent,
     CvComponent,

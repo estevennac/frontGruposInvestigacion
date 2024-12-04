@@ -85,11 +85,18 @@ import { InstStrategicObjComponent } from './pages/administracion/inst-strategic
 import { StrategiesComponent } from './pages/administracion/strategies/strategies.component';
 import { InfPertinenciaComponent } from './pages/coordinador-inv/informePertinencia/infPertinencia.component';
 import { MostrarSolicitudForDirector2 } from './pages/directorDepartamento/solicitudes-de-creacion/mostrarSolicitud2.component';
+import { GruposControlComponent } from './pages/administracion/grupos-investigacion/grupos-investigacion.component';
+import { DetalleGIComponent } from './pages/administracion/grupos-investigacion/detalle-gi.component';
+
+
 const routes: Routes = [
   {
     path: 'principal',
     component: MainComponent
   },{
+    path:'grupos-investigacion',
+    component:GruposControlComponent
+  },{path:'detalleGrupo',component:DetalleGIComponent},{
 path:'informePertinencia',
 component:InfPertinenciaComponent
   },{

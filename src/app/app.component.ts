@@ -481,6 +481,12 @@ export class AppComponent implements OnInit {
                 },
                 {
                   type: 'link',
+                  label: 'Gestión Grupos de Investigación',
+                  route: 'main/grupos-investigacion',
+                  icon: 'mat:groups'
+                },
+                {
+                  type: 'link',
                   label: 'Lista GI',
                   route: 'main/ejecucion',
                   icon: 'mat:description'

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { InvGroupForm } from 'src/app/types/invGroup.types';
+import { InvGroupForm , InvGroupCompleteForm} from 'src/app/types/invGroup.types';
 
 @Injectable({
   providedIn: 'root'
@@ -22,6 +22,9 @@ export class InvGroupService {
     return this.http.get<InvGroupForm>(`${this.URL}/${id}`);
   }
 
+  getByIdAll(id: number): Observable<InvGroupCompleteForm> {
+    return this.http.get<InvGroupCompleteForm>(`${this.URL}/all/${id}`);
+  }
   createInvGroupForm(formData: InvGroupForm): Observable<any> {
     return this.http.post(`${this.URL}/create`, formData);
   }

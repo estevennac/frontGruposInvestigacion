@@ -43,7 +43,7 @@ export class CreationFormComponent implements OnInit {
   selectedUsers: any[] = [];
   documentosCargados = {};
 
-  selectedUsersExterns:any[]=[];
+  selectedUsersExterns: any[] = [];
   selectedFiles: File[] = [];
   userIdSelect: any[] = [];
   dominiosControl = new FormControl();
@@ -64,14 +64,14 @@ export class CreationFormComponent implements OnInit {
   checkList: any;
   revisado: any;
   check: boolean = false;
-  grupo:InvGroupForm;
+  grupo: InvGroupForm;
   loadingData: boolean = true;
   currentUser: string;
   currentDate: any;
-  currentUserId:number;
+  currentUserId: number;
   isSaved: boolean = false;
   public isLoading: boolean = true; // Inicializar como true para que el spinner aparezca al inicio
-  idGrupo:number;
+  idGrupo: number;
   constructor(
     private builder: FormBuilder,
     private snackBar: MatSnackBar,
@@ -97,10 +97,10 @@ export class CreationFormComponent implements OnInit {
   ) { this.usuarios = []; }
 
   ngOnInit(): void {
-    this.currentUser=this.authService.getUserName();
+    this.currentUser = this.authService.getUserName();
     this.currentDate = new Date();
-    this.currentUserId=Number(sessionStorage.getItem("userId"));
-    this.idGrupo=Number(sessionStorage.getItem("invGroup"));
+    this.currentUserId = Number(sessionStorage.getItem("userId"));
+    this.idGrupo = Number(sessionStorage.getItem("invGroup"));
     this.checkInvGroupInSessionStorage();
     this.areasControl.valueChanges.subscribe((selectedAreas: any[]) => {
       this.updateLineasByAreas(selectedAreas);
@@ -130,23 +130,32 @@ export class CreationFormComponent implements OnInit {
     if (invGroup) {
       this.invGroupExists = true;
       this.cargarInfoGrupo(Number(invGroup));
-     // this.cargarChecklist(Number(invGroup));
+      // this.cargarChecklist(Number(invGroup));
     } else {
       this.invGroupExists = false;
       this.cargarFormularios(invGroup);
+      this.loadCoordinador();
     }
   }
+  userCoordinador: Usuario;
+  loadCoordinador() {
+    this.usuarioService.getByUserName(this.currentUser).subscribe((data: Usuario) => {
+      this.userCoordinador = data;
+    }, error => {
+      console.error("Error al cargar el usuario del coordinador:", error);
+    });
+  }
   //Cargamos los formularios respectivos si no se encuentran registros de que se ha creado un grupo de investigacion o tiene un proceso anterior
-  cargarFormularios(invGroup){
-     this.cargarInfoGrupo(Number(invGroup));
-      this.loadDominios();
-      this.loadAreas();
-      //this.loadLineas();
-      this.dominiosControl.patchValue(this.dominios);
-      this.areasControl.patchValue(this.areas);
-      this.lineasControl.patchValue(this.lineas);
-      const token = sessionStorage.getItem('acces_token');
-      //this.loadUser(this.currentUser, token);
+  cargarFormularios(invGroup) {
+    this.cargarInfoGrupo(Number(invGroup));
+    this.loadDominios();
+    this.loadAreas();
+    //this.loadLineas();
+    this.dominiosControl.patchValue(this.dominios);
+    this.areasControl.patchValue(this.areas);
+    this.lineasControl.patchValue(this.lineas);
+    const token = sessionStorage.getItem('acces_token');
+    //this.loadUser(this.currentUser, token);
     this.myForm = this.builder.group({
       grupoInv1: this.builder.group({
         idUser: sessionStorage.getItem('idUser'),
@@ -154,12 +163,12 @@ export class CreationFormComponent implements OnInit {
         acronimoGrupoinv: ['', Validators.required],
       }),
       grupoInv2: this.builder.group({
-        dominios:this.dominiosControl,
-        areas:this.areasControl,
-        lineas:this.lineasControl,
+        dominios: this.dominiosControl,
+        areas: this.areasControl,
+        lineas: this.lineasControl,
       }),
-      grupoInv2_1:this.builder.group({
-        alineacionEstrategica:['', Validators.required]
+      grupoInv2_1: this.builder.group({
+        alineacionEstrategica: ['', Validators.required]
       }),
       grupoInv3: this.builder.group({
         cvsCoordinador: new FormControl(''),
@@ -180,7 +189,7 @@ export class CreationFormComponent implements OnInit {
     });
   }
 
-  
+
   get grupoInvform() {
     return this.myForm.get('grupoInv1') as FormGroup;
   }
@@ -204,7 +213,7 @@ export class CreationFormComponent implements OnInit {
       certificadosInvestigador: new FormControl(''),
     });
   }
-  
+
   private crearFormGroupInvestigadorExtern() {
     return new FormGroup({
       idUsuario: new FormControl(''),
@@ -214,9 +223,9 @@ export class CreationFormComponent implements OnInit {
     });
   }
   //Cargamos la Información del Grupo si tiene un proceso Anterior
-  cargarInfoGrupo(id: number){
-    this.apiInvGroupService.getById(id).subscribe(data =>{
-      this.grupo=data;
+  cargarInfoGrupo(id: number) {
+    this.apiInvGroupService.getById(id).subscribe(data => {
+      this.grupo = data;
       this.loadingData = false;
     })
   }
@@ -226,13 +235,13 @@ export class CreationFormComponent implements OnInit {
       this.dominios = data.filter(dominio => dominio.estado === true);
     });
   }
-  
+
   loadAreas(): void {
     this.areaService.getAll().subscribe(data => {
       this.areas = data.filter(area => area.estado === true);
     });
   }
-  
+
 
 
   //Abrimos un modal para poder agregar investigadores, en base a usuarios que se utilizan mediante la Api de la ESPE, mediante su username
@@ -252,7 +261,7 @@ export class CreationFormComponent implements OnInit {
         verticalPosition: 'top', // Posición del toast
       });
     });
-  
+
     dialogRef.afterClosed().subscribe((data: { user: any, usuarioValue: any }) => {
       if (data?.usuarioValue) {
         this.userIdSelect.push(data.usuarioValue);
@@ -266,7 +275,7 @@ export class CreationFormComponent implements OnInit {
 
   //borrar investigadores de la lista al agregar miembros em caso de que estos hayan sido mal descritos
   borrarInvestigador(index: number) {
-    this.selectedUsers.splice(index, 1); 
+    this.selectedUsers.splice(index, 1);
     this.investigadores.splice(index, 1);
     this.userIdSelect.splice(index, 1);
     delete this.selectedFileByUser[index];
@@ -274,9 +283,9 @@ export class CreationFormComponent implements OnInit {
     console.log(this.userIdSelect);
   }
   borrarInvestigadorExtern(index: number) {
-    this.selectedUsersExterns.splice(index, 1); 
+    this.selectedUsersExterns.splice(index, 1);
     this.investigadoresExterns.splice(index, 1);
-    this.userIdSelect.splice(index, 1);  
+    this.userIdSelect.splice(index, 1);
     console.log(this.userIdSelect);
 
     delete this.selectedFileByUserExtern[index];
@@ -285,13 +294,13 @@ export class CreationFormComponent implements OnInit {
     (this.myForm.get('grupoInv3').get('investigadores') as FormArray).push(
       this.crearFormGroupInvestigador()
     );
-    this.investigadores.push(this.investigadores.length + 1); 
- }
+    this.investigadores.push(this.investigadores.length + 1);
+  }
   agregarInvestigadorExtern() {
     (this.myForm.get('grupoInv3').get('investigadoresExterns') as FormArray).push(
       this.crearFormGroupInvestigadorExtern()
     );
-    this.investigadoresExterns.push(this.investigadoresExterns.length + 1); 
+    this.investigadoresExterns.push(this.investigadoresExterns.length + 1);
 
   }
 
@@ -338,7 +347,7 @@ export class CreationFormComponent implements OnInit {
     }
   }
 
-//Para dar formato y controlar las hojas de vida de los miembros del grupo de Investigación.
+  //Para dar formato y controlar las hojas de vida de los miembros del grupo de Investigación.
   onFileSelected(event: Event, index: number, userId: number) {
     const input = event.target as HTMLInputElement;
     const files = input.files;
@@ -364,15 +373,15 @@ export class CreationFormComponent implements OnInit {
       }
     }
   }
-documentosCompletosCargados = false;
+  documentosCompletosCargados = false;
 
-verificarDocumentosCargados(): void {
-  const usuariosInternosCompletos = this.selectedUsers.every(user => this.documentosCargados[user.user.idBd]);
-  const usuariosExternosCompletos = this.selectedUsersExterns.every(user => this.documentosCargados[user.id]);
+  verificarDocumentosCargados(): void {
+    const usuariosInternosCompletos = this.selectedUsers.every(user => this.documentosCargados[user.user.idBd]);
+    const usuariosExternosCompletos = this.selectedUsersExterns.every(user => this.documentosCargados[user.id]);
 
-  // Actualiza el estado general si todos los documentos están cargados
-  this.documentosCompletosCargados = usuariosInternosCompletos && usuariosExternosCompletos;
-}
+    // Actualiza el estado general si todos los documentos están cargados
+    this.documentosCompletosCargados = usuariosInternosCompletos && usuariosExternosCompletos;
+  }
 
 
   onFileSelectedExtern(event: Event, index: number, userId: number) {
@@ -409,23 +418,24 @@ verificarDocumentosCargados(): void {
   HandleSubmit() {
     if (this.myForm.valid) {
       this.loadingData = true;
-      const grupoInvData:InvGroupForm={
-        idGrupoInv:1, 
-        idCoordinador:this.currentUserId, 
-        nombreGrupoInv:this.myForm.value.grupoInv1.nombreGrupoInv,
-        estadoGrupoInv:"inicialpp", 
-        acronimoGrupoinv:this.myForm.value.grupoInv1.acronimoGrupoinv, 
-        usuarioCreacion:this.currentUser, 
-        fechaCreacion:this.currentDate, 
-        usuarioModificacion:null, 
-        fechaModificacion:null
-      }  
-      console.log("datos antes de enviar",grupoInvData)   
+      const partes = this.userCoordinador.departamento.split(" - ");
+      const departamento = partes[1].trim();
+      const grupoInvData: InvGroupForm = {
+        idGrupoInv: 1,
+        idCoordinador: this.currentUserId,
+        nombreGrupoInv: this.myForm.value.grupoInv1.nombreGrupoInv,
+        estadoGrupoInv: "inicialpp",
+        acronimoGrupoinv: this.myForm.value.grupoInv1.acronimoGrupoinv,
+        departamento: departamento,
+        usuarioCreacion: this.currentUser,
+        fechaCreacion: this.currentDate,
+        usuarioModificacion: null,
+        fechaModificacion: null
+      }
+      console.log("datos antes de enviar", grupoInvData)
       this.solCreaGIFormService.createInvGroup(grupoInvData).subscribe(
         (response) => {
           this.reqFormResponse = response;
-          // Mostrar toast de éxito
-          
           const idGrupoCreado = this.reqFormResponse;
           const reqFormData: CreationReqForm = {
             idPeticionCreacion: null,
@@ -437,25 +447,22 @@ verificarDocumentosCargados(): void {
             usuarioModificacionPeticion: null,
             fechaModificacionPeticion: null,
           };
-
           this.creationReqService.createCreationRequestForm(reqFormData).subscribe(
             (reqFormResponse) => {
-              
-              this.saveCurriculums(idGrupoCreado, this.currentUser, this.currentDate);
-
+              this.saveCurriculums(idGrupoCreado, this.currentUser, this.currentDate); 
               this.saveAcademicDomain(idGrupoCreado);
               this.saveArea(idGrupoCreado);
               this.saveLine(idGrupoCreado);
               this.saveMember(idGrupoCreado);
               localStorage.setItem('reqFormResponse', JSON.stringify(reqFormResponse));
               this.loadingData = false;
-            this.snackBar.open('Enviado con éxito', 'Cerrar', {
-              duration: 4000, // Duración del toast en milisegundos
-            });
-  
-            setTimeout(() => {
-              window.location.reload();
-            }, 8000);
+              this.snackBar.open('Enviado con éxito', 'Cerrar', {
+                duration: 4000, // Duración del toast en milisegundos
+              });
+
+              setTimeout(() => {
+                window.location.reload();
+              }, 8000);
             },
             (reqFormError) => {
               console.error('Error al crear el registro en CreationReqForm:', reqFormError);
@@ -535,8 +542,8 @@ verificarDocumentosCargados(): void {
     } else {
     }
   }
- 
-//Guarda información de los miembros del grupo y se les asiga al rol de miembro
+
+  //Guarda información de los miembros del grupo y se les asiga al rol de miembro
   private saveMember(idGrupo: number) {
     console.log(this.selectedUsersExterns);
 
@@ -553,7 +560,7 @@ verificarDocumentosCargados(): void {
           }
           this.apiInvMemberService.createInvMemberFormForm(member).subscribe(
             (response) => {
-            },(error)=>{
+            }, (error) => {
               console.log(error);
             }
           )
@@ -566,7 +573,7 @@ verificarDocumentosCargados(): void {
             fechaModificacion: null
           }
           this.userRolService.createUserRol(userRol).subscribe((response) => {
-            
+
           },
             (error) => {
               console.error('El usuario ya tiene el rol:', error);
@@ -579,36 +586,36 @@ verificarDocumentosCargados(): void {
 
     if (this.selectedUsersExterns && this.selectedUsersExterns.length > 0) {
       this.selectedUsersExterns.forEach((user: { id: number }) => {
-          const member: InvMemberForm = {
-            idGrupoInv: idGrupo,
-            idUsuario: user.id,
-            usuarioCreacion: this.currentUser,
-            fechaCreacion: this.currentDate,
-            usuarioModificacion: null,
-            fechaModificacion: null
+        const member: InvMemberForm = {
+          idGrupoInv: idGrupo,
+          idUsuario: user.id,
+          usuarioCreacion: this.currentUser,
+          fechaCreacion: this.currentDate,
+          usuarioModificacion: null,
+          fechaModificacion: null
+        }
+        this.apiInvMemberService.createInvMemberFormForm(member).subscribe(
+          (response) => {
+            console.log(response);
+          }, (error) => {
+            console.log(error);
           }
-          this.apiInvMemberService.createInvMemberFormForm(member).subscribe(
-            (response) => {
-              console.log(response);
-            },(error)=>{
-              console.log(error);
-            }
-          )
-          const userRol: UserRoles = {
-            idUsuario: user.id,
-            idRoles: 8,
-            usuarioCreacion: this.currentUser,
-            fechaCreacion: this.currentDate,
-            usuarioModificacion: null,
-            fechaModificacion: null
+        )
+        const userRol: UserRoles = {
+          idUsuario: user.id,
+          idRoles: 8,
+          usuarioCreacion: this.currentUser,
+          fechaCreacion: this.currentDate,
+          usuarioModificacion: null,
+          fechaModificacion: null
+        }
+        this.userRolService.createUserRol(userRol).subscribe((response) => {
+        },
+          (error) => {
+            console.error('El usuario ya tiene el rol:', error);
           }
-          this.userRolService.createUserRol(userRol).subscribe((response) => {
-          },
-            (error) => {
-              console.error('El usuario ya tiene el rol:', error);
-            }
-          )
-       
+        )
+
       })
     }
   }
@@ -619,7 +626,7 @@ verificarDocumentosCargados(): void {
         console.log(`Archivo para el usuario despues ${index}:`, archivo);
         const token = sessionStorage.getItem('access_token');
         const sistema = 'publicaciones'
-        this.documentService.saveDocument(token,archivo,sistema).subscribe(response=>{
+        this.documentService.saveDocument(token, archivo, sistema).subscribe(response => {
           const annexes: Annexes = {
             idAnexo: null,
             idGrupo: idGrupo,
@@ -633,11 +640,11 @@ verificarDocumentosCargados(): void {
           this.annexesServices.createAnnexesForm(annexes).subscribe((response) => {
 
           })
-        }),(err)=>{
+        }), (err) => {
           console.log(err);
         }
-        
-        
+
+
       }
     }
 
@@ -647,7 +654,7 @@ verificarDocumentosCargados(): void {
         console.log(`Archivo para el usuario despues ${index}:`, archivo);
         const token = sessionStorage.getItem('access_token');
         const sistema = 'publicaciones'
-        this.documentService.saveDocument(token,archivo,sistema).subscribe(response=>{
+        this.documentService.saveDocument(token, archivo, sistema).subscribe(response => {
           const annexes: Annexes = {
             idAnexo: null,
             idGrupo: idGrupo,
@@ -661,75 +668,75 @@ verificarDocumentosCargados(): void {
           this.annexesServices.createAnnexesForm(annexes).subscribe((response) => {
 
           })
-        }),(err)=>{
+        }), (err) => {
           console.log(err);
         }
-        
-        
+
+
       }
     }
-    
+
   }
 
   //Cargamos Información respectiva de un  checklist de verificacion de documentos, 
- /* cargarChecklist(id: number) {
-    this.checklistService.getByGroup(id).subscribe(data => {
-      this.checkList = data;
-      this.revisadoPor(data.recibidoPor);
-      this.checklistForm = this.builder.group({
-        peticionMemorando: [data.peticionMemorando],
-        formularioGrInv: [data.formularioGrInv],
-        planDevGr: [data.planDevGr],
-        planEconomico: [data.planEconomico],
-        hojaVida: [data.hojaVida],
-        certificado: [data.certificado],
-        usuarioCreacionChecklist: [data.usuarioCreacionChecklist],
-        fechaCreacionChecklist: [data.fechaCreacionChecklist],
-        usuarioModificacionChecklist: [null],
-        fechaModificacionChecklist: [null],
-        fechaChecklist: [data.fechaChecklist],
-        recibidoPor: [data.recibidoPor],
-        enviadoPor: [null]
-      });
-      this.loadingData = false;
-      const requiredFields = ['peticionMemorando', 'formularioGrInv', 'planDevGr', 'planEconomico', 'hojaVida', 'certificado'];
-    const allTrue = requiredFields.every(field => this.checklistForm.get(field).value === true);
-    if (allTrue) {
-      //this.todosTrueFunction();
-    } else {
-      this.check = true;
-    }
-    })
+  /* cargarChecklist(id: number) {
+     this.checklistService.getByGroup(id).subscribe(data => {
+       this.checkList = data;
+       this.revisadoPor(data.recibidoPor);
+       this.checklistForm = this.builder.group({
+         peticionMemorando: [data.peticionMemorando],
+         formularioGrInv: [data.formularioGrInv],
+         planDevGr: [data.planDevGr],
+         planEconomico: [data.planEconomico],
+         hojaVida: [data.hojaVida],
+         certificado: [data.certificado],
+         usuarioCreacionChecklist: [data.usuarioCreacionChecklist],
+         fechaCreacionChecklist: [data.fechaCreacionChecklist],
+         usuarioModificacionChecklist: [null],
+         fechaModificacionChecklist: [null],
+         fechaChecklist: [data.fechaChecklist],
+         recibidoPor: [data.recibidoPor],
+         enviadoPor: [null]
+       });
+       this.loadingData = false;
+       const requiredFields = ['peticionMemorando', 'formularioGrInv', 'planDevGr', 'planEconomico', 'hojaVida', 'certificado'];
+     const allTrue = requiredFields.every(field => this.checklistForm.get(field).value === true);
+     if (allTrue) {
+       //this.todosTrueFunction();
+     } else {
+       this.check = true;
+     }
+     })
+ 
+     
+   }*/
 
-    
-  }*/
-  
   revisadoPor(user: string): void {
     this.usuarioService.getByUserName(user).subscribe(data => {
       this.revisado = data
     })
   }
 
- 
- /* enviarAnexos(){
 
-    const invGroup = Number(sessionStorage.getItem('invGroup'));
-    const currentUser = this.authService.getUserName();
-    const currentDate = new Date();
-    this.creationReqService.getByGroup(invGroup).subscribe(data=>{
-      const formData:any={
-        idGrupoInv:invGroup,
-        estado:'E'
-      }
-      this.creationReqService.update(data.idPeticionCreacion,formData).subscribe(response=>{
-        console.log(response)
-      })
-    })
-    this.saveAnexos(invGroup, currentUser,currentDate)
-    
-    
-  }
-  */
+  /* enviarAnexos(){
+ 
+     const invGroup = Number(sessionStorage.getItem('invGroup'));
+     const currentUser = this.authService.getUserName();
+     const currentDate = new Date();
+     this.creationReqService.getByGroup(invGroup).subscribe(data=>{
+       const formData:any={
+         idGrupoInv:invGroup,
+         estado:'E'
+       }
+       this.creationReqService.update(data.idPeticionCreacion,formData).subscribe(response=>{
+         console.log(response)
+       })
+     })
+     this.saveAnexos(invGroup, currentUser,currentDate)
+     
+     
+   }
+   */
   /*postInvestigador(data: any) {
     this.apiInvMemberService.createInvMemberFormForm(data).subscribe((item) => {
       alert("Guardado correctamente")
@@ -739,31 +746,31 @@ verificarDocumentosCargados(): void {
   }*/
 
 
- /* private saveAnexos(idGrupo: number, user: string, date: Date) {
-    this.selectedFiles.forEach((data) => {
-      const annexes: Annexes = {
-        idAnexo: null,
-        idGrupo: idGrupo,
-        rutaAnexo: "https://docs.google.com/document/d/137T7f6j_lvQzt99db-TvlpktpWMWKS1a/edit?usp=drive_link&ouid=106867232357735510933&rtpof=true&sd=true",
-        nombreAnexo: data.name,
-        usuarioCreacionAnexo: user,
-        fechaCreacionAnexo: date,
-        usuarioModificacionAnexo: null,
-        fechaModificacionAnexo: null
-      }
-      
-      this.annexesServices.createAnnexesForm(annexes).subscribe((response) => {
-        setTimeout(() => {
-          this.router.navigateByUrl('main/developPlan/${idGrupo}');
-        }, 100);
-      })
-    })
-  }
- 
-*/
+  /* private saveAnexos(idGrupo: number, user: string, date: Date) {
+     this.selectedFiles.forEach((data) => {
+       const annexes: Annexes = {
+         idAnexo: null,
+         idGrupo: idGrupo,
+         rutaAnexo: "https://docs.google.com/document/d/137T7f6j_lvQzt99db-TvlpktpWMWKS1a/edit?usp=drive_link&ouid=106867232357735510933&rtpof=true&sd=true",
+         nombreAnexo: data.name,
+         usuarioCreacionAnexo: user,
+         fechaCreacionAnexo: date,
+         usuarioModificacionAnexo: null,
+         fechaModificacionAnexo: null
+       }
+       
+       this.annexesServices.createAnnexesForm(annexes).subscribe((response) => {
+         setTimeout(() => {
+           this.router.navigateByUrl('main/developPlan/${idGrupo}');
+         }, 100);
+       })
+     })
+   }
+  
+ */
 
 
-  enlace(plan:string){
+  enlace(plan: string) {
     this.router.navigateByUrl(`main/${plan}`);
 
   }
