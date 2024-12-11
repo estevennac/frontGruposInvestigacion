@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { MainComponent} from './pages/main/main.component';
+import { MainComponent } from './pages/main/main.component';
 import { DegreeComponent } from './pages/degree/degree.component';
 import { UserRolListComponent } from './pages/rol/rol.component';
 import { ChecklistFormComponent } from './pages/checklist/checklist-reg.component';
@@ -21,7 +21,7 @@ import { NationalPlanComponent } from './pages/administracion/national-plan/nati
 import { LegalFrameworkComponent } from './pages/administracion/legal-framework/legal-framework.component';
 
 import { OdsComponent } from './pages/administracion/ods/ods.component';
-import {CreationFormComponent} from './pages/creation-form/creation-form/creation-form.component';
+import { CreationFormComponent } from './pages/creation-form/creation-form/creation-form.component';
 import { EjecucionComponent } from './pages/ejecucion/ejecucion.component';
 import { TarjetSeguimientoComponent } from './pages/coordinadorGI/seguimiento/seguimiento.component';
 import { CargaBaremoComponent } from './pages/coordinadorGI/seguimiento/baremo/baremo.component';
@@ -33,7 +33,7 @@ import { AllInvGroupCDComponent } from './pages/reportes/all-inv-group-cd/all-in
 import { ScientificProductionGroupsComponent } from './pages/reportes/scientific-production-groups/scientific-production-groups.component';
 import { ReporteActividadesComponent } from './pages/reporte-actividades/reporte-actividades.component';
 import { SolicitudesForDirectorComponent } from './pages/directorDepartamento/solicitudes-de-creacion/obtenerSolicitudes.component';
-import { MostrarSolicitudForDirector } from './pages/directorDepartamento/solicitudes-de-creacion/mostrarSolicitud.component'; 
+import { MostrarSolicitudForDirector } from './pages/directorDepartamento/solicitudes-de-creacion/mostrarSolicitud.component';
 import { CargaMemoDirComponent } from './pages/directorDepartamento/memorandosSolicitudCreacion/memorando.component';
 import { GestionRolesComponent } from './pages/administracion/gestion-roles/gestion-crea/gestion-roles.component';
 import { GestionMenuComponent } from './pages/administracion/gestion-roles/gestion-menu.component';
@@ -93,19 +93,19 @@ const routes: Routes = [
   {
     path: 'principal',
     component: MainComponent
-  },{
-    path:'grupos-investigacion',
-    component:GruposControlComponent
-  },{path:'detalleGrupo',component:DetalleGIComponent},{
-path:'informePertinencia',
-component:InfPertinenciaComponent
-  },{
+  }, {
+    path: 'grupos-investigacion',
+    component: GruposControlComponent
+  }, { path: 'detalleGrupo', component: DetalleGIComponent }, {
+    path: 'informePertinencia',
+    component: InfPertinenciaComponent
+  }, {
     path: 'solDir2',
     component: MostrarSolicitudForDirector2
   },
   {
-path: 'ods',
-component: OdsComponent
+    path: 'ods',
+    component: OdsComponent
   },
   {
     path: 'rol',
@@ -115,9 +115,9 @@ component: OdsComponent
     path: 'degree',
     component: DegreeComponent
   },
- 
 
-  
+
+
   {
     path: 'checklist',
     component: ChecklistFormComponent
@@ -141,46 +141,48 @@ component: OdsComponent
   {
     path: 'acadDom',
     component: DominioAcademico
-    
+
   },
-  
+
   {
     path: 'line',
     component: LineComponent
   },
-  
+
   {
     path: 'area',
     component: AreaComponent
   },
-  
+
   {
     path: 'upper-plan',
     component: UpperPlanComponent
   },
- 
-  
+
+
   {
-    path:'national-plan',
+    path: 'national-plan',
     component: NationalPlanComponent
   },
-  {path:'coord2',
-component:SolicitudesForDirectorComponent}
+  {
+    path: 'coord2',
+    component: SolicitudesForDirectorComponent
+  }
   ,
 
-  
+
   {
-    path:'legal',
+    path: 'legal',
     component: LegalFrameworkComponent
   }
   ,
- 
+
   {
-    path:'remitirSolicitudes',
-    component:MostrarSolicitudForDirector
+    path: 'remitirSolicitudes',
+    component: MostrarSolicitudForDirector
 
   },
-  
+
   {
     path: 'crea',
     component: CreationFormComponent
@@ -189,236 +191,239 @@ component:SolicitudesForDirectorComponent}
   {
     path: 'ejecucion',
     component: EjecucionComponent
-  },{
-    path:'seguimiento',
+  }, {
+    path: 'seguimiento',
     component: TarjetSeguimientoComponent
   },
   {
-    path:'baremo',
+    path: 'baremo',
     component: CargaBaremoComponent
   },
   {
-    path:'solicitudes',
-    component:SolicitudesComponent
+    path: 'solicitudes',
+    component: SolicitudesComponent
   },
   {
-    path:'solicitudGI',
-    component:MostrarSolicitud
+    path: 'solicitudGI',
+    component: MostrarSolicitud
   },
   {
-    path:'reportMenu',
+    path: 'reportMenu',
     component: ReportMenuComponent
-  },{
-    path:'allGroups',
+  }, {
+    path: 'allGroups',
     component: AllInvGroupCDComponent
   },
   {
-    path:'cientificProduction',
-    component:ScientificProductionGroupsComponent
+    path: 'cientificProduction',
+    component: ScientificProductionGroupsComponent
   },
   {
-    path:'produccion-cientifica',
-    component:ReportesProdArticulosComponent
+    path: 'produccion-cientifica',
+    component: ReportesProdArticulosComponent
   }
   ,
   {
-    path:'reporte-actividades',
-    component:ReporteActividadesComponent
-  },{
-    path:'memo-solicitud',
-    component:CargaMemoDirComponent
-  },{
-    path:'solicitud-dir',
-    component:MostrarSolicitudForDirector
+    path: 'reporte-actividades',
+    component: ReporteActividadesComponent
+  }, {
+    path: 'memo-solicitud',
+    component: CargaMemoDirComponent
+  }, {
+    path: 'solicitud-dir',
+    component: MostrarSolicitudForDirector
   },
   {
-    path:'memo-solicitud-v',
-    component:CargaMemoVicComponent
+    path: 'memo-solicitud-v',
+    component: CargaMemoVicComponent
   },
   {
-    path:'solicitud-vic',
-    component:MostrarSolicitudForVicerector
+    path: 'solicitud-vic',
+    component: MostrarSolicitudForVicerector
   },
   {
-    path:'solicitud-com',
-    component:MostrarSolicitudForComision
+    path: 'solicitud-com',
+    component: MostrarSolicitudForComision
   },
   {
-path:'memo-solicitud-t',
-component:CargaMemoComComponent
-  },{
-    path:'solicitudes-t',
-    component:SolicitudesForComisionComponent
+    path: 'memo-solicitud-t',
+    component: CargaMemoComComponent
+  }, {
+    path: 'solicitudes-t',
+    component: SolicitudesForComisionComponent
 
-  },{
-    path:'solicitud-con',
-    component:MostrarSolicitudForConsejo
-
-  },
-  {
-    path:'solicitudes-A',
-    component:SolicitudesForConsejoComponent
-  },
-  {
-path:'memo-solicitud-A',
-component:CargaMemoConsejoComponent
-  },
-  {
-    path:'solicitud-Vic',
-    component:MostrarSolicitudForVicerectorA
+  }, {
+    path: 'solicitud-con',
+    component: MostrarSolicitudForConsejo
 
   },
   {
-    path:'solicitudes-V',
-    component:SolicitudesForVicerectorAComponent
+    path: 'solicitudes-A',
+    component: SolicitudesForConsejoComponent
   },
   {
-    path:'solicitud-Inscripcion',
-    component:SolicitudesForVicerectorIComponent
+    path: 'memo-solicitud-A',
+    component: CargaMemoConsejoComponent
   },
   {
-    path:'inscripcionV',
-    component:MostrarSolicitudForVicerectorI
+    path: 'solicitud-Vic',
+    component: MostrarSolicitudForVicerectorA
+
   },
   {
-    path:'memo-registro',
-    component:CargaMemoVicIComponent
+    path: 'solicitudes-V',
+    component: SolicitudesForVicerectorAComponent
   },
   {
-path:'memo-solicitud-V',
-component:CargaMemoVicAComponent
+    path: 'solicitud-Inscripcion',
+    component: SolicitudesForVicerectorIComponent
   },
   {
-    path:'rol-gestion',
-    component:GestionRolesComponent
+    path: 'inscripcionV',
+    component: MostrarSolicitudForVicerectorI
   },
   {
-    path:'rol-menu',
-    component:GestionMenuComponent
+    path: 'memo-registro',
+    component: CargaMemoVicIComponent
   },
   {
-    path:'rol-principal',
-    component:GestionRolesPrincipalComponent
+    path: 'memo-solicitud-V',
+    component: CargaMemoVicAComponent
   },
   {
-    path:'solicitudesV',
-    component:SolicitudesForVicerectorComponent
+    path: 'rol-gestion',
+    component: GestionRolesComponent
   },
   {
-    path:'validarSolicitud',
-    component:MostrarSolicitudForVicerector,
+    path: 'rol-menu',
+    component: GestionMenuComponent
   },
   {
-    path:'solicitudesA',
-    component:SolicitudesForAnalistaComponent
+    path: 'rol-principal',
+    component: GestionRolesPrincipalComponent
   },
   {
-    path:'validarSolicitudA',
-    component:MostrarSolicitudForAnalista
+    path: 'solicitudesV',
+    component: SolicitudesForVicerectorComponent
   },
   {
-    path:'ficha',
-    component:FichaFormComponent
+    path: 'validarSolicitud',
+    component: MostrarSolicitudForVicerector,
+  },
+  {
+    path: 'solicitudesA',
+    component: SolicitudesForAnalistaComponent
+  },
+  {
+    path: 'validarSolicitudA',
+    component: MostrarSolicitudForAnalista
+  },
+  {
+    path: 'ficha',
+    component: FichaFormComponent
   },
   //seguimiento
   {
-    path:'sol-informe',
-    component:CargaSolComComponent
+    path: 'sol-informe',
+    component: CargaSolComComponent
   },
   {
-    path:'grupos-a',
-    component:GruposForAnalistaComponent
+    path: 'grupos-a',
+    component: GruposForAnalistaComponent
   },
   {
-    path:'sol-informe-d',
-    component:CargaSolDirComponent
+    path: 'sol-informe-d',
+    component: CargaSolDirComponent
   },
   {
-    path:'grupos-d',
-    component:GruposForDirectorComponent
+    path: 'grupos-d',
+    component: GruposForDirectorComponent
   },
   //procesos de vinculacion desvinculacion
   {
-    path:'sol-vinc-c',
-    component:VinculacionForCorComponent
+    path: 'sol-vinc-c',
+    component: VinculacionForCorComponent
   },
   {
-    path:'solicitud-vin-c',
-    component:VinculacionForCoor
+    path: 'solicitud-vin-c',
+    component: VinculacionForCoor
   },
   {
-    path:'sol-vinc-d',
-    component:VinculacionForDirComponent
+    path: 'sol-vinc-d',
+    component: VinculacionForDirComponent
   },
   {
-    path:'sol-vinc-v',
-    component:VinculacionForVicComponent
+    path: 'sol-vinc-v',
+    component: VinculacionForVicComponent
   },
   {
-    path:'solicitud-vin-v',
-    component:VinculacionForVic
+    path: 'solicitud-vin-v',
+    component: VinculacionForVic
   },
-{
-  path:'acta-v',
-  component:ActaVicComponent
-},
-{
-  path:'sol-vinc-V',
-  component:ActualizacionForVicComponent
-},
-{
-path:'solicitud-vin-V',
-component:ActualizacionForVic
-},
-{
-path:'acta-V',
-component:MemoActualizacionVicComponent
-},
-{path:'acta-t',
-component:ActaTecComponent},
-{
-  path:'sol-vinc-t',
-  component:VinculacionForTecComponent
-},
-{
-  path:'solicitud-vin-t',
-  component:VinculacionForTec
-},
-{
-  path:'solicitud-vin-a',
-  component:ActualizacionAnaVic
-},
-{
-  path:'sol-vinc-a',
-  component:ActualizacionForAnaComponent
-},
-//reportes de Actividades
-{
-  path:'reports-c',
-  component:ActivityReportsForCorComponent},
-{
-  path:'ver-reportes',
-  component:VerReportesComponent
-},{
-  path:'propuesta',
-  component:PropuestaGIComponent
-},
-{
-  path:'infPertinencia',
-  component:InformeDePertinenciaComponent
-},
-{
-  path:'memoDIR_VITT',
-  component:MemoDirVIITComponent
-},
-{
-  path:'obj_institucionales',
-  component:InstStrategicObjComponent
-},
-{
-  path:'strategiesInst',
-  component:StrategiesComponent
-}
+  {
+    path: 'acta-v',
+    component: ActaVicComponent
+  },
+  {
+    path: 'sol-vinc-V',
+    component: ActualizacionForVicComponent
+  },
+  {
+    path: 'solicitud-vin-V',
+    component: ActualizacionForVic
+  },
+  {
+    path: 'acta-V',
+    component: MemoActualizacionVicComponent
+  },
+  {
+    path: 'acta-t',
+    component: ActaTecComponent
+  },
+  {
+    path: 'sol-vinc-t',
+    component: VinculacionForTecComponent
+  },
+  {
+    path: 'solicitud-vin-t',
+    component: VinculacionForTec
+  },
+  {
+    path: 'solicitud-vin-a',
+    component: ActualizacionAnaVic
+  },
+  {
+    path: 'sol-vinc-a',
+    component: ActualizacionForAnaComponent
+  },
+  //reportes de Actividades
+  {
+    path: 'reports-c',
+    component: ActivityReportsForCorComponent
+  },
+  {
+    path: 'ver-reportes',
+    component: VerReportesComponent
+  }, {
+    path: 'propuesta',
+    component: PropuestaGIComponent
+  },
+  {
+    path: 'infPertinencia',
+    component: InformeDePertinenciaComponent
+  },
+  {
+    path: 'memoDIR_VITT',
+    component: MemoDirVIITComponent
+  },
+  {
+    path: 'obj_institucionales',
+    component: InstStrategicObjComponent
+  },
+  {
+    path: 'strategiesInst',
+    component: StrategiesComponent
+  }
 ];
 
 

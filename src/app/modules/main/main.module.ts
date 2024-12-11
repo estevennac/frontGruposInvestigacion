@@ -143,9 +143,13 @@ import { InformePertinenciaComponent } from 'src/@vex/components/forms/relevance
 import { MostrarSolicitudForDirector2 } from './pages/directorDepartamento/solicitudes-de-creacion/mostrarSolicitud2.component';
 import { GruposControlComponent } from './pages/administracion/grupos-investigacion/grupos-investigacion.component';
 import { DetalleGIComponent } from './pages/administracion/grupos-investigacion/detalle-gi.component';
+import { CrearGIComponent } from './pages/administracion/grupos-investigacion/crearGI.component';
+
+
 @NgModule({
   declarations: [
     ProgressComponent,
+    //CrearGIComponent,
     DetalleGIComponent,
     GruposControlComponent,
     MostrarSolicitudForDirector2,
