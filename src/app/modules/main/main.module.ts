@@ -144,12 +144,16 @@ import { MostrarSolicitudForDirector2 } from './pages/directorDepartamento/solic
 import { GruposControlComponent } from './pages/administracion/grupos-investigacion/grupos-investigacion.component';
 import { DetalleGIComponent } from './pages/administracion/grupos-investigacion/detalle-gi.component';
 import { CrearGIComponent } from './pages/administracion/grupos-investigacion/crearGI.component';
+import { LineModalEdit } from './pages/administracion/grupos-investigacion/modales_gestion/lineModal.component';
+import{MembersModalEdit} from './pages/administracion/grupos-investigacion/modales_gestion/membersModal.component';
 
 
 @NgModule({
   declarations: [
     ProgressComponent,
-    //CrearGIComponent,
+    MembersModalEdit,
+    LineModalEdit,
+    CrearGIComponent,
     DetalleGIComponent,
     GruposControlComponent,
     MostrarSolicitudForDirector2,

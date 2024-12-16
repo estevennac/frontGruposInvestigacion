@@ -1,3 +1,4 @@
+import { Line } from "./line.types";
 export interface Area{
     idArea?:number;
     nombreArea?:string;
@@ -6,5 +7,5 @@ export interface Area{
     fechaCreacionArea?:Date;
     usuarioModificacionArea?:string;
     fechaModificacionArea?:Date;
-
+    lineas?: Line[];
 }

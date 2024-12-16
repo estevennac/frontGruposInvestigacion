@@ -189,3 +189,16 @@
   }
   /* Otros estilos permanecen igual */
   
+  .info-container {
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .column {
+    width: 48%; /* Ajusta el ancho de las columnas */
+  }
+  
+  p {
+    margin: 0.5em 0;
+  }
+  

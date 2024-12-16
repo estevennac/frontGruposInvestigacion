@@ -1,0 +1,68 @@
+<div class="cont">
+    <header>
+      <h1>Gestión de Áreas y Líneas de Investigación</h1>
+    </header>
+  
+    <table>
+        <thead>
+          <tr>
+            <th>Área</th>
+            <th>Línea</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let area of invGroup?.area">
+            <td [attr.rowspan]="area.lineas?.length">{{ area.nombreArea }}
+                <button class="delete" mat-mini-fab (click)="deleteArea(area.idArea)">
+                    <i class="fa fa-trash-alt" aria-hidden="true"></i> 
+                </button>
+            </td>
+            <td>
+              <div *ngFor="let linea of area.lineas">
+                {{ linea.nombreLinea }}
+              </div>
+            </td>
+            <td>
+              <div *ngFor="let linea of area.lineas">
+                <button class="delete" mat-mini-fab (click)="deleteLinea(linea.idLinea)">
+                    <i class="fas fa-trash-alt" aria-hidden="true"></i> 
+                </button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      
+  
+    <div *ngIf="loadingData">
+      <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
+    </div>
+  
+    <div *ngIf="!loadingData">
+      <form [formGroup]="myForm" (ngSubmit)="Enviar()">
+        <mat-form-field>
+          <mat-label>Áreas de Investigación</mat-label>
+          <mat-select [formControl]="areasControl" multiple>
+            <mat-option *ngFor="let area of areas" [value]="area.idArea">
+              {{ area.nombreArea }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+  
+        <mat-form-field *ngIf="areasControl.value">
+          <mat-label>Líneas de Investigación</mat-label>
+          <mat-select [formControl]="lineasControl" multiple>
+            <mat-option *ngFor="let linea of lineas" [value]="linea.idLinea">
+              {{ linea.nombreLinea }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+  
+        <button mat-raised-button color="primary" type="submit" [disabled]="!myForm.valid">
+          Guardar
+        </button>
+      </form>
+    </div>
+  </div>
+  

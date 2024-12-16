@@ -28,6 +28,9 @@ export class InvGroup_academicDomainService {
   getByGroup(id: number): Observable<AcademicDomain[]> {
     return this.http.get<AcademicDomain[]>(`${this.URL}/byGroup/${id}`);
   }
+  delete(idGroup: number, idDomain: number): Observable<any> {
+    return this.http.delete(`${this.URL}/${idDomain}/group/${idGroup}`);
+  }
 }
 
 

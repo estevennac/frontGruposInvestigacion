@@ -28,4 +28,7 @@ export class InvGroup_areaService {
   getByGroup(id: number): Observable<Area[]> {
     return this.http.get<Area[]>(`${this.URL}/byGroup/${id}`);
   }
+  delete(idGroup: number, idArea: number): Observable<any> {
+    return this.http.delete(`${this.URL}/${idArea}/group/${idGroup}`);
+  }
 }

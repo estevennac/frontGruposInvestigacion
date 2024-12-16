@@ -87,13 +87,17 @@ import { InfPertinenciaComponent } from './pages/coordinador-inv/informePertinen
 import { MostrarSolicitudForDirector2 } from './pages/directorDepartamento/solicitudes-de-creacion/mostrarSolicitud2.component';
 import { GruposControlComponent } from './pages/administracion/grupos-investigacion/grupos-investigacion.component';
 import { DetalleGIComponent } from './pages/administracion/grupos-investigacion/detalle-gi.component';
+import { CrearGIComponent } from './pages/administracion/grupos-investigacion/crearGI.component';
 
 
 const routes: Routes = [
   {
     path: 'principal',
     component: MainComponent
-  }, {
+  },{
+    path: 'crearGI',
+    component: CrearGIComponent
+  } ,{
     path: 'grupos-investigacion',
     component: GruposControlComponent
   }, { path: 'detalleGrupo', component: DetalleGIComponent }, {

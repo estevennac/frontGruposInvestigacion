@@ -28,4 +28,10 @@ export class InvGroup_linesService {
   getByGroup(id: number): Observable<Line[]> {
     return this.http.get<Line[]>(`${this.URL}/byGroup/${id}`);
   }
+  delete(idGroup: number, idLine: number): Observable<any> {
+    return this.http.delete(`${this.URL}/${idLine}/group/${idGroup}`);
+  }
+  deleteByArea(id:number): Observable<any> {
+    return this.http.delete(`${this.URL}/deleteByArea/${id}`);
+  }
 }

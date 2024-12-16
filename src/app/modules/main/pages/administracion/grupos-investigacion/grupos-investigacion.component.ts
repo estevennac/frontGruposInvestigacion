@@ -53,18 +53,10 @@ coordinador:Usuario;
     );
 
   }
-  openDialog(invGroup?: InvGroupForm): void {
-    const dialogRef = this.dialog.open(GIControl, {
-        width: '50%',
-        height: '70%',
-        data: { invGroup } // Pasar los datos del dominio si existe (para edición)
-    });
-
-    dialogRef.afterClosed().subscribe((result) => {
-        if (result) {
-            this.get(); // Actualizar la tabla si se creó o editó algo
-        }
-    });
+add(){
+  
+    this.router.navigate(['/main/crearGI']);
+  
 }
 
   

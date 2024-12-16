@@ -1,0 +1,73 @@
+
+<div class="cont">
+    <div class="container-fluid">
+        <div class="card">
+            <header>
+                <h1>Detalle del Grupo de Investigación</h1>
+            </header>
+            <mat-card>
+                <div class="info-container">
+                    <div class="column">
+                        <p><strong>Nombre del Grupo:</strong> {{
+                            invGroup.invGroup.nombreGrupoInv }}</p>
+                        <p><strong>Departamento:</strong> {{
+                            invGroup.invGroup.departamento }}</p>
+                        <p><strong>Acrónimo:</strong> {{
+                            invGroup.invGroup.acronimoGrupoinv }}</p>
+                    </div>
+                    <div class="column">
+                        <p *ngFor="let line of invGroup.line"><strong>Líneas de
+                                Investigación:</strong> {{ line.nombreLinea
+                            }}</p>
+                        <p *ngFor="let area of invGroup.area"><strong>Áreas de
+                                Investigación:</strong> {{ area.nombreArea
+                            }}</p>
+                        <p
+                            *ngFor="let acad of invGroup.academicDomain"><strong>Dominios
+                                Académicos:</strong> {{
+                            acad.nombreDominioAcademico }}</p>
+                    </div>
+                </div>
+                <table mat-table class="mat-table" matSort>
+                    <thead>
+                        <tr>
+                            <th>País</th>
+                            <th>Nombre del Docente</th>
+                            <th>Función</th>
+                            <th>Sede</th>
+                            <th>Universidad/Centro</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let users of invGroup.users">
+                            <td>{{ users.nacionalidad }}</td>
+                            <td>{{ users.nombre }}</td>
+                            <td>Miembro</td>
+                            <td>{{ users.departamento ? users.departamento :
+                                'Externo' }}</td>
+                            <td>{{ users.institucion }}</td>
+
+                        </tr>
+                        <tr>
+                            <td>{{invGroup.coordinador.nacionalidad}}</td>
+                            <td>{{invGroup.coordinador.nombre}}</td>
+                            <td>Coordinador</td>
+                            <td>{{invGroup.coordinador.departamento ?
+                                invGroup.coordinador.departamento :
+                                'Externo'}}</td>
+                            <td>{{invGroup.coordinador.institucion}}</td>
+                        </tr>
+                    </tbody>
+                    <!-- Columna: País -->
+
+                </table>
+                <button class="edit" mat-button  (click)="EditLine()">
+                    Editar lineas y áreas de investigación
+                  </button>
+                  <button class="edit" mat-button  (click)="EditMembers()">
+                    Editar integrantes
+                  </button>
+            </mat-card>
+        </div>
+    </div>
+</div>

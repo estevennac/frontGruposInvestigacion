@@ -37,7 +37,9 @@ import { Usuario } from 'src/app/types/usuario.types';
 export class CrearGIComponent implements OnInit {
   selectedUsers: any[] = [];
   documentosCargados = {};
-
+  token: string;
+  selectedUserCoord: any;
+  userIdSelectCoord: number;
   selectedUsersExterns: any[] = [];
   selectedFiles: File[] = [];
   userIdSelect: any[] = [];
@@ -84,8 +86,9 @@ export class CrearGIComponent implements OnInit {
     private invGroup_academicDomainService: InvGroup_academicDomainService,
     private invGroup_linesService: InvGroup_linesService,
     private userRolService: UserRolService,
-    private annexesServices: AnnexesService, 
-    private documentService: DocumentsService
+    private documentService: DocumentsService,
+    private annexesService: AnnexesService,
+    private matSnackBar: MatSnackBar
   ) { this.usuarios = []; }
 
   ngOnInit(): void {
@@ -94,7 +97,9 @@ export class CrearGIComponent implements OnInit {
     this.currentUserId = Number(sessionStorage.getItem("userId"));
     this.areasControl.valueChanges.subscribe((selectedAreas: any[]) => {
       this.updateLineasByAreas(selectedAreas);
+
     });
+    this.cargarFormularios();
   }
   updateLineasByAreas(selectedAreas: any[]) {
     this.lineas = []; // Limpia las líneas actuales
@@ -111,10 +116,11 @@ export class CrearGIComponent implements OnInit {
         });
       });
     }
+
   }
 
 
-  cargarFormularios(invGroup) {
+  cargarFormularios() {
     this.loadDominios();
     this.loadAreas();
     this.dominiosControl.patchValue(this.dominios);
@@ -152,7 +158,7 @@ export class CrearGIComponent implements OnInit {
   }
 
 
-  get grupoInvform() {
+  get grupoInv1() {
     return this.myForm.get('grupoInv1') as FormGroup;
   }
   get grupoInv2() {
@@ -194,6 +200,7 @@ export class CrearGIComponent implements OnInit {
     this.areaService.getAll().subscribe(data => {
       this.areas = data.filter(area => area.estado === true);
     });
+    this.loadingData=false;
   }
 
   openDialog(): void {
@@ -222,6 +229,28 @@ export class CrearGIComponent implements OnInit {
       }
     });
   }
+
+  openDialogCoord(): void {
+    const dialogRef = this.dialog.open(MembersGroup, {
+      width: '60%',
+      height: '90%',
+      data: { usuarios: this.usuarios }
+    });
+  
+    dialogRef.afterClosed().subscribe((data: { user?: any; usuarioValue?: any } | null) => {
+      if (data) {
+        if (data.usuarioValue) {
+          this.userIdSelectCoord = data.usuarioValue;
+        }
+        if (data.user) {
+          this.selectedUserCoord =  data.user,data.usuarioValue;
+        }
+      console.log("1",this.selectedUserCoord);
+      }
+    });
+  }
+  
+
 
   borrarInvestigador(index: number) {
     this.selectedUsers.splice(index, 1);
@@ -255,30 +284,98 @@ export class CrearGIComponent implements OnInit {
     this.investigadoresExterns.pop(); // Eliminar el último índice
   }
 
+  selectedFile: File | undefined;
 
-   onFileSelected(event: Event) {
-    const input = event.target as HTMLInputElement;
-    const files = input.files;
-   
-   
+  onDrop(event: any) {
+    event.preventDefault();
+    const files = event.dataTransfer.files;
+    if (files.length > 0) {
+      const file = files[0];
+      const fileExtension = file.name.split('.').pop().toLowerCase();
+      if (fileExtension !== 'pdf') {
+        alert('Solo se permiten archivos PDF.');
+        return;
+      }
+      this.selectedFile = file;
+
+    }
+  }
+
+  onDragOver(event: any) {
+    event.preventDefault();
+    event.stopPropagation();
+    event.target.classList.add('drag-over');
+  }
+  onDragLeave(event: any) {
+    event.preventDefault();
+    event.stopPropagation();
+    event.target.classList.remove('drag-over');
   }
 
 
+  groupId:number;
+  onFileSelected(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    const files = input.files;
+    
+    if (files && files.length > 0) {
+      const file = files[0];
+  
+      // Verificar si el archivo es una imagen válida
+      const allowedTypes = ['image/png', 'image/jpeg', 'image/jpg', 'image/gif'];
+      if (allowedTypes.includes(file.type)) {
+        // Crear nombre personalizado para el archivo
+        const year = this.currentDate.getFullYear();
+        const month = ('0' + (this.currentDate.getMonth() + 1)).slice(-2);
+        const day = ('0' + this.currentDate.getDate()).slice(-2);
+        const customFileName = `imagen_GI_${year}-${month}-${day}`;
+  
+        // Renombrar archivo
+        const archivoRenombrado = new File([file], customFileName, { type: file.type });
+        this.selectedFile = archivoRenombrado;
+  
+        console.log('Archivo seleccionado y renombrado:', archivoRenombrado);
+      } else {
+        alert('Por favor, seleccione un archivo de imagen válido (PNG, JPEG, JPG, GIF).');
+        input.value = ''; // Limpiar el input en caso de error
+      }
+    } else {
+      alert('No se seleccionó ningún archivo.');
+    }
+  }
+  
+
+  validateFileType() {
+    if (this.selectedFile) {
+      const fileExtension = this.selectedFile.name.split('.').pop().toLowerCase();
+      if (fileExtension !== 'png') {
+        alert('Solo se permiten archivos PNG.');
+        this.clearFileInput();
+      }
+    }
+  }
+
+  clearFileInput() {
+    const fileInput = document.getElementById('fileInput') as HTMLInputElement;
+    if (fileInput) {
+      fileInput.value = '';
+    }
+  }
 
   
   //Envio del Formulario
   HandleSubmit() {
     if (this.myForm.valid) {
       this.loadingData = true;
-      //const partes = this.userCoordinador.departamento.split(" - ");
-      //const departamento = partes[1].trim();
+      const partes = this.selectedUserCoord.ubicacion.split(" - ");
+      const departamento = partes[1].trim();
       const grupoInvData: InvGroupForm = {
         idGrupoInv: 1,
-        idCoordinador: this.currentUserId,
+        idCoordinador: this.selectedUserCoord.idBd,
         nombreGrupoInv: this.myForm.value.grupoInv1.nombreGrupoInv,
         estadoGrupoInv: "inicialpp",
         acronimoGrupoinv: this.myForm.value.grupoInv1.acronimoGrupoinv,
-       // departamento: departamento,
+        departamento: departamento,
         usuarioCreacion: this.currentUser,
         fechaCreacion: this.currentDate,
         usuarioModificacion: null,
@@ -287,13 +384,52 @@ export class CrearGIComponent implements OnInit {
       console.log("datos antes de enviar", grupoInvData)
       this.solCreaGIFormService.createInvGroup(grupoInvData).subscribe(
         (response) => {
+          this.idGrupo=response;
             this.saveAcademicDomain(response);
               this.saveArea(response);
               this.saveLine(response);
               this.saveMember(response);
+              this.saveImage(response);
         });
 
   }}
+  fileUploaded: boolean = false; 
+
+  saveImage(id: number) {
+    if (this.selectedFile) {
+      //this.loading = true;
+      const fileToUpload = this.selectedFile;
+      const sistema = 'publicaciones'
+      this.documentService.saveDocument(this.token, fileToUpload, sistema).subscribe(response => {
+      const annexesData: Annexes = {
+        idAnexo: 0, 
+        usuarioCreacionAnexo: this.currentUser, 
+        fechaCreacionAnexo: this.currentDate, 
+        usuarioModificacionAnexo: '', 
+        fechaModificacionAnexo: null, 
+        idGrupo: id,
+        nombreAnexo: response.fileName,
+        rutaAnexo: response.uuid
+      };
+
+      this.annexesService.createAnnexesForm(annexesData).subscribe(
+        (response) => {
+          this.fileUploaded = true; // Establecer la bandera a verdadero cuando el archivo se haya cargado correctamente
+          setTimeout(() => {
+            this.matSnackBar.open('Solicitudes Enviados correctamente.', 'Cerrar', {
+                duration: 3000,
+              });
+            this.router.navigateByUrl('main/grupos-investigacion');
+          }, 1000);
+        })
+      }), 
+        (error) => {
+          console.error('Error al subir el archivo:', error);
+        }
+      }
+
+
+  }
 
   //Guardamos los dominios academicos,lineas y areas relacionadas al la solicitud de creacion y al grupo de Investigacion
   private saveAcademicDomain(id: number) {

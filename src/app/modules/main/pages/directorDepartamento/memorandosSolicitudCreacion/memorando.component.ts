@@ -69,7 +69,6 @@ export class CargaMemoDirComponent implements OnInit {
     event.preventDefault();
     event.stopPropagation();
     event.target.classList.remove('drag-over');
-
   }
 
   onFileSelected(event: any) {
