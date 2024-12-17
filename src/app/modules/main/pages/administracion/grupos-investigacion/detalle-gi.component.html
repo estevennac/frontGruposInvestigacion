@@ -3,22 +3,20 @@
     <div class="container-fluid">
         <div class="card">
             <header>
-                <h1>Detalle del Grupo de Investigación</h1>
+                <h1>{{invGroup.invGroup.nombreGrupoInv }} - {{
+                            invGroup.invGroup.acronimoGrupoinv }}</h1>
             </header>
             <mat-card>
                 <div class="info-container">
                     <div class="column">
-                        <p><strong>Nombre del Grupo:</strong> {{
-                            invGroup.invGroup.nombreGrupoInv }}</p>
                         <p><strong>Departamento:</strong> {{
                             invGroup.invGroup.departamento }}</p>
-                        <p><strong>Acrónimo:</strong> {{
-                            invGroup.invGroup.acronimoGrupoinv }}</p>
+                    <p *ngFor="let line of invGroup.line"><strong>Líneas de
+                        Investigación:</strong> {{ line.nombreLinea
+                    }}</p>
                     </div>
                     <div class="column">
-                        <p *ngFor="let line of invGroup.line"><strong>Líneas de
-                                Investigación:</strong> {{ line.nombreLinea
-                            }}</p>
+                        
                         <p *ngFor="let area of invGroup.area"><strong>Áreas de
                                 Investigación:</strong> {{ area.nombreArea
                             }}</p>
@@ -27,6 +25,9 @@
                                 Académicos:</strong> {{
                             acad.nombreDominioAcademico }}</p>
                     </div>
+                    <img *ngIf="imagenUrl" [src]="imagenUrl" alt="Imagen del Grupo" />
+<p *ngIf="!imagenUrl">No se pudo cargar la imagen.</p>
+
                 </div>
                 <table mat-table class="mat-table" matSort>
                     <thead>
@@ -66,6 +67,9 @@
                   </button>
                   <button class="edit" mat-button  (click)="EditMembers()">
                     Editar integrantes
+                  </button>
+                  <button class="edit" mat-button  (click)="EditGroup()">
+                    Editar grupo
                   </button>
             </mat-card>
         </div>

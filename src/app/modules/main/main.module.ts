@@ -146,11 +146,12 @@ import { DetalleGIComponent } from './pages/administracion/grupos-investigacion/
 import { CrearGIComponent } from './pages/administracion/grupos-investigacion/crearGI.component';
 import { LineModalEdit } from './pages/administracion/grupos-investigacion/modales_gestion/lineModal.component';
 import{MembersModalEdit} from './pages/administracion/grupos-investigacion/modales_gestion/membersModal.component';
-
+import { GroupModalEdit } from './pages/administracion/grupos-investigacion/modales_gestion/groupModal.component';
 
 @NgModule({
   declarations: [
     ProgressComponent,
+    GroupModalEdit,
     MembersModalEdit,
     LineModalEdit,
     CrearGIComponent,

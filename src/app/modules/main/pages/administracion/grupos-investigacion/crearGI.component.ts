@@ -132,6 +132,7 @@ export class CrearGIComponent implements OnInit {
         idUser: sessionStorage.getItem('idUser'),
         nombreGrupoInv: ['', Validators.required],
         acronimoGrupoinv: ['', Validators.required],
+        //coordinador:['', Validators.required]
       }),
       grupoInv2: this.builder.group({
         dominios: this.dominiosControl,

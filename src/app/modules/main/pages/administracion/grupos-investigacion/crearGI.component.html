@@ -5,12 +5,11 @@
     <div class="container-fluid">
         <div class="card" *ngIf="!loadingData">
             <header>
-                <h1>CREACIÓN DE GRUPO DE INVESTIGACIÓN</h1>
+                <h1>Creación del Grupo de Investigación</h1>
             </header>
         </div>
     </div>
 
-    <!-- FASE DE CREACIÓN DEL GRUPO DE INVESTIGACIÓN (FORMULARIO CUANDO SE ENVÍA LA SOLICITUD POR PRIMERA VEZ) -->
     <div class="container-fluid">
         <form [formGroup]="myForm" (ngSubmit)="HandleSubmit()">
             <mat-stepper [linear]="isLinear" #stepper>
@@ -38,16 +37,29 @@
                                         placeholder="Ingrese el acrónimo">
                                 </mat-form-field>
                             </div>
+                            <div class="grid-item">
 
                             <button type="button" mat-raised-button
-                                color="primary" class="btn-add"
+                                color="warn" 
                                 (click)="openDialogCoord()" *ngIf="!selectedUserCoord">Coordinador</button>
-                                <h1 *ngIf="selectedUserCoord">Coordinador:{{selectedUserCoord.nombres}}</h1>
+                                <mat-form-field appearance="fill" *ngIf="selectedUserCoord" class="coordinator-field">
+                                    <mat-label>Coordinador:</mat-label>
+                                    <input
+                                      matInput
+                                      id="coordinador"
+                                      type="text"
+                                      [value]="selectedUserCoord.nombres"
+                                      [disabled]="true"
+                                    />
+                                  </mat-form-field>
+                            </div>
+
                             <div class="grid-item">
+                                <div>
                                 <button type="button" mat-raised-button
                                     color="primary"
                                     [disabled]="!myForm.get('grupoInv1').valid"
-                                    matStepperNext>Siguiente</button>
+                                    matStepperNext>Siguiente</button></div>
                             </div>
                         </div>
                     </div>
@@ -99,6 +111,7 @@
                                 </mat-form-field>
                             </div>
                             <div class="grid-item">
+                                <div>
                                 <button type="button" mat-raised-button
                                     color="primary"
                                     matStepperPrevious>Regresar</button>
@@ -106,7 +119,7 @@
                                     color="primary"
                                     [disabled]="!dominiosControl.value?.length || !areasControl.value?.length || !lineasControl.value?.length"
                                     matStepperNext>Siguiente</button>
-                            </div>
+                            </div></div>
                         </div>
                     </div>
                 </mat-step>
@@ -201,10 +214,9 @@
                 <mat-step [stepControl]="grupoInv4" label="Imagen del Grupo">
                     <div class="creacion-grupo-investigacion">
                         <div formGroupName="grupoInv4">
-                            <div class="drag-drop" (drop)="onDrop($event)" (dragover)="onDragOver($event)">
-                                <p>Arrastra y suelta el documento aquí o haz clic para seleccionarlo.</p>
+                            <div >
                                 <div class="custom-file-input">
-                                  <label for="fileInput">Seleccionar archivo</label>
+                                  <label for="fileInput">Seleccione la Imagen del Grupo</label>
                                   <input id="fileInput" type="file" (change)="onFileSelected($event)" accept=".png" />
                                 </div>
                               </div>

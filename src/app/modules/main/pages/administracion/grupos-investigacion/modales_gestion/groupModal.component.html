@@ -1,0 +1,97 @@
+
+<div class="cont" *ngIf="!mostrar">
+    <header>
+        <h1>Gestión de Grupos</h1>
+    </header>
+    <p *ngIf="!myForm">Cargando datos del grupo...</p>
+    <form *ngIf="myForm" [formGroup]="myForm" (ngSubmit)="onSubmit()"
+        class="form-container">
+        <mat-form-field appearance="fill" class="full-width">
+            <mat-label>Coordinador</mat-label>
+            <input matInput [value]="coordinatorName" readonly />
+        </mat-form-field>
+        <button mat-icon-button type="button" style="background-color: darkgreen;" (click)="addUser()">
+            <i class="fa-regular fa-pen-to-square"></i>
+        </button>
+        <mat-form-field appearance="fill" class="full-width">
+            <mat-label>Nombre del Grupo</mat-label>
+            <input matInput formControlName="nombreGrupoInv" />
+        </mat-form-field>
+        <mat-form-field appearance="fill" class="full-width">
+            <mat-label>Acrónimo</mat-label>
+            <input matInput formControlName="acronimoGrupoinv" />
+        </mat-form-field>
+        <mat-form-field appearance="fill" class="full-width">
+            <mat-label>Misión</mat-label>
+            <textarea matInput formControlName="mision"></textarea>
+        </mat-form-field>
+        <mat-form-field appearance="fill" class="full-width">
+            <mat-label>Visión</mat-label>
+            <textarea matInput formControlName="vision"></textarea>
+        </mat-form-field>
+        <mat-form-field appearance="fill" class="full-width">
+            <mat-label>Departamento</mat-label>
+            <input matInput formControlName="departamento" />
+        </mat-form-field>
+        <div class="button-container">
+            <button mat-raised-button color="primary" type="submit"
+                [disabled]="myForm.invalid">Guardar</button>
+        </div>
+    </form>
+</div>
+
+<div class="cont" *ngIf="mostrar">
+    <div class="container-fluid">
+      <form [formGroup]="userForm" (ngSubmit)="buscarMiembro()" class="container">
+        <header class="header">
+          <h1 class="title">Añadir Investigadores</h1>
+        </header>
+        <div class="grid-container">
+          <div class="grid-item">
+            <mat-form-field appearance="fill">
+              <mat-label>Ingrese el usuario del miembro a buscar</mat-label>
+              <input matInput formControlName="usuario">
+            </mat-form-field>
+          </div>
+          <div class="grid-item">
+            <button mat-raised-button color="primary" class="btn-verde" (click)="buscarMiembro()">
+              <i class="fas fa-search"></i>
+            </button>
+          </div>
+          <div class="grid-item" *ngIf="user">
+            <div class="info">
+              <!-- Información del usuario -->
+              <h2>{{user.nombres}}</h2>
+              <h3>{{user.tipo}}</h3>
+              <h3>{{user.escalafon}}</h3>
+              <h3>{{user.ubicacion}}</h3>
+              <h3>{{user.correoInstitucional}} - {{user.correoPersonal}}</h3>
+              <h3>{{user.id}} - {{user.cedula}}</h3>
+            </div>
+          </div>
+          <div class="grid-item" *ngIf="user">
+            <div class="info">
+              <!-- Imagen del usuario -->
+              <img [src]="user.urlFoto" alt="Imagen del usuario" class="rounded-image">
+            </div>
+          </div>
+          <div class="grid-item" *ngIf="userNotFound">
+            <div class="info">
+              <p>El usuario no existe.</p>
+            </div>
+          </div>
+        </div>
+        <button mat-icon-button type="button" style="background-color: darkgreen;" (click)="cancelar()">
+            <i class="fa-regular fa-pen-to-square"></i>
+        </button>
+      </form>
+      <div mat-dialog-actions>
+        <button mat-button class="btn-agregar" 
+                (click)="crearUsuario(user)"
+                *ngIf="isSearchClicked && !userNotFound">
+          Añadir
+        </button>
+      </div>
+    </div>
+  </div>
+  

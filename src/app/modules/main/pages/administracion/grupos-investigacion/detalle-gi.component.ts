@@ -10,6 +10,10 @@ import { Usuario } from 'src/app/types/usuario.types';
 import { catchError, map, Observable, of } from 'rxjs';
 import { LineModalEdit } from './modales_gestion/lineModal.component';
 import { MembersModalEdit } from './modales_gestion/membersModal.component';
+import { GroupModalEdit } from './modales_gestion/groupModal.component';
+import { AnnexesService } from 'src/app/core/http/annexes/annexes.service';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser'; // Importa DomSanitizer y SafeResourceUrl
+import { DocumentsService } from 'src/app/core/http/documentos/documents.service';
 @Component({
   selector: 'app-grupos-investigacion-crud',
   templateUrl: './detalle-gi.component.html',
@@ -21,12 +25,17 @@ coordinador:Usuario;
 
   constructor(private router: Router, private giService: InvGroupService,
     private usuarioService: UsuarioService,
-    private dialog:MatDialog
+    private annexesService:AnnexesService,
+    private dialog:MatDialog,
+    private documentsService: DocumentsService,
+    private sanitizer: DomSanitizer,
   ) {}
 id:number;
   ngOnInit() {
    this.id= Number(sessionStorage.getItem('selectedId'))
     this.get(this.id);
+    this.token=sessionStorage.getItem('access_token');
+
   }
 
   get(id:number) {
@@ -34,8 +43,38 @@ id:number;
       this.invGroup = data;
       console.log(this.invGroup);
     });
+   this.getImage()
   }
+  token:string;
+  imagenUrl: SafeResourceUrl | undefined;
 
+  getImage() {
+    this.annexesService.getByGroupType(this.id, 'imagen_GI').subscribe((data) => {
+      console.log('ann', data);
+  
+      // Asegurarse de que haya datos antes de continuar
+      if (data && data.length > 0) {
+        this.documentsService.getDocument(this.token, data[0].rutaAnexo, data[0].nombreAnexo)
+          .subscribe({
+            next: (blob) => {
+              // Convertir el blob en una URL de imagen
+              const imageBlob = new Blob([blob], { type: 'image/jpeg' }); // Cambiar el tipo MIME si la imagen es diferente, como 'image/png'
+              const imageUrl = window.URL.createObjectURL(imageBlob);
+  
+              // Usar la URL en una propiedad que se enlazará en la plantilla
+              this.imagenUrl = this.sanitizer.bypassSecurityTrustUrl(imageUrl); // Marcar la URL como segura
+              console.log('imagenUrl', this.imagenUrl);
+            },
+            error: (err) => {
+              console.error('Error al cargar la imagen:', err);
+            }
+          });
+      } else {
+        console.warn('No se encontraron anexos para el grupo.');
+      }
+    });
+  }
+  
   goBack() {
     this.router.navigate(['main/admin']);
   }
@@ -44,8 +83,6 @@ id:number;
       const dialogRef = this.dialog.open(LineModalEdit, {
           width: '80%',
           height: '70%',
-          
-          //data: { area } // Pasar los datos del dominio si existe (para edición)
       });
   
       dialogRef.afterClosed().subscribe((result) => {
@@ -59,8 +96,6 @@ id:number;
     const dialogRef = this.dialog.open(MembersModalEdit, {
         width: '80%',
         height: '70%',
-        
-        //data: { area } // Pasar los datos del dominio si existe (para edición)
     });
 
     dialogRef.afterClosed().subscribe((result) => {
@@ -69,5 +104,18 @@ id:number;
         }
         this.get(this.id);
     });
+}
+
+EditGroup(): void {
+  const dialogRef = this.dialog.open(GroupModalEdit, {
+      width: '80%',
+      height: '70%',
+  });
+  dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+          this.get(this.id);
+      }
+      this.get(this.id);
+  });
 }
 }
