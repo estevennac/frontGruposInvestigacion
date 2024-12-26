@@ -14,21 +14,38 @@
                     <p *ngFor="let line of invGroup.line"><strong>Líneas de
                         Investigación:</strong> {{ line.nombreLinea
                     }}</p>
+                                            
+                                            <p *ngFor="let area of invGroup.area"><strong>Áreas de
+                                                Investigación:</strong> {{ area.nombreArea
+                                            }}</p>
+                                        <p
+                                            *ngFor="let acad of invGroup.academicDomain"><strong>Dominios
+                                                Académicos:</strong> {{
+                                            acad.nombreDominioAcademico }}</p>
                     </div>
-                    <div class="column">
-                        
-                        <p *ngFor="let area of invGroup.area"><strong>Áreas de
-                                Investigación:</strong> {{ area.nombreArea
-                            }}</p>
-                        <p
-                            *ngFor="let acad of invGroup.academicDomain"><strong>Dominios
-                                Académicos:</strong> {{
-                            acad.nombreDominioAcademico }}</p>
+                    <div class="column"  >
+                        <div class="img-container">
+                            <img class="imgLogo" *ngIf="imagenUrl" [src]="imagenUrl" alt="Imagen del Grupo" />
+                            <p *ngIf="!imagenUrl">No se pudo cargar la imagen.</p>
+                        </div>
+
                     </div>
-                    <img *ngIf="imagenUrl" [src]="imagenUrl" alt="Imagen del Grupo" />
-<p *ngIf="!imagenUrl">No se pudo cargar la imagen.</p>
+
 
                 </div>
+                <div class="modal-buttons">
+                    <button color="primary" mat-button (click)="EditLine()">
+                        <i class="fa fa-edit"></i>Líneas y áreas
+                    
+                    </button>
+                    <button color="primary" mat-button (click)="EditMembers()">
+                        <i class="fa fa-edit"></i>Integrantes
+                    </button>
+                    <button color="primary" mat-button (click)="EditGroup()">
+                        <i class="fa fa-edit"></i>Grupo
+                    </button>
+                  </div>
+                  
                 <table mat-table class="mat-table" matSort>
                     <thead>
                         <tr>
@@ -59,18 +76,8 @@
                             <td>{{invGroup.coordinador.institucion}}</td>
                         </tr>
                     </tbody>
-                    <!-- Columna: País -->
-
                 </table>
-                <button class="edit" mat-button  (click)="EditLine()">
-                    Editar lineas y áreas de investigación
-                  </button>
-                  <button class="edit" mat-button  (click)="EditMembers()">
-                    Editar integrantes
-                  </button>
-                  <button class="edit" mat-button  (click)="EditGroup()">
-                    Editar grupo
-                  </button>
+
             </mat-card>
         </div>
     </div>

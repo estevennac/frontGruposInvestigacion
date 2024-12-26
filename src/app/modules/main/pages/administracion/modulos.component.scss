@@ -231,3 +231,18 @@ tr:nth-child(odd) {
 p {
   margin: 0.5em 0;
 }
+
+.imgLogo {
+  width: 180px;  /* Define el ancho deseado */
+  height: 180px; /* Define la altura deseada */
+  object-fit: contain; /* Evita la deformación y ajusta la imagen dentro del contenedor */
+  object-position: center
+}
+.modal-buttons {
+  display: flex;
+  flex-direction: row;
+  gap: 50px;
+  width: 100%; 
+  align-items: center;
+  text-align: center;
+}

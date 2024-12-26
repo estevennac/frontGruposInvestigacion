@@ -8,8 +8,7 @@
 
 <!-- Aparece Unicamente cuando se debe cargar el formulario de creación de grupo de investigación -->
             <header *ngIf="!invGroupExists">
-                <h1>FORMULARIO DE SOLICITUD DE CREACIÓN DE GRUPO DE
-                    INVESTIGACIÓN</h1>
+                <h1>Formulario de Solicitud de creación de grupo de Investigación</h1>
                 </header>
                     <div *ngIf="invGroupExists">
                    
@@ -426,8 +425,8 @@
                                         mat-raised-button color="primary"
                                         matStepperPrevious>Regresar</button>
 <!-- Deshabilitar el botón Enviar hasta que documentosCompletosCargados sea true -->
-<button type="button" mat-raised-button color="primary" type="submit" matStepperNext
-        [disabled]="selectedUsers.length === 0 || !documentosCompletosCargados">Enviar</button>
+<button type="button" mat-raised-button color="primary"  matStepperNext
+        [disabled]="selectedUsers.length <4 || !documentosCompletosCargados">Enviar</button>
 
        
                                 </div>
@@ -435,58 +434,28 @@
 
                         </div>
                     </mat-step>
-
-                    <!-- ANEXOS- ANTERIOR FORMULARIO VÁLIDO -->
-                     <!--
-                    <mat-step [stepControl]="grupoInv4" label="Anexos">
+                    <mat-step [stepControl]="grupoInv4" label="Imagen del Grupo">
                         <div class="creacion-grupo-investigacion">
                             <div formGroupName="grupoInv4">
-                                <div class="fila">
-                                    <div class="grid-items">
-                                        <mat-label>Resúmen del Grupo (máximo 800
-                                            caracteres):</mat-label>
+                                <div >
+                                    <div class="custom-file-input">
+                                      <label for="fileInput">Seleccione la Imagen del Grupo</label>
+                                      <input id="fileInput" type="file" (change)="imageSelected($event)" accept=".png" />
                                     </div>
-                                    <div class="grid-items">
-                                        <input type="file"
-                                            accept=".pdf"
-                                            (change)="anexos($event,'r')">
-                                    </div>
-
-                                    <div class="grid-items">
-                                        <mat-label>Certificado de categoría del
-                                            Docente(1 pdf por
-                                            todos):</mat-label>
-
-                                    </div>
-                                    <div class="grid-items">
-                                        <input type="file"
-                                            accept=".pdf"
-                                            (change)="anexos($event,'c')">
-                                    </div>
-
-                                    <div class="grid-items">
-                                        <mat-label>Méritos
-                                            Científicos:</mat-label>
-
-                                    </div>
-                                    <div class="grid-items">
-                                        <input type="file"
-                                            accept=".pdf"
-                                            (change)="anexos($event,'m')">
-                                    </div>
-
-                                    <div class="grid-item">
-                                        <button mat-raised-button type="button"
-                                            color="primary"
-                                            matStepperPrevious>Regresar</button>
-                                        <button mat-raised-button type="submit"
-                                            color="primary">Enviar</button>
-                                    </div>
-                                </div>
-
+                                  </div>
                             </div>
+                            <div class="grid-item">
+                                <div>
+                                    <button type="button" mat-raised-button
+                                        color="primary"
+                                        matStepperPrevious>Regresar</button>
+                                    <button type="submit" mat-raised-button
+                                        color="primary"
+                                        >Guardar</button>
+    
+                                </div> </div>
                         </div>
-                    </mat-step>-->
+                    </mat-step>
 
                 </mat-stepper>
             </form>

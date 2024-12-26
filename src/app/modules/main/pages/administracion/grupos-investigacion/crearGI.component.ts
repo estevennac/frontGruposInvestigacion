@@ -371,12 +371,13 @@ export class CrearGIComponent implements OnInit {
       const partes = this.selectedUserCoord.ubicacion.split(" - ");
       const departamento = partes[1].trim();
       const grupoInvData: InvGroupForm = {
-        idGrupoInv: 1,
+        idGrupoInv: null,
         idCoordinador: this.selectedUserCoord.idBd,
         nombreGrupoInv: this.myForm.value.grupoInv1.nombreGrupoInv,
         estadoGrupoInv: "inicialpp",
         acronimoGrupoinv: this.myForm.value.grupoInv1.acronimoGrupoinv,
         departamento: departamento,
+        proceso:"activo",
         usuarioCreacion: this.currentUser,
         fechaCreacion: this.currentDate,
         usuarioModificacion: null,

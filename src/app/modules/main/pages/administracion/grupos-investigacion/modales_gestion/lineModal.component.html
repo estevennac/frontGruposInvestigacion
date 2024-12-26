@@ -14,7 +14,7 @@
         <tbody>
           <tr *ngFor="let area of invGroup?.area">
             <td [attr.rowspan]="area.lineas?.length">{{ area.nombreArea }}
-                <button class="delete" mat-mini-fab (click)="deleteArea(area.idArea)">
+                <button class="warn" mat-mini-fab (click)="deleteArea(area.idArea)">
                     <i class="fa fa-trash-alt" aria-hidden="true"></i> 
                 </button>
             </td>
@@ -25,7 +25,7 @@
             </td>
             <td>
               <div *ngFor="let linea of area.lineas">
-                <button class="delete" mat-mini-fab (click)="deleteLinea(linea.idLinea)">
+                <button class="warn" mat-mini-fab (click)="deleteLinea(linea.idLinea)">
                     <i class="fas fa-trash-alt" aria-hidden="true"></i> 
                 </button>
               </div>

@@ -228,3 +228,25 @@ button.custom-button:disabled {
 .form-container button:hover {
   background-color: #00b318;
 }
+.modal-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 50px; /* Espacio entre los botones */
+  width: 100%; /* Se asegura que los botones ocupen todo el ancho */
+}
+
+.img-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+  width: 10px;  /* Define el ancho deseado */
+  height: 10px; /* Define la altura deseada */
+}
+
+.imgLogo {
+  width: 10px;  /* Define el ancho deseado */
+  height: 10px; /* Define la altura deseada */
+  object-fit: contain; /* Evita la deformación y ajusta la imagen dentro del contenedor */
+  object-position: center
+}

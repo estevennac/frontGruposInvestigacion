@@ -2,7 +2,6 @@ import { Component, OnInit, Injectable } from '@angular/core';
 import { FormBuilder, Validators, FormGroup, FormArray, FormControl } from '@angular/forms';
 import { SolCreaGiService } from 'src/app/core/http/sol-crea-gi/sol-crea-gi.service';
 import { Router } from '@angular/router';
-import { DatePipe } from '@angular/common';
 import { AuthService } from 'src/app/core/auth/services/auth.service';
 import { CreationReqService } from 'src/app/core/http/creation-req/creation-req.service';
 import { InvGroupService } from 'src/app/core/http/inv-group/inv-group.service';
@@ -30,7 +29,6 @@ import { ChecklistService } from 'src/app/core/http/checklist/checklist.service'
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { DocumentsService } from 'src/app/core/http/documentos/documents.service';
 import { Usuario } from 'src/app/types/usuario.types';
-import { ProgressComponent } from 'src/@vex/components/progress/progress.component';
 @Component({
   selector: 'vex-creation-form',
   templateUrl: './creation-form.component.html',
@@ -42,7 +40,6 @@ import { ProgressComponent } from 'src/@vex/components/progress/progress.compone
 export class CreationFormComponent implements OnInit {
   selectedUsers: any[] = [];
   documentosCargados = {};
-
   selectedUsersExterns: any[] = [];
   selectedFiles: File[] = [];
   userIdSelect: any[] = [];
@@ -92,8 +89,6 @@ export class CreationFormComponent implements OnInit {
     private userRolService: UserRolService,
     private annexesServices: AnnexesService, private checklistService: ChecklistService,
     private documentService: DocumentsService
-
-
   ) { this.usuarios = []; }
 
   ngOnInit(): void {
@@ -108,12 +103,9 @@ export class CreationFormComponent implements OnInit {
   }
   updateLineasByAreas(selectedAreas: any[]) {
     this.lineas = []; // Limpia las líneas actuales
-
     if (selectedAreas.length > 0) {
-      // Itera sobre cada área seleccionada y llama al servicio para obtener sus líneas
       selectedAreas.forEach((idArea) => {
         this.lineService.getLineByArea(idArea).subscribe((lineasArea: any[]) => {
-          // Agrega las líneas obtenidas y evita duplicados
           this.lineas = [
             ...this.lineas,
             ...lineasArea.filter(
@@ -130,7 +122,6 @@ export class CreationFormComponent implements OnInit {
     if (invGroup) {
       this.invGroupExists = true;
       this.cargarInfoGrupo(Number(invGroup));
-      // this.cargarChecklist(Number(invGroup));
     } else {
       this.invGroupExists = false;
       this.cargarFormularios(invGroup);
@@ -145,17 +136,14 @@ export class CreationFormComponent implements OnInit {
       console.error("Error al cargar el usuario del coordinador:", error);
     });
   }
-  //Cargamos los formularios respectivos si no se encuentran registros de que se ha creado un grupo de investigacion o tiene un proceso anterior
   cargarFormularios(invGroup) {
     this.cargarInfoGrupo(Number(invGroup));
     this.loadDominios();
     this.loadAreas();
-    //this.loadLineas();
     this.dominiosControl.patchValue(this.dominios);
     this.areasControl.patchValue(this.areas);
     this.lineasControl.patchValue(this.lineas);
     const token = sessionStorage.getItem('acces_token');
-    //this.loadUser(this.currentUser, token);
     this.myForm = this.builder.group({
       grupoInv1: this.builder.group({
         idUser: sessionStorage.getItem('idUser'),
@@ -359,13 +347,35 @@ export class CreationFormComponent implements OnInit {
     }
   }
   documentosCompletosCargados = false;
-
+selectedImage:File|undefined;
+  imageSelected(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    const files = input.files;
+    if (files && files.length > 0) {
+      const file = files[0];
+        const allowedTypes = ['image/png', 'image/jpeg', 'image/jpg', 'image/gif'];
+      if (allowedTypes.includes(file.type)) {
+        const year = this.currentDate.getFullYear();
+        const month = ('0' + (this.currentDate.getMonth() + 1)).slice(-2);
+        const day = ('0' + this.currentDate.getDate()).slice(-2);
+        const customFileName = `imagen_GI_${year}-${month}-${day}`;
+          const archivoRenombrado = new File([file], customFileName, { type: file.type });
+        this.selectedImage = archivoRenombrado;
+        console.log('Archivo seleccionado y renombrado:', archivoRenombrado);
+      } else {
+        alert('Por favor, seleccione un archivo de imagen válido (PNG, JPEG, JPG, GIF).');
+        input.value = ''; // Limpiar el input en caso de error
+      }
+    } else {
+      alert('No se seleccionó ningún archivo.');
+    }
+  }
+  
   verificarDocumentosCargados(): void {
     const usuariosInternosCompletos = this.selectedUsers.every(user => this.documentosCargados[user.user.idBd]);
     const usuariosExternosCompletos = this.selectedUsersExterns.every(user => this.documentosCargados[user.id]);
     this.documentosCompletosCargados = usuariosInternosCompletos && usuariosExternosCompletos;
   }
-
 
   onFileSelectedExtern(event: Event, index: number, userId: number) {
     const input = event.target as HTMLInputElement;
@@ -402,12 +412,13 @@ export class CreationFormComponent implements OnInit {
       const partes = this.userCoordinador.departamento.split(" - ");
       const departamento = partes[1].trim();
       const grupoInvData: InvGroupForm = {
-        idGrupoInv: 1,
+        idGrupoInv: null,
         idCoordinador: this.currentUserId,
         nombreGrupoInv: this.myForm.value.grupoInv1.nombreGrupoInv,
         estadoGrupoInv: "inicialpp",
         acronimoGrupoinv: this.myForm.value.grupoInv1.acronimoGrupoinv,
         departamento: departamento,
+        proceso:"",
         usuarioCreacion: this.currentUser,
         fechaCreacion: this.currentDate,
         usuarioModificacion: null,

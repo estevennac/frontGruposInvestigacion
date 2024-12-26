@@ -11,6 +11,7 @@ export interface InvGroupForm {
     mision?:string;
     vision?:string;
     departamento?: string;
+    proceso?:string;
     usuarioCreacion: string;
     fechaCreacion: Date;
     usuarioModificacion: string;
