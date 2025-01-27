@@ -22,7 +22,7 @@ import { DocumentsService } from 'src/app/core/http/documentos/documents.service
 export class DetalleGIComponent implements OnInit {
 invGroup:InvGroupCompleteForm;
 coordinador:Usuario;
-
+isLoading:boolean = true;
   constructor(private router: Router, private giService: InvGroupService,
     private usuarioService: UsuarioService,
     private annexesService:AnnexesService,
@@ -64,9 +64,11 @@ id:number;
               // Usar la URL en una propiedad que se enlazará en la plantilla
               this.imagenUrl = this.sanitizer.bypassSecurityTrustUrl(imageUrl); // Marcar la URL como segura
               console.log('imagenUrl', this.imagenUrl);
+              this.isLoading = false;
             },
             error: (err) => {
               console.error('Error al cargar la imagen:', err);
+              this.isLoading = false;
             }
           });
       } else {

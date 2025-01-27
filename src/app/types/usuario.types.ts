@@ -3,13 +3,14 @@ export interface Usuario{
     usuario?:string;
     nombre:string;
     idInstitucional?:string;
-    telefono?:string;
     correo:string;
     departamento?:string;
     cedula:string;
     institucion:string;
     cargo?:string;
     nacionalidad?:string;
+    foto?:string;
+    genero?:string;
     fechaCreacion:Date;
     fechaModificacion:Date;
     usuarioCreacion:string;

@@ -1,9 +1,7 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
-import { AreaService } from 'src/app/core/http/area/area.service';
 import { AuthService } from 'src/app/core/auth/services/auth.service';
-import { Area } from 'src/app/types/area.types';
 import { Objectives } from 'src/app/types/specificobjectives.types';
 import { ObjectivesService } from 'src/app/core/http/objectives/objectives.service';
 import { StrategiesService } from 'src/app/core/http/strategies/strategies.service';
@@ -74,9 +72,7 @@ export class ObjControl implements OnInit {
         this.dialogRef.close(result);
       }
       
-    
-      // Cerrar el modal sin guardar
-      onClickClose(): void {
+          onClickClose(): void {
         this.dialogRef.close();
       }
 }

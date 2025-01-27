@@ -163,7 +163,6 @@ export class GroupModalEdit implements OnInit {
             usuario: userName,
             nombre: data.nombres,
             idInstitucional: data.id,
-            telefono: null,
             correo: data.correoInstitucional,
             departamento: data.ubicacion,
             cedula: data.cedula,

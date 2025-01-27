@@ -38,7 +38,6 @@ export class ExternMembersGroup implements OnInit {
         this.currentUser = this.authService.getUserName();
         this.miembro = this.fb.group({
             nombre: ['', Validators.required],
-            telefono: ['', Validators.required],
             correo: ['', [Validators.required, Validators.email]],
             cedula: ['', Validators.required],
             institucion: ['', Validators.required],

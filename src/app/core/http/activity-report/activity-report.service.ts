@@ -25,6 +25,7 @@ export class ActivityReportService {
   getByState(state: string): Observable<ActivityReport[]> {
     return this.http.get<ActivityReport[]>(`${this.URL}/state/${state}`);
   }
+  
   createActivityReportForm(formData: ActivityReport): Observable<any> {
     return this.http.post(`${this.URL}/create`, formData);
   }

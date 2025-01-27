@@ -1,34 +1,47 @@
 <div class="cont">
-    <div class="container-fluid">
-      <div class="card">
-
-        <header>
-          <h1>Lista de Grupos de Investigación</h1>
-          <button mat-flat-button color="primary" class="create" (click)="add()">
-            <i class="fa fa-plus"></i> Nuevo Grupo
-          </button>
-        </header>
+  <div class="container-fluid">
+    <div class="card">
+      <header>
+        <h1>Lista de Grupos de Investigación</h1>
+        <button mat-flat-button color="primary" class="create" (click)="add()">
+          <i class="fa fa-plus"></i> Nuevo Grupo
+        </button>
+      </header>
+   
+      <div *ngIf="isLoading" class="loading-spinner-overlay">
+        <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
       </div>
-        <div class="tab">
+    </div>
+
+    <div class="tab">
+         <!-- Campo de búsqueda -->
+         <mat-form-field appearance="outline">
+          <mat-label>Buscar grupo por nombre</mat-label>
+          <input matInput type="text" [(ngModel)]="searchTerm" (input)="filterGroups()">
+        </mat-form-field>
+  
       <table>
         <thead style="position: sticky; top: 0;">
           <tr>
-            <th>#</th>
-            <th>Nombre del Grupo de Investigación</th>
-            <th>Coordinador</th>
+            <th (click)="sortBy('index')">#</th>
+            <th (click)="sortBy('nombreGrupoInv')">Nombre del Grupo de Investigación</th>
+            <th (click)="sortBy('acronimoGrupoinv')">Acrónimo</th>
+            <th (click)="sortBy('departamento')">Departamento</th>
+            <th (click)="sortBy('coordinador')">Coordinador</th>
             <th>Abrir</th>
           </tr>
         </thead>
         <tbody>
-          
-          <!-- Filas de la tabla -->
-          <tr *ngFor="let g of invGroup,let i = index">
-           <td>{{i+1}}</td>
+          <!-- Filas de la tabla filtradas -->
+          <tr *ngFor="let g of filteredGroups, let i = index">
+            <td>{{ i + 1 }}</td>
             <td>{{ g.nombreGrupoInv }}</td>
-            <td> {{getCoordinador(g.idCoordinador) | async}} </td>
+            <td>{{ g.acronimoGrupoinv }}</td>
+            <td>{{ g.departamento }}</td>
+            <td>{{ getCoordinador(g.idCoordinador) | async }}</td>
             <td>
-              <button mat-mini-fab color ="primary"(click)="open(g.idGrupoInv)">
-                <i class="fa fa-folder-open"></i> 
+              <button mat-mini-fab color="primary" (click)="open(g.idGrupoInv)">
+                <i class="fa fa-folder-open"></i>
               </button>
             </td>
           </tr>
@@ -36,5 +49,4 @@
       </table>
     </div>
   </div>
-  </div>
-  
+</div>

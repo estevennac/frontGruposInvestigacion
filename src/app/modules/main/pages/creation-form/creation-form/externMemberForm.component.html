@@ -27,16 +27,7 @@
                         <mat-label>Apellido del Integrante</mat-label>
                         <input matInput type="text" #apellidoInput>
                     </mat-form-field>
-
-                    <!-- Campo Teléfono -->
-                    <mat-form-field appearance="outline" class="full-width">
-                        <mat-label>Teléfono</mat-label>
-                        <input matInput type="tel" formControlName="telefono" required>
-                        <mat-error *ngIf="miembro.get('telefono').invalid && miembro.get('telefono').touched">
-                            El teléfono es obligatorio
-                        </mat-error>
-                    </mat-form-field>
-
+    
                     <!-- Campo Correo -->
                     <mat-form-field appearance="outline" class="full-width">
                         <mat-label>Correo Electrónico</mat-label>
