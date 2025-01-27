@@ -139,7 +139,6 @@ export class CargaSolComComponent implements OnInit {
   goBack() {
     const navigationState = history.state;
     const creationReqForm = navigationState.creationReqForm;
-
     this.router.navigate(["main/grupos-a"], { state: { creationReqForm } });
   }
 

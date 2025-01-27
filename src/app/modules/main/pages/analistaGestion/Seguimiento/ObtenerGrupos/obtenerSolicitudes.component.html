@@ -1,34 +1,42 @@
 <div class="container-fluid">
     <div class="card">
         <header>
-            <h1>Solicitar Informes</h1>
+            <h1>SOLICITAR PLANES</h1>
         </header>
         <main>
             <div *ngIf="noGruposPendientes" class="no-data-message">
                 No existen Grupos Pendientes de solicitar informes
             </div>
             <div style="width: 100%;display: flex;justify-self: center;justify-items: center;justify-content: center; align-items: center;" *ngIf="loadingData">
-                <mat-spinner  diameter="150" color="primary" class="overlay-spinner" ></mat-spinner>
+                <mat-spinner diameter="150" color="primary" class="overlay-spinner"></mat-spinner>
             </div>
             <div class="table-container" *ngIf="!noGruposPendientes && !loadingData">
                 <table class="solicitudes-table">
                     <thead>
                         <tr>
-                            <th style="width: 10%;">#</th>
-                            <th style="width: 35%;">Nombre de Grupo</th>
-                            <th style="width: 30%;">Nombre del Coordinador</th>
-                            <th style="width: 25%;">Fecha de Creación</th>
+                            <th style="width: 10%;" (click)="ordenar('index')">#
+                                <span [class.asc]="orden === 'index' && ascendente" [class.desc]="orden === 'index' && !ascendente"></span>
+                            </th>
+                            <th style="width: 35%;" (click)="ordenar('nombreGrupo')">Nombre de Grupo
+                                <span [class.asc]="orden === 'nombreGrupo' && ascendente" [class.desc]="orden === 'nombreGrupo' && !ascendente"></span>
+                            </th>
+                            <th style="width: 30%;" (click)="ordenar('nombreCoordinador')">Nombre del Coordinador
+                                <span [class.asc]="orden === 'nombreCoordinador' && ascendente" [class.desc]="orden === 'nombreCoordinador' && !ascendente"></span>
+                            </th>
+                            <th style="width: 25%;" (click)="ordenar('fechaCreacion')">Fecha de Creación
+                                <span [class.asc]="orden === 'fechaCreacion' && ascendente" [class.desc]="orden === 'fechaCreacion' && !ascendente"></span>
+                            </th>
                             <th>Solicitar</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr *ngFor="let grupo of gruposFiltrados; let i = index">
-                            <td>{{i+1}}</td>
+                            <td>{{ i + 1 }}</td>
                             <td>{{ getNombreGrupo(grupo.idGrupoInv) }}</td>
-                            <td>{{getNombreCoordinador(grupo.idCoordinador)}}</td>
+                            <td>{{ getNombreCoordinador(grupo.idCoordinador) }}</td>
                             <td>{{ grupo.fechaCreacion | date }}</td>
                             <td>
-                                <button class="edit" mat-mini-fab color="primary" aria-label="Example icon button with a delete icon" (click)="validar(grupo.idGrupoInv)">
+                                <button class="edit" mat-mini-fab color="primary" aria-label="Solicitar" (click)="validar(grupo.idGrupoInv)">
                                     <i class="fa fa-folder-open" aria-hidden="true"></i>
                                 </button>
                             </td>

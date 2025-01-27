@@ -11,10 +11,10 @@ import { InvGroupForm } from 'src/app/types/invGroup.types';
 import {MatSnackBar} from '@angular/material/snack-bar';
 @Component({
     selector: 'app-carga-anexo',
-    templateUrl: './creation_proposal.html',
-    styleUrls: ['./creation_proposal.scss']
+    templateUrl: './solPlan.component.html',
+    styleUrls: ['./solPlan.component.scss']
 })
-export class PropuestaGIComponent implements OnInit {
+export class SolicitarPlanesComponent implements OnInit {
     selectedFile: File | undefined;
     fileName: string = '';
     fileUploaded: boolean = false;

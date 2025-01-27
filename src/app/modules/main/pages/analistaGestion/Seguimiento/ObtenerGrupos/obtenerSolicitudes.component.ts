@@ -16,9 +16,10 @@ export class GruposForAnalistaComponent implements OnInit {
     gruposFiltrados: InvGroupForm[] = [];
     noGruposPendientes: boolean = false;
     grupos: InvGroupForm[] = [];
-    usuarios: Usuario[] = []; 
+    usuarios: Usuario[] = [];
     loadingData: boolean = true;
-    coordinador: Usuario | undefined;
+    orden: string = ''; // Columna activa
+    ascendente: boolean = true; // Dirección del ordenamiento
 
     constructor(
         private router: Router,
@@ -42,7 +43,7 @@ export class GruposForAnalistaComponent implements OnInit {
     filtrarGrupos() {
         this.gruposFiltrados = this.grupos.filter(group => group.estadoGrupoInv === 'Activo');
         this.noGruposPendientes = this.gruposFiltrados.length === 0;
-        this.loadingData = false; // Esta línea se mueve aquí para asegurarse de que se actualice correctamente.
+        this.loadingData = false;
     }
 
     getUsuarios() {
@@ -73,5 +74,38 @@ export class GruposForAnalistaComponent implements OnInit {
                 console.error('Error al obtener los detalles de la Solicitud', error);
             }
         );
-    }    
+    }
+
+    ordenar(campo: string) {
+        if (this.orden === campo) {
+            this.ascendente = !this.ascendente;
+        } else {
+            this.orden = campo;
+            this.ascendente = true;
+        }
+
+        this.gruposFiltrados.sort((a, b) => {
+            const valorA = this.obtenerValorOrden(campo, a);
+            const valorB = this.obtenerValorOrden(campo, b);
+
+            if (valorA < valorB) return this.ascendente ? -1 : 1;
+            if (valorA > valorB) return this.ascendente ? 1 : -1;
+            return 0;
+        });
+    }
+
+    obtenerValorOrden(campo: string, grupo: InvGroupForm): any {
+        switch (campo) {
+            case 'index':
+                return this.gruposFiltrados.indexOf(grupo);
+            case 'nombreGrupo':
+                return this.getNombreGrupo(grupo.idGrupoInv).toLowerCase();
+            case 'nombreCoordinador':
+                return this.getNombreCoordinador(grupo.idCoordinador).toLowerCase();
+            case 'fechaCreacion':
+                return new Date(grupo.fechaCreacion).getTime();
+            default:
+                return '';
+        }
+    }
 }
