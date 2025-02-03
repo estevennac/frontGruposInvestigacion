@@ -4,7 +4,7 @@ import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { OdsService } from 'src/app/core/http/ods/ods.service';
 import { AuthService } from 'src/app/core/auth/services/auth.service';
 import { ODS } from 'src/app/types/ods.types';
-
+import { MatSnackBar } from '@angular/material/snack-bar'; // Importar MatSnackBar
 @Component({
     selector: 'app-area',
     templateUrl: './modal_ods.component.html',
@@ -24,6 +24,7 @@ export class OdsControl implements OnInit {
         private authService: AuthService,
         public dialogRef: MatDialogRef<OdsControl>,
         private odsService: OdsService,
+        private snackBar: MatSnackBar, // Inyectar MatSnackBar
         @Inject(MAT_DIALOG_DATA) public data: any, // Datos que vienen del componente de la tabla
     ) {}
 
@@ -32,11 +33,11 @@ export class OdsControl implements OnInit {
 
         // Inicializar el formulario
         this.form = this.fb.group({
-            ods: ['', Validators.required],
-            descripcion: ['', Validators.required],
-
+            ods: ['', Validators.required],  // Antes tenía "nombreOds"
+            descripcion: ['', Validators.required],  // Antes tenía "estado"
             estado: [1, Validators.required],
         });
+        
 
         // Si hay datos, significa que se está editando un dominio
         if (this.data && this.data.ods) {
@@ -46,12 +47,15 @@ export class OdsControl implements OnInit {
     }
 
     // Cargar los datos del dominio académico para la edición
-    loadData(ods: ODS) {
-        this.form.patchValue({
-            nombreOds: ods.ods,
-            estado: ods.descripcion
-        });
-    }
+    // Cargar los datos del ODS para la edición
+loadData(ods: ODS) {
+    this.form.patchValue({
+        ods: ods.ods, // Antes estaba "nombreOds"
+        descripcion: ods.descripcion, // Antes estaba "estado"
+        estado: ods.estado
+    });
+}
+
 
     // Método para crear o actualizar dependiendo de la acción
     save() {
@@ -74,13 +78,13 @@ export class OdsControl implements OnInit {
 
         this.odsService.create(odsData).subscribe(
             () => {
-                console.log('Area creada correctamente');
+                this.showToast('ODS creado correctamente', 'cerrar');
                 this.isSaved = true;
                 this.isLoading = false; // Ocultar el spinner
                 this.dialogRef.close(true); // Cerrar el modal y retornar éxito
             },
             (error) => {
-                console.error('Error al crear el ods', error);
+                this.showToast('Error al crear el ODS', 'cerrar', 'error-toast');
                 this.isLoading = false; // Ocultar el spinner
             }
         );
@@ -92,19 +96,26 @@ export class OdsControl implements OnInit {
         updatedData.fechaModificacion = this.currentDate;
         updatedData.usuarioModificacion = this.currentUser;
 
-        this.odsService.update(this.data.area.idArea, updatedData).subscribe(
+        this.odsService.update(this.data.ods.id, updatedData).subscribe(
             () => {
-                console.log('Ods actualizado correctamente');
+                this.showToast('ODS actualizado correctamente', 'cerrar');
                 this.isSaved = true;
                 this.isLoading = false; // Ocultar el spinner
                 this.dialogRef.close(true); // Cerrar el modal y retornar éxito
             },
             (error) => {
-                console.error('Error al actualizar el area', error);
+                this.showToast('Error al actualizar el ODS', 'cerrar', 'error-toast');
                 this.isLoading = false; // Ocultar el spinner
             }
         );
-    }
+    } 
+    showToast(message: string, action: string, panelClass: string = '') {
+        this.snackBar.open(message, action, {
+          duration: 3000,
+          verticalPosition: 'top',
+          panelClass: panelClass,
+        });
+      }
 
     onClickClose(): void {
         this.dialogRef.close();

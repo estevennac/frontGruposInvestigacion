@@ -3,22 +3,27 @@
   <header>
     <h1>Solicitud de Informe</h1>
   </header>
+  <div *ngIf="isLoading" class="loading-spinner-overlay">
+    <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
+</div>
   <main>
     <form (submit)="onSubmit()">
       <div class="drag-drop" (drop)="onDrop($event)" (dragover)="onDragOver($event)">
-        <p>Arrastra y suelta el documento aquí o haz clic para seleccionarlo.</p>
+        <i *ngIf="selectedFile" class="{{ getFileIcon(selectedFile.type) }}"></i>
+        <p *ngIf="!selectedFile">Arrastra y suelta el documento aquí o haz clic para seleccionarlo.</p>
+        <p *ngIf="selectedFile">{{ fileNameOriginal }} </p>
+
         <div class="custom-file-input">
-          <label for="fileInput">Seleccionar archivo</label>
+          <label *ngIf="!selectedFile" for="fileInput">Seleccionar archivo</label>
+          <label *ngIf="selectedFile" for="fileInput">Cambiar archivo</label>
           <input id="fileInput" type="file" (change)="onFileSelected($event)" accept=".pdf" />
         </div>
       </div>
-      <div>
-        Adjuntar el memorando solicitando al coordinador del GI el plan de desarrollo  a 4 años y la planificación operativa anual de los GI.
+      <div *ngIf="!loadingData">
+        Adjuntar el memorando solicitando a {{invGroup.coordinador.nombre}} coordinador del GI {{invGroup.invGroup.nombreGrupoInv+"-"+invGroup.invGroup.acronimoGrupoinv}} el plan de desarrollo  a 4 años y la planificación operativa anual de los GI.
       </div>
       <button class="boton" type="submit" [disabled]="!selectedFile">Solicitar Informe</button>
       <div *ngIf="selectedFile" class="file-info">
-        <span>{{ selectedFile.name }} </span>
-        <i class="{{ getFileIcon(selectedFile.type) }}"></i>
         <p *ngIf="fileUploaded" class="success-message">El anexo se ha cargado con éxito.</p>
       </div>
     </form>

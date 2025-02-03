@@ -120,6 +120,7 @@ export class MemoDirVIITComponent implements OnInit {
       this.documentService.saveDocument(this.token, fileToUpload, sistema).subscribe(response => {
       const annexesData: Annexes = {
         idAnexo: 0, 
+        idDocumento:1,
         usuarioCreacionAnexo: this.currentUser, 
         fechaCreacionAnexo: this.currentDate, 
         usuarioModificacionAnexo: '', 

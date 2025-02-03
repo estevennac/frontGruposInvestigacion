@@ -1,10 +1,14 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit,ViewChild } from "@angular/core";
 import { InstStrategicObj } from "src/app/types/InstStrategicObj.types";
 import { InstStrategicObjService } from "src/app/core/http/instStrategicObj/inst-strategic-obj.service";
 import { MatDialog } from "@angular/material/dialog";
 import { ModalInstStrategicObjControl } from "./modal-inst-strategic-obj.component";
 import { Router } from "@angular/router";
-import { error } from "console";
+import { FormControl } from "@angular/forms";
+import { MatTableDataSource } from "@angular/material/table";
+import { MatSort } from "@angular/material/sort";
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { AuthService } from 'src/app/core/auth/services/auth.service';
 
 @Component({
     selector: 'app-strategic-obj',
@@ -14,20 +18,37 @@ import { error } from "console";
 
 export class InstStrategicObjComponent implements OnInit{
     instStrategicObj: InstStrategicObj[] = [];
+    displayedColumns: string[] = ['objetivo', 'estado', 'acciones'];
+    dataSource = new MatTableDataSource<InstStrategicObj>();
+    searchControl = new FormControl();
+    @ViewChild(MatSort) sort!: MatSort;
+    currentUser: string;
+    currentDate: Date = new Date();
+    isLoading: boolean = true;
 
     constructor(
         private router: Router,
         private instStrategicObjService: InstStrategicObjService,
-        private dialog: MatDialog
+        private dialog: MatDialog,
+        private snackBar: MatSnackBar,
+        private authService: AuthService,
     ){}
 
     ngOnInit(){
         this.getInstStrategicObj();
+        this.currentUser = this.authService.getUserName();
+        this.searchControl.valueChanges.subscribe(value => {
+            this.dataSource.filter = value.trim().toLowerCase();
+        });
     }
 
     getInstStrategicObj(){
         this.instStrategicObjService.getAll().subscribe((data) =>{
-            this.instStrategicObj = data;
+            this.dataSource=new MatTableDataSource(data);
+            this.dataSource.sort = this.sort;
+            this.dataSource.filterPredicate = (data: InstStrategicObj, filter: string) =>
+                data.objetivo.toLowerCase().includes(filter);
+            this.isLoading = false;
         });
     }
 
@@ -46,39 +67,54 @@ export class InstStrategicObjComponent implements OnInit{
     }
     
     editInstStrategicObj(id: number){
+        this.isLoading = true;
         this.instStrategicObjService.getById(id).subscribe(
             (instStrategicObj: InstStrategicObj) =>{
+                this.isLoading = false;
                 this.openDialog(instStrategicObj);
             },
             (error) => {
-                console.error('Error al obtener los detalles de los objetivos estrategicos')
+                this.isLoading = false;
+                this.showToast('Lo siento, intenta más tarde', 'cerrar', 'error-toast')
             }
         );
     }
 
     deleteObj(id: number){
-        this.instStrategicObjService.update(id, {estado: false}).subscribe(
+        this.isLoading = true;
+        this.instStrategicObjService.update(id, {estado: false,fechaModificadoObj: this.currentDate, usuarioModificadoObj: this.currentUser}).subscribe(
             ()=>{
-                console.log(`Objetivo estrategico con ID:${id} eliminado correctamente`);
+                this.isLoading = false;
+                this.showToast('Objetivo estrategico eliminado correctamente', 'cerrar');
                 this.getInstStrategicObj();
             },
             (error) => {
-                console.log('Error al eliminar objetvio estrategico', error)
+                this.isLoading = false;
+                this.showToast('Lo siento, intenta más tarde', 'cerrar', 'error-toast');
             }
         );
     }
     activateObj(id:number){
-        this.instStrategicObjService.update(id, {estado: true}).subscribe(
+        this.instStrategicObjService.update(id, {estado: true,fechaModificadoObj: this.currentDate, usuarioModificadoObj: this.currentUser}).subscribe(
             () =>{
+                this.isLoading = false;
+                this.showToast('Objetivo estrategico activado correctamente', 'cerrar');
                 this.getInstStrategicObj();
             },
             (error) => {
-                console.log(error);
+                    this.isLoading = false;
+                    this.showToast('Lo siento, intenta más tarde', 'cerrar', 'error-toast');
             }
         );
     }
     goBack(){
         this.router.navigate(['main/admin'])
     }
-
+    private showToast(message: string, action: string, panelClass: string = '') {
+        this.snackBar.open(message, action, {
+          duration: 3000,
+          verticalPosition: 'top',
+          panelClass: panelClass,
+        });
+      }
 }

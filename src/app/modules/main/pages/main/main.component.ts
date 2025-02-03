@@ -21,23 +21,9 @@ export class MainComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.getUserRolById(2 );
   }
 
-  getUserRolById(id: number) {
-    this.userRolService.getUserRolById(id).subscribe((userRolData) => {
-      this.usuarioConectado = userRolData[0]; 
-      const idRoles = this.usuarioConectado.idRoles;
-      if (idRoles) {
-        this.getRolDetails(idRoles);
-      }
-    });
-  }
 
-  getRolDetails(idRoles: number) {
-    this.rolService.getRolById(idRoles).subscribe((rolDetails) => {
-      this.rolDetalles = rolDetails;
-    });
-  }
+
 
 }

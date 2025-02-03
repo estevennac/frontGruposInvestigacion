@@ -195,12 +195,12 @@ export class AppComponent implements OnInit {
               roleItem.children.push(
                 {
                   type: 'subheading',
-                  label: `Creación Grupo Investigación`,
+                  label: `Procesos de Grupo Investigación`,
                 }
                 ,
                 {
                   type: 'link',
-                  label: 'Creación GI',
+                  label: 'Grupo de Investigación',
                   route: 'main/crea',
                   icon: 'mat:groups'
                 },
@@ -521,14 +521,16 @@ export class AppComponent implements OnInit {
     );
   }
 
-
+invGroup:Boolean=false;
 
   getIdGroup(user: number): void {
     this.invGroupService.getByUser(user).subscribe(
       (grupo: InvGroupForm) => {
         const IdGroup = grupo.idGrupoInv;
+
         if (IdGroup) {
           sessionStorage.setItem('invGroup', IdGroup.toString());
+          this.invGroup=true;
         } else {
           sessionStorage.removeItem('invGroup');
         }

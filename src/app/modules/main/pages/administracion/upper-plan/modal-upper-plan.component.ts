@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { AuthService } from 'src/app/core/auth/services/auth.service';
 import { UpperLevelPlan } from 'src/app/types/upperLevelPlan.types';
 import { UpperLevelPlanService } from 'src/app/core/http/upperLevel-plan/upper-level-plan.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-area',
@@ -17,54 +18,54 @@ export class ModalUpperPlanControl implements OnInit {
   isSaved: boolean = false;
   isLoading: boolean = false;
   isEditing: boolean = false; // Variable para determinar si se está en modo edición
-  areas: any[] = []; // Áreas cargadas desde el servicio
 
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
     public dialogRef: MatDialogRef<ModalUpperPlanControl>,
     private upperPlanService: UpperLevelPlanService,
-    @Inject(MAT_DIALOG_DATA) public data: any // Datos que vienen del componente de la tabla
+    private snackBar: MatSnackBar, // Servicio para notificaciones
+    @Inject(MAT_DIALOG_DATA) public data: any // Datos del componente padre
   ) {}
 
   ngOnInit(): void {
     this.currentUser = this.authService.getUserName();
 
-    // Inicializar el formulario con los controles correspondientes
+    // Inicializar el formulario
     this.upperPlanForm = this.fb.group({
       nombre: ['', Validators.required],
       estado: [1, Validators.required],
     });
 
-    // Si hay datos, significa que se está editando una línea
+    // Si hay datos, significa que se está editando
     if (this.data && this.data.upperLevelPlan) {
       this.isEditing = true;
-      this.upperPlanData(this.data.upperLevelPlan); // Cargar los datos de la línea para editar
+      this.upperPlanData(this.data.upperLevelPlan);
     }
   }
 
-  // Cargar los datos de la línea para la edición
-  upperPlanData(nationalPlan: UpperLevelPlan): void {
+  // Cargar datos en el formulario para edición
+  upperPlanData(upperPlan: UpperLevelPlan): void {
     this.upperPlanForm.patchValue({
-      nombre: nationalPlan.nombre,
-      estado: nationalPlan.estado,
+      nombre: upperPlan.nombre,
+      estado: upperPlan.estado,
     });
   }
 
   // Método para guardar (crear o actualizar)
   saveUpperPlan(): void {
     if (this.upperPlanForm.valid) {
-      this.isLoading = true; // Mostrar el spinner
+      this.isLoading = true; // Activar el spinner
 
       if (this.isEditing) {
-        this.updateUpperPlan(); // Actualizar la línea
+        this.updateUpperPlan();
       } else {
-        this.createUpperPlan(); // Crear una nueva línea
+        this.createUpperPlan();
       }
     }
   }
 
-  // Crear una nueva línea de investigación
+  // Crear un nuevo plan
   createUpperPlan(): void {
     const upperPlanData: UpperLevelPlan = this.upperPlanForm.value;
     upperPlanData.fechaCreacion = this.currentDate;
@@ -72,19 +73,19 @@ export class ModalUpperPlanControl implements OnInit {
 
     this.upperPlanService.createUpperLevelPlanForm(upperPlanData).subscribe(
       () => {
-        console.log('Línea creada correctamente');
+        this.showToast('Plan creado correctamente', 'Cerrar', 'success-toast');
         this.isSaved = true;
         this.isLoading = false;
-        this.dialogRef.close(true); // Cerrar el modal y retornar éxito
+        this.dialogRef.close(true);
       },
       (error) => {
-        console.error('Error al crear la línea', error);
+        this.showToast('Error al crear el plan', 'Cerrar', 'error-toast');
         this.isLoading = false;
       }
     );
   }
 
-  // Actualizar una línea existente
+  // Actualizar un plan existente
   updateUpperPlan(): void {
     const updatedData: UpperLevelPlan = this.upperPlanForm.value;
     updatedData.fechaModificacion = this.currentDate;
@@ -92,13 +93,13 @@ export class ModalUpperPlanControl implements OnInit {
 
     this.upperPlanService.update(this.data.upperLevelPlan.idPlanNivelSuperior, updatedData).subscribe(
       () => {
-        console.log('Línea actualizada correctamente');
+        this.showToast('Plan actualizado correctamente', 'Cerrar', 'success-toast');
         this.isSaved = true;
         this.isLoading = false;
-        this.dialogRef.close(true); // Cerrar el modal y retornar éxito
+        this.dialogRef.close(true);
       },
       (error) => {
-        console.error('Error al actualizar la línea', error);
+        this.showToast('Error al actualizar el plan', 'Cerrar', 'error-toast');
         this.isLoading = false;
       }
     );
@@ -107,5 +108,14 @@ export class ModalUpperPlanControl implements OnInit {
   // Cerrar el modal
   onClickClose(): void {
     this.dialogRef.close();
+  }
+
+  // Método para mostrar notificaciones
+  private showToast(message: string, action: string, panelClass: string = '') {
+    this.snackBar.open(message, action, {
+      duration: 3000,
+      verticalPosition: 'top',
+      panelClass: panelClass,
+    });
   }
 }

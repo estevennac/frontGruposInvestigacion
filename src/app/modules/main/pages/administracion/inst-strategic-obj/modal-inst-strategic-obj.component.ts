@@ -5,6 +5,7 @@ import { AuthService } from "src/app/core/auth/services/auth.service";
 import { InstStrategicObj } from "src/app/types/InstStrategicObj.types";
 import { InstStrategicObjService } from "src/app/core/http/instStrategicObj/inst-strategic-obj.service";
 import { error } from "console";
+import { MatSnackBar } from '@angular/material/snack-bar'; // Importar MatSnackBar
 
 @Component({
     selector: 'app-area',
@@ -24,6 +25,7 @@ export class ModalInstStrategicObjControl implements OnInit{
         private authService: AuthService,
         public dialogRef: MatDialogRef<ModalInstStrategicObjControl>,
         private instStrategicObjService: InstStrategicObjService,
+        private snackBar: MatSnackBar, // Inyectar MatSnackBar
         @Inject(MAT_DIALOG_DATA) public data: any
     ){}
    
@@ -72,14 +74,14 @@ export class ModalInstStrategicObjControl implements OnInit{
 
         this.instStrategicObjService.createInstStrategicObjForm(instStrategicObjData).subscribe(
             () => {
-                console.log('Objetivo creado correctamente');
                 this.isSaved = true;
                 this.isLoading = false;
+                this.showToast('Objetivo creado correctamente', 'cerrar'); // Mostrar toast
                 this.dialogRef.close(true);
             },
             (error) => {
-                console.log('Error al crear', error)
                 this.isLoading = false;
+                this.showToast('Error al crear el objetivo', 'cerrar', 'error-toast'); // Mostrar toast de error
             }
         );
     }
@@ -95,16 +97,25 @@ export class ModalInstStrategicObjControl implements OnInit{
             console.log('Objetivo actualizado correctamente');
             this.isSaved = true;
             this.isLoading = false;
+            this.showToast('Objetivo actualizado correctamente', 'cerrar'); // Mostrar toast
             this.dialogRef.close(true); // Cerrar el modal y retornar éxito
         },
         (error) => {
-            console.error('Error al actualizar la línea', error);
+
             this.isLoading = false;
+            this.showToast('Error al actualizar el objetivo', 'cerrar', 'error-toast'); // Mostrar toast de error
         }
         );
     }
 
     onClickClose(): void {
         this.dialogRef.close();
+    }
+    private showToast(message: string, action: string, panelClass: string = '') {
+        this.snackBar.open(message, action, {
+            duration: 3000, // Duración del toast
+            verticalPosition: 'top', // Posición en la parte superior
+            panelClass: panelClass, // Clase CSS para aplicar estilos personalizados
+        });
     }
 }

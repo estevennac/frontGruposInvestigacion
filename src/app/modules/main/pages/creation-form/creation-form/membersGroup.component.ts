@@ -102,16 +102,17 @@ export class MembersGroup implements OnInit {
             usuarioCreacion: currentUser,
             usuarioModificacion: null,
             institucion: 'UNIVERSIDAD DE LAS FUERZAS ARMADAS – ESPE',
-            cargo: data.escalafon,
+            cargo: data.escalafon||"Administrativo",
+            nacionalidad:data.nacionalidad,
+            genero:data.genero,
+            grado:data.grado,
             foto: this.URLImage + data.id,
           };
           this.userService.createUser(usuario).subscribe(
             (response) => {
               this.user.idBd = response;
-              console.log("usuario", response);
             }
           );
-          console.log("user", userData);
         }
       });
     });
@@ -123,7 +124,6 @@ export class MembersGroup implements OnInit {
       data: { usuarios: this.usuarios }
     });
     dialogRef.componentInstance.memberCreated.subscribe((usuarioCreado: Usuario) => {
-      console.log('Nuevo usuario creado en ExternMembersGroup:', usuarioCreado);
       this.usuarios.push(usuarioCreado); // Agregar el usuario a la lista de usuarios
       this.usuarioExternoCreado.emit(usuarioCreado); // Emitir el usuario al componente padre
     });

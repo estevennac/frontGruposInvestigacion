@@ -1,3 +1,5 @@
+import { Area } from "./area.types";
+
 export interface AcademicDomain{
     idDomimioAcademico?:number;
     nombreDominioAcademico?:string;
@@ -6,4 +8,5 @@ export interface AcademicDomain{
     fechaCreacionDominio?:Date;
     usuarioModificacionDominio?:string;
     fechaModificacionDominio?:Date;
+    areas?:Area[];
 }

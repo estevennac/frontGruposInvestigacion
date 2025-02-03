@@ -19,10 +19,28 @@
 }
 
 
-.delete {
-  background-color: #fc1900; 
+::ng-deep .edit {
+  background-color: blue !important;
   color: white;
+  margin-right: 10px !important; 
+}
 
+::ng-deep .delete {
+  background-color: red !important;
+  color: white;
+  margin-right: 10px; 
+}
+
+::ng-deep.activar {
+  background-color: green !important;
+  color: white;
+  margin-right: 10px !important;
+}
+.btn-container{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
 }
 
 header {
@@ -250,3 +268,22 @@ button.custom-button:disabled {
   object-fit: contain; /* Evita la deformación y ajusta la imagen dentro del contenedor */
   object-position: center
 }
+//tooltip
+//validar todo campo, y que no se repita 
+//campo de SEDE
+.success-toast {
+  background-color: #4caf50 !important; /* Verde */
+  color: white !important;
+}
+
+.error-toast {
+  background-color: #f44336 !important; /* Rojo */
+  color: white !important;
+}
+.mat-table th, .mat-table td {
+  text-align: center;
+}
+.mat-header-cell {
+  text-align: center;
+}
+

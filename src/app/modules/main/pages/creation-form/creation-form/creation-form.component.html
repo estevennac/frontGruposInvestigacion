@@ -2,156 +2,198 @@
     <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
 </div>
 <div class="cont">
-  
+
     <div class="container-fluid">
         <div class="card" *ngIf="!loadingData">
 
-<!-- Aparece Unicamente cuando se debe cargar el formulario de creación de grupo de investigación -->
+            <!-- Aparece Unicamente cuando se debe cargar el formulario de creación de grupo de investigación -->
             <header *ngIf="!invGroupExists">
-                <h1>Formulario de Solicitud de creación de grupo de Investigación</h1>
+                <h1>Formulario de Solicitud de Creación de grupo de Investigación</h1>
+            </header>
+            <div *ngIf="invGroupExists">
+
+                <!-- Posterior al envio del formulario de solicitud de creación del grupo de Investigación se debe cargar el plan de desarrollo del grupo de Investigación -->
+                <header
+                    *ngIf="invGroupExists  && grupo && grupo.estadoGrupoInv==='inicialpp' ">
+
+                    <h1>Para complementar la información y continuar con la
+                        solicitud de creación del grupo de investigación se debe
+                        cargar el plan de desarrollo del grupo de
+                        Investigación</h1>
                 </header>
-                    <div *ngIf="invGroupExists">
-                   
-                    <!-- Posterior al envio del formulario de solicitud de creación del grupo de Investigación se debe cargar el plan de desarrollo del grupo de Investigación -->
-                    <header
-                        *ngIf="invGroupExists  && grupo && grupo.estadoGrupoInv==='inicialpp' ">
-        
-                        <h1>Para complementar la información y continuar con la solicitud de creación del grupo de investigación se debe cargar el plan de desarrollo del grupo de Investigación</h1>
-                    </header>
-                    
-                    <!--  Carga del memrando de creacion del grupo de -->
-                    <header
-                        *ngIf="invGroupExists  && grupo && grupo.estadoGrupoInv==='ppropuesta' ">
-        
-                        <h1>Mediante memorando presentar la propuesta de creación del GI al Departamento.</h1>
-                    </header>
-        
-                    <!-- Aparece cuando se solicita Informe de Seguimiento -->
-                    <header
-                        *ngIf="invGroupExists  && grupo && grupo.estadoGrupoInv=='SolInforme' ">
-        
-                        <h1>La Unidad de Gestión de Grupos de Investigación a solicitado
-                            que cargue la documentación habilitante para el
-                            seguimiento</h1>
-                    </header>
-                   <!-- Aparece cuando se envia la solicitud de creación junto con el plan de desarrollo y muestra el status de su solicitud -->
-        
-                    <header
-                        *ngIf="invGroupExists  && grupo && grupo.estadoGrupoInv=='revDirDep' || grupo.estadoGrupoInv==='revInfPer' 
+
+                <!--  Carga del memrando de creacion del grupo de -->
+                <header
+                    *ngIf="invGroupExists  && grupo && grupo.estadoGrupoInv==='ppropuesta' ">
+
+                    <h1>Mediante memorando presentar la propuesta de creación
+                        del GI al Departamento.</h1>
+                </header>
+
+                <!-- Aparece cuando se solicita Informe de Seguimiento -->
+                <header
+                    *ngIf="invGroupExists  && grupo && grupo.estadoGrupoInv=='SolInforme' ">
+
+                    <h1>La Unidad de Gestión de Grupos de Investigación a
+                        solicitado
+                        que cargue la documentación habilitante para el
+                        seguimiento</h1>
+                </header>
+                <!-- Aparece cuando se envia la solicitud de creación junto con el plan de desarrollo y muestra el status de su solicitud -->
+
+                <header
+                    *ngIf="invGroupExists  && grupo && grupo.estadoGrupoInv=='revDirDep' || grupo.estadoGrupoInv==='revInfPer' 
                         || grupo.estadoGrupoInv==='revVITT' || grupo.estadoGrupoInv==='solInfPer'
                         || grupo.estadoGrupoInv==='revCom'|| grupo.estadoGrupoInv==='revCon'|| grupo.estadoGrupoInv==='Registro' ">
-        
-                        <h1>Se esta procesando su solicitud</h1>
-                    </header>
-                    <header
+
+                    <h1>Se esta procesando su solicitud</h1>
+                </header>
+                <header
                     *ngIf="invGroupExists  && grupo && grupo.estadoGrupoInv=='Favorable' ">
-        
+
                     <h1>Su solicitud se proceso co un resultado Favorable</h1>
                 </header>
-                
-                    <header *ngIf="grupo && grupo.estadoGrupoInv==='Activo'">
-                        <h1>Bienvenido al Módulo de Gestión de Grupos de
-                            Investigación</h1>
-                    </header>
-                </div>
-             
-                
-                <div class="presentacionGrupo"
-                    *ngIf=" !loadingData  && grupo.estadoGrupoInv==='revDirDep' || grupo.estadoGrupoInv==='revInfPer' "
-                    style="text-align: center;">
-                    <h1>Grupo de Investigación {{grupo.nombreGrupoInv}}</h1>
-        
-                   Su solicitud se encuentra actualmente en revisión por parte del Director del Departamento
-                   <p *ngIf="grupo.estadoGrupoInv==='revInfPer'">Sus documentos han sido revisados por el Coordinador de Investigación</p>
-                </div>
-                <div class="presentacionGrupo"
-                    *ngIf=" !loadingData  &&  grupo.estadoGrupoInv==='revVITT' "
-                    style="text-align: center;">
-                    <h1>Grupo de Investigación {{grupo.nombreGrupoInv}}</h1>
-        
-                   Su solicitud se encuentra remitida al Vicerrectorado de Investigación
-                </div>
-                <div class="presentacionGrupo"
-                    *ngIf=" !loadingData  &&  grupo.estadoGrupoInv==='revCom' "
-                    style="text-align: center;">
-                    <h1>Grupo de Investigación {{grupo.nombreGrupoInv}}</h1>
-        
-                   Su solicitud se encuentra remitida al Comité de Investigación
-                </div>
-                <div class="presentacionGrupo"
-                    *ngIf=" !loadingData  && grupo.estadoGrupoInv==='revVITT' "
-                    style="text-align: center;">
-                    <h1>Grupo de Investigación {{grupo.nombreGrupoInv}}</h1>
-        
-                   Su solicitud se encuentra actualmente en revisión por parte del VITT
-                </div>
-        
-                <div class="presentacionGrupo"
-                    *ngIf=" !loadingData  && grupo.estadoGrupoInv==='Favorable' "
-                    style="text-align: center;">
-                    <h1>Grupo de Investigación {{grupo.nombreGrupoInv}}</h1>
-                   El Comité de Investigación ha emitido un criterio favorable de su solicitud 
-                </div>
-                <div class="presentacionGrupo"
+
+                <header *ngIf="grupo && grupo.estadoGrupoInv==='Activo'&& grupo.proceso!=='SolicitaPlanAnual'">
+                    <h1>Bienvenido al Módulo de Gestión de Grupos de
+                        Investigación</h1>
+                </header> 
+                <!-- Seguimiento -->
+                <header *ngIf="grupo && grupo.proceso==='SolicitaPlanAnual'">
+                    <h1>Elaborar y remitir los planes</h1>
+                </header>
+
+            </div>
+
+            <div class="presentacionGrupo"
+                *ngIf=" !loadingData  && grupo.estadoGrupoInv==='revDirDep' || grupo.estadoGrupoInv==='revInfPer' "
+                style="text-align: center;">
+                <h1>Grupo de Investigación {{grupo.nombreGrupoInv}}</h1>
+
+                Su solicitud se encuentra actualmente en revisión por parte del
+                Director del Departamento
+                <p *ngIf="grupo.estadoGrupoInv==='revInfPer'">Sus documentos han
+                    sido revisados por el Coordinador de Investigación</p>
+            </div>
+            <div class="presentacionGrupo"
+                *ngIf=" !loadingData  &&  grupo.estadoGrupoInv==='revVITT' "
+                style="text-align: center;">
+                <h1>Grupo de Investigación {{grupo.nombreGrupoInv}}</h1>
+
+                Su solicitud se encuentra remitida al Vicerrectorado de
+                Investigación
+            </div>
+            <div class="presentacionGrupo"
+                *ngIf=" !loadingData  &&  grupo.estadoGrupoInv==='revCom' "
+                style="text-align: center;">
+                <h1>Grupo de Investigación {{grupo.nombreGrupoInv}}</h1>
+
+                Su solicitud se encuentra remitida al Comité de Investigación
+            </div>
+            <div class="presentacionGrupo"
+                *ngIf=" !loadingData  && grupo.estadoGrupoInv==='revVITT' "
+                style="text-align: center;">
+                <h1>Grupo de Investigación {{grupo.nombreGrupoInv}}</h1>
+
+                Su solicitud se encuentra actualmente en revisión por parte del
+                VITT
+            </div>
+
+            <div class="presentacionGrupo"
+                *ngIf=" !loadingData  && grupo.estadoGrupoInv==='Favorable' "
+                style="text-align: center;">
+                <h1>Grupo de Investigación {{grupo.nombreGrupoInv}}</h1>
+                El Comité de Investigación ha emitido un criterio favorable de
+                su solicitud
+            </div>
+            <div class="presentacionGrupo"
                 *ngIf=" !loadingData  && grupo.estadoGrupoInv==='Registro' "
                 style="text-align: center;">
                 <h1>Grupo de Investigación {{grupo.nombreGrupoInv}}</h1>
-                El Consejo Académico emitirá el acta de resolución de creación del GI al VITT y al Departamento proponente.    </div>
-                <div class="presentacionGrupo"
+                El Consejo Académico emitirá el acta de resolución de creación
+                del GI al VITT y al Departamento proponente. </div>
+            <div class="presentacionGrupo"
                 *ngIf=" !loadingData  && grupo.estadoGrupoInv==='revCon' "
                 style="text-align: center;">
                 <h1>Grupo de Investigación {{grupo.nombreGrupoInv}}</h1>
-                El Consejo Académico emitirá el acta de resolución de creación del GI al VITT y al Departamento proponente
+                El Consejo Académico emitirá el acta de resolución de creación
+                del GI al VITT y al Departamento proponente
             </div>
-                <div class="presentacionGrupo"
-                    *ngIf=" !loadingData  && grupo.estadoGrupoInv==='sol_documentacion' "
-                    style="text-align: center;">
-                    <h1>Grupo de Investigación {{grupo.nombreGrupoInv}}</h1>
-        
-                    <button type="button" (click)="enlace('seguimiento')"
-                        color="primary" mat-raised-button>Cargar documentacion</button>
-                </div>
-        
-                <div class="presentacionGrupo"
+            <div class="presentacionGrupo"
+                *ngIf=" !loadingData  && grupo.estadoGrupoInv==='sol_documentacion' "
+                style="text-align: center;">
+                <h1>Grupo de Investigación {{grupo.nombreGrupoInv}}</h1>
+
+                <button type="button" (click)="enlace('seguimiento')"
+                    color="primary" mat-raised-button>Cargar
+                    documentacion</button>
+            </div>
+
+            <div class="presentacionGrupo"
                 *ngIf=" !loadingData  && grupo.estadoGrupoInv==='solInfPer' "
                 style="text-align: center;">
                 <h1>Grupo de Investigación {{grupo.nombreGrupoInv}}</h1>
-                <h1>El Director de Departamento ha solicitado que remita el respectivo Informe de Pertinencia para validar la información</h1>
-        
-        
+                <h1>El Director de Departamento ha solicitado que remita el
+                    respectivo Informe de Pertinencia para validar la
+                    información</h1>
+
             </div>
-                
-                <div class="presentacionGrupo"
-                    *ngIf=" !loadingData  && grupo.estadoGrupoInv==='inicialpp' "
-                    style="text-align: center;">
-                    <h1>Grupo de Investigación {{grupo.nombreGrupoInv}}</h1>
-        
-                    <button type="button" (click)="enlace('developPlan')"
-                        color="primary" mat-raised-button>Cargar plan de Desarrollo</button>
-                </div>
-        
-                <div class="presentacionGrupo"
-                    *ngIf=" !loadingData  && grupo.estadoGrupoInv==='ppropuesta' "
-                    style="text-align: center;">
-                    <h1>Grupo de Investigación {{grupo.nombreGrupoInv}}</h1>
-        
-                    <button type="button" (click)="enlace('propuesta')"
-                        color="primary" mat-raised-button>Cargar memorando</button>
-                </div>
-        
-                <div class="presentacionGrupo"
-                    *ngIf=" !loadingData  && grupo.estadoGrupoInv==='Activo' "
-                    style="text-align: center;">
-                    <h1>Grupo de Investigación {{grupo.nombreGrupoInv}}</h1>
-                </div>
-                    </div>
 
-                    <div class="presentacionGrupo"
-                    *ngIf=" !loadingData  && grupo.estadoGrupoInv==='revDirDep' || grupo.estadoGrupoInv==='solInfPer' "
-                    style="text-align: center;">
-                    <app-progress [id]="idGrupo"></app-progress>
+            <div class="presentacionGrupo"
+                *ngIf=" !loadingData  && grupo.estadoGrupoInv==='inicialpp' "
+                style="text-align: center;">
+                <h1>Grupo de Investigación {{grupo.nombreGrupoInv}}</h1>
+
+                <button type="button" (click)="enlace('developPlan')"
+                    color="primary" mat-raised-button>Cargar plan de
+                    Desarrollo</button>
+            </div>
+
+            <div class="presentacionGrupo"
+                *ngIf=" !loadingData  && grupo.estadoGrupoInv==='ppropuesta' "
+                style="text-align: center;">
+                <h1>Grupo de Investigación {{grupo.nombreGrupoInv}}</h1>
+
+                <button type="button" (click)="enlace('propuesta')"
+                    color="primary" mat-raised-button>Cargar memorando</button>
+            </div>
+
+              <div class="presentacionGrupo"
+                *ngIf=" !loadingData  && grupo.estadoGrupoInv==='Activo' && grupo.proceso!=='SolicitaPlanAnual'"
+                style="text-align: center;">
+                <h1>Grupo de Investigación {{grupo.nombreGrupoInv}}</h1>
+            </div> 
+            <div class="presentacionGrupo"
+                *ngIf=" !loadingData  && grupo.estadoGrupoInv==='revDirDep' || grupo.estadoGrupoInv==='solInfPer' "
+                style="text-align: center;">
+                <app-progress [id]="idGrupo"></app-progress>
+
+            </div>
+            <!-- FASE DE SEGUIMIENTO DEL GRUPO DE INVESTIGACIÓN (FORMULARIO CUANDO SE ENVÍA LA SOLICITUD POR PRIMERA VEZ) -->
+            <div class="presentacionGrupo"
+                *ngIf=" !loadingData  && grupo.estadoGrupoInv==='Activo' && grupo.proceso==='SolicitaPlanAnual' "
+                style="text-align: center;">
+                <h1>Grupo de Investigación {{grupo.nombreGrupoInv}}</h1>
+                <p>Mediante memorando la Unidad de Gestión de Investigación
+                    solicita que el GI revise, elabore y remita el plan de
+                    desarrollo y planificación operativa anual con base a los
+                    lineamientos establecidos por el VITT.
+                    El GI coordinarán con la Unidad responsable de la Gestión de
+                    la Investigación con el fin de verificar la pertinencia y
+                    cumplimiento de requisitos.
+                </p>
+                <div>
+                    <button type="button" mat-raised-button
+                    color="primary"><a href="/main/anual-Plan">Cargar Plan Anual</a></button>
+                </div>
+                <div *ngIf="pdfUrl">
+                    <iframe [src]="pdfUrl" width="100%" height="600px"></iframe>
 
                 </div>
+
+            </div>
+
+        </div>
 
         <!-- FASE DE CREACIÓN DEL GRUPO DE INVESTIGACIÓN (FORMULARIO CUANDO SE ENVÍA LA SOLICITUD POR PRIMERA VEZ) -->
         <div class="container-fluid" *ngIf="!invGroupExists">
@@ -169,7 +211,8 @@
                                 <div class="grid-item">
 
                                     <mat-form-field appearance="fill">
-                                        <mat-label>Nombre del Grupo (cualquier idioma):</mat-label>
+                                        <mat-label>Nombre del Grupo (cualquier
+                                            idioma):</mat-label>
                                         <input matInput id="nombreGrupo"
                                             type="text"
                                             formControlName="nombreGrupoInv"
@@ -177,7 +220,6 @@
                                             placeholder="Ingrese el nombre del grupo">
                                     </mat-form-field>
                                 </div>
-
 
                                 <div class="grid-item">
 
@@ -230,7 +272,8 @@
 
                                 <!-- Áreas de Investigación -->
                                 <div class="grid-item">
-                                    <mat-form-field appearance="fill" *ngIf="dominiosControl.value">
+                                    <mat-form-field appearance="fill"
+                                        *ngIf="dominiosControl.value">
                                         <mat-label>Áreas de
                                             Investigación</mat-label>
                                         <mat-select [formControl]="areasControl"
@@ -246,7 +289,8 @@
 
                                 <!-- Líneas de Investigación -->
                                 <div class="grid-item">
-                                    <mat-form-field appearance="fill"  *ngIf="areasControl.value">
+                                    <mat-form-field appearance="fill"
+                                        *ngIf="areasControl.value">
                                         <mat-label>Líneas de
                                             Investigación</mat-label>
                                         <mat-select
@@ -280,7 +324,7 @@
                         </div>
                     </mat-step>
 
-                    <mat-step [stepControl]="grupoInv2_1"
+               <!--     <mat-step [stepControl]="grupoInv2_1"
                         class="centrado-y-mayusculas"
                         label="Alineación Estratégica">
                         <ng-template matStepLabel>Alineación
@@ -289,10 +333,8 @@
                         <div formGroupName="grupoInv2_1"
                             class="centrado-form-group">
 
-                            <!-- Título y Descripción -->
 
                             <h1>Alineación Estratégica</h1>
-                            <!-- Campo de texto para Alineación Estratégica -->
                             <mat-form-field appearance="fill">
                                 <mat-label class="multiline-label">Contribución
                                     a los objetivos nacionales o
@@ -312,7 +354,6 @@
                                     maxlength="4000"></textarea>
                             </mat-form-field>
 
-                            <!-- Botón de siguiente -->
                             <div class="grid-container">
                                 <div class="grid-item">
                                     <button type="button" mat-raised-button
@@ -328,7 +369,7 @@
                             </div>
 
                         </div>
-                    </mat-step>
+                    </mat-step>-->
 
                     <mat-step [stepControl]="grupoInv3"
                         label="Integrantes del Grupo">
@@ -352,7 +393,8 @@
                                                 *ngFor="let user of selectedUsers; let i = index;">
                                                 <td>{{ user.user.nombres }}</td>
                                                 <td>{{ user.user.tipo }}</td>
-                                                <td>{{ user.user.escalafon }}</td>
+                                                <td>{{ user.user.escalafon
+                                                    }}</td>
 
                                                 <td>
                                                     <input type="file"
@@ -374,75 +416,78 @@
                                     </table>
                                 </div> </div>
 
-                                <div *ngIf="selectedUsersExterns.length > 0">
+                            <div *ngIf="selectedUsersExterns.length > 0">
 
-                                    <header>
-                                        <h1>Investigadores Externos:</h1>
+                                <header>
+                                    <h1>Investigadores Externos:</h1>
 
-                                    </header>
-                                    <table>
-                                        <thead>
-                                            <tr>
-                                                <th>Nombre del Integrante</th>
-                                                <th>Institución</th>
-                                                <th>Hoja de Vida</th>
-                                                <th>Borrar</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr
-                                                *ngFor="let user of selectedUsersExterns; let i = index;">
-                                                <td>{{ user.nombre }}</td>
-                                                <td>{{ user.institucion }}</td>
+                                </header>
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>Nombre del Integrante</th>
+                                            <th>Institución</th>
+                                            <th>Hoja de Vida</th>
+                                            <th>Borrar</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr
+                                            *ngFor="let user of selectedUsersExterns; let i = index;">
+                                            <td>{{ user.nombre }}</td>
+                                            <td>{{ user.institucion }}</td>
 
-                                                <td>
-                                                    <input type="file"
-                                                        (change)="onFileSelectedExtern($event,i,user.id)"
-                                                        accept=".pdf">
-                                                </td>
-                                                <td>
-                                                    <!-- Columna para el botón de borrar -->
-                                                    <button type="button"
-                                                        class="delete"
-                                                        mat-mini-fab
-                                                        (click)="borrarInvestigadorExtern(i)">
-                                                        <i
-                                                            class="fas fa-trash-alt"></i>
-                                                    </button>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
+                                            <td>
+                                                <input type="file"
+                                                    (change)="onFileSelectedExtern($event,i,user.id)"
+                                                    accept=".pdf">
+                                            </td>
+                                            <td>
+                                                <!-- Columna para el botón de borrar -->
+                                                <button type="button"
+                                                    class="delete"
+                                                    mat-mini-fab
+                                                    (click)="borrarInvestigadorExtern(i)">
+                                                    <i
+                                                        class="fas fa-trash-alt"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
 
-                     
-                            </div>           <button type="button" mat-raised-button
-                            color="primary" class="btn-add"
-                            (click)="openDialog()">Agregar
-                            Investigador</button>
+                            </div> <button type="button" mat-raised-button
+                                color="primary" class="btn-add"
+                                (click)="openDialog()">Agregar
+                                Investigador</button>
                             <div class="grid-item">
                                 <div>
                                     <button type="button"
                                         mat-raised-button color="primary"
                                         matStepperPrevious>Regresar</button>
-<!-- Deshabilitar el botón Enviar hasta que documentosCompletosCargados sea true -->
-<button type="button" mat-raised-button color="primary"  matStepperNext
-        [disabled]="selectedUsers.length <4 || !documentosCompletosCargados">Enviar</button>
+                                    <!-- Deshabilitar el botón Enviar hasta que documentosCompletosCargados sea true -->
+                                    <button type="button" mat-raised-button
+                                        color="primary" matStepperNext
+                                        [disabled]="selectedUsers.length <4 || !documentosCompletosCargados">Enviar</button>
 
-       
                                 </div>
                             </div>
 
                         </div>
                     </mat-step>
-                    <mat-step [stepControl]="grupoInv4" label="Imagen del Grupo">
+                    <mat-step [stepControl]="grupoInv4"
+                        label="Imagen del Grupo">
                         <div class="creacion-grupo-investigacion">
                             <div formGroupName="grupoInv4">
-                                <div >
+                                <div>
                                     <div class="custom-file-input">
-                                      <label for="fileInput">Seleccione la Imagen del Grupo</label>
-                                      <input id="fileInput" type="file" (change)="imageSelected($event)" accept=".png" />
+                                        <label for="fileInput">Seleccione la
+                                            Imagen del Grupo</label>
+                                        <input id="fileInput" type="file"
+                                            (change)="imageSelected($event)"
+                                            accept=".png" />
                                     </div>
-                                  </div>
+                                </div>
                             </div>
                             <div class="grid-item">
                                 <div>
@@ -450,9 +495,8 @@
                                         color="primary"
                                         matStepperPrevious>Regresar</button>
                                     <button type="submit" mat-raised-button
-                                        color="primary"
-                                        >Guardar</button>
-    
+                                        color="primary">Guardar</button>
+
                                 </div> </div>
                         </div>
                     </mat-step>

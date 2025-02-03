@@ -101,6 +101,7 @@ export class CargaSolDirComponent implements OnInit {
       const currentUser = this.authService.getUserName();
       const annexesData: Annexes = {
         idAnexo: 0, 
+        idDocumento:1,
         usuarioCreacionAnexo: currentUser, 
         fechaCreacionAnexo: currentDate, 
         usuarioModificacionAnexo: '', 

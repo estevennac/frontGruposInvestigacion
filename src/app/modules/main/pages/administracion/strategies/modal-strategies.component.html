@@ -16,7 +16,7 @@
             <form [formGroup]="strategiesForm" (ngSubmit)="saveStrategies()">
                 <mat-form-field appearance="outline" class="full-width">
                     <mat-label>Estrategia</mat-label>
-                    <input matInput type="text" formControlName="estrategia" required>
+                    <textarea matInput type="text" formControlName="estrategia" rows="3" minlength="10" maxlength="999" required></textarea>
                     <mat-error *ngIf="strategiesForm.get('estrategia').invalid && strategiesForm.get('estrategia').touched">
                         El nombre del area es obligatorio.
                     </mat-error>

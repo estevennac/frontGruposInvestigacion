@@ -147,7 +147,11 @@ import { CrearGIComponent } from './pages/administracion/grupos-investigacion/cr
 import { LineModalEdit } from './pages/administracion/grupos-investigacion/modales_gestion/lineModal.component';
 import{MembersModalEdit} from './pages/administracion/grupos-investigacion/modales_gestion/membersModal.component';
 import { GroupModalEdit } from './pages/administracion/grupos-investigacion/modales_gestion/groupModal.component';
-
+import { AnnualPlanComponent } from './pages/coordinadorGI/seguimiento/PlanAnual/planAnual.component';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatTableModule } from '@angular/material/table';
+import { MatSortModule } from '@angular/material/sort';
+import { MatPaginatorModule } from '@angular/material/paginator';
 @NgModule({
   declarations: [
     ProgressComponent,
@@ -264,6 +268,7 @@ import { GroupModalEdit } from './pages/administracion/grupos-investigacion/moda
     ModalStrategiesControl,
     InfPertinenciaComponent,
     infBienesEquiposComponent,
+    AnnualPlanComponent,
    
   ],
   imports: [
@@ -288,6 +293,10 @@ import { GroupModalEdit } from './pages/administracion/grupos-investigacion/moda
     MatNativeDateModule,
     MatCardModule,
     MatGridListModule,
+    MatTooltipModule,
+    MatTableModule,
+    MatSortModule,
+    MatPaginatorModule,
     
     
     

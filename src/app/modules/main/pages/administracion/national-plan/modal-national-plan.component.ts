@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { AuthService } from 'src/app/core/auth/services/auth.service';
 import { NationalPlan } from 'src/app/types/nationalPlan.types';
 import { NationalPlanService } from 'src/app/core/http/national-plan/national-plan.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-area',
@@ -24,6 +25,8 @@ export class ModalNationalControl implements OnInit {
     private authService: AuthService,
     public dialogRef: MatDialogRef<ModalNationalControl>,
     private nationalPlanService: NationalPlanService,
+        private snackBar: MatSnackBar, // Inyectar MatSnackBar
+    
     @Inject(MAT_DIALOG_DATA) public data: any // Datos que vienen del componente de la tabla
   ) {}
 
@@ -76,13 +79,13 @@ export class ModalNationalControl implements OnInit {
 
     this.nationalPlanService.createNationalPlanForm(nationalPlanData).subscribe(
       () => {
-        console.log('Línea creada correctamente');
+        this.showToast('Línea creada correctamente', 'cerrar');
         this.isSaved = true;
         this.isLoading = false;
         this.dialogRef.close(true); // Cerrar el modal y retornar éxito
       },
       (error) => {
-        console.error('Error al crear la línea', error);
+        this.showToast('Error al crear la línea', 'cerrar', 'error-toast');
         this.isLoading = false;
       }
     );
@@ -96,16 +99,24 @@ export class ModalNationalControl implements OnInit {
 
     this.nationalPlanService.update(this.data.nationalPlan.idPlanNacional, updatedData).subscribe(
       () => {
-        console.log('Línea actualizada correctamente');
+        this.showToast('Línea actualizada correctamente', 'cerrar');
         this.isSaved = true;
         this.isLoading = false;
         this.dialogRef.close(true); // Cerrar el modal y retornar éxito
       },
       (error) => {
-        console.error('Error al actualizar la línea', error);
+        this.showToast('Error al actualizar la línea', 'cerrar', 'error-toast');
         this.isLoading = false;
       }
     );
+  }
+  // Mostrar el toast
+  private showToast(message: string, action: string, panelClass: string = '') {
+    this.snackBar.open(message, action, {
+      duration: 3000, // Duración del toast
+      verticalPosition: 'top', // Posición en la parte superior
+      panelClass: panelClass, // Clase CSS para aplicar estilos personalizados
+    });
   }
 
   // Cerrar el modal

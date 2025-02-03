@@ -17,7 +17,7 @@
           <!-- Campo de nombre de la Plan de Nivel Superior -->
           <mat-form-field appearance="outline" class="full-width">
             <mat-label>Nombre del Plan de Nivel Superior</mat-label>
-            <input matInput type="text" formControlName="nombre" required>
+            <input matInput type="text" formControlName="nombre" minlength="5" maxlength="299" required>
             <mat-error *ngIf="upperPlanForm.get('nombre').invalid && upperPlanForm.get('nombre').touched">
               El nombre del Plan de Nivel Superior es obligatorio.
             </mat-error>

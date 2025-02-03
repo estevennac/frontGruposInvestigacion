@@ -4,6 +4,8 @@ import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { LegalFrameworkService } from 'src/app/core/http/legal-framework/legalFramework.service';
 import { AuthService } from 'src/app/core/auth/services/auth.service';
 import { LegalFramework } from 'src/app/types/legalFramework.types';
+import { MatSnackBar } from '@angular/material/snack-bar';
+
 @Component({
     selector: 'app-academic-domain',
     templateUrl: './modal_legal_framework.component.html',
@@ -23,6 +25,8 @@ export class LegalFrameworkControl implements OnInit {
         private authService: AuthService,
         public dialogRef: MatDialogRef<LegalFrameworkControl>,
         private legalFrameworkService: LegalFrameworkService,
+        private snackBar: MatSnackBar,
+
         @Inject(MAT_DIALOG_DATA) public data: any, // Datos que vienen del componente de la tabla
     ) {}
 
@@ -71,13 +75,13 @@ export class LegalFrameworkControl implements OnInit {
 
         this.legalFrameworkService.createLegalFramework(legalFrameworknData).subscribe(
             () => {
-                console.log('Marco Legal creado correctamente');
+                this.showToast('Marco Legal creado correctamente', 'cerrar');
                 this.isSaved = true;
                 this.isLoading = false; // Ocultar el spinner
                 this.dialogRef.close(true); // Cerrar el modal y retornar éxito
             },
             (error) => {
-                console.error('Error al crear el marco Legal', error);
+                this.showToast('Error al crear el marco Legal', 'cerrar');
                 this.isLoading = false; // Ocultar el spinner
             }
         );
@@ -91,18 +95,24 @@ export class LegalFrameworkControl implements OnInit {
 
         this.legalFrameworkService.update(this.data.marco.idMarcoLegal, updatedData).subscribe(
             () => {
-                console.log('Marco Legal actualizado correctamente');
+                this.showToast('Marco Legal actualizado correctamente','cerrar');
                 this.isSaved = true;
                 this.isLoading = false; // Ocultar el spinner
                 this.dialogRef.close(true); // Cerrar el modal y retornar éxito
             },
             (error) => {
-                console.error('Error al actualizar el marco Legal', error);
+                this.showToast('Error al actualizar el marco Legal', 'cerrar');
                 this.isLoading = false; // Ocultar el spinner
             }
         );
     }
-
+    private showToast(message: string, action: string, panelClass: string = '') {
+        this.snackBar.open(message, action, {
+          duration: 3000,
+          verticalPosition: 'top',
+          panelClass: panelClass,
+        });
+      }
     onClickClose(): void {
         this.dialogRef.close();
     }

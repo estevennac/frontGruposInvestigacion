@@ -5,6 +5,7 @@ import { LineService } from 'src/app/core/http/line/line.service';
 import { AuthService } from 'src/app/core/auth/services/auth.service';
 import { Line } from 'src/app/types/line.types';
 import { AreaService } from 'src/app/core/http/area/area.service';
+import { MatSnackBar } from '@angular/material/snack-bar'; // Importar MatSnackBar
 
 @Component({
   selector: 'app-area',
@@ -19,13 +20,14 @@ export class LineaControl implements OnInit {
   isLoading: boolean = false;
   isEditing: boolean = false; // Variable para determinar si se está en modo edición
   areas: any[] = []; // Áreas cargadas desde el servicio
-
+  
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
     public dialogRef: MatDialogRef<LineaControl>,
     private lineService: LineService,
     private areaService: AreaService,
+    private snackBar: MatSnackBar, // Inyectar MatSnackBar
     @Inject(MAT_DIALOG_DATA) public data: any // Datos que vienen del componente de la tabla
   ) {}
 
@@ -87,11 +89,13 @@ export class LineaControl implements OnInit {
         console.log('Línea creada correctamente');
         this.isSaved = true;
         this.isLoading = false;
+        this.showToast('Línea creada correctamente', 'cerrar'); // Mostrar toast de éxito
         this.dialogRef.close(true); // Cerrar el modal y retornar éxito
       },
       (error) => {
         console.error('Error al crear la línea', error);
         this.isLoading = false;
+        this.showToast('Error al crear la línea. Intenta más tarde', 'cerrar', 'error-toast'); // Mostrar toast de error
       }
     );
   }
@@ -107,13 +111,24 @@ export class LineaControl implements OnInit {
         console.log('Línea actualizada correctamente');
         this.isSaved = true;
         this.isLoading = false;
+        this.showToast('Línea actualizada correctamente', 'cerrar'); // Mostrar toast de éxito
         this.dialogRef.close(true); // Cerrar el modal y retornar éxito
       },
       (error) => {
         console.error('Error al actualizar la línea', error);
         this.isLoading = false;
+        this.showToast('Error al actualizar la línea. Intenta más tarde', 'cerrar', 'error-toast'); // Mostrar toast de error
       }
     );
+  }
+
+  // Mostrar el toast
+  private showToast(message: string, action: string, panelClass: string = '') {
+    this.snackBar.open(message, action, {
+      duration: 3000, // Duración del toast
+      verticalPosition: 'top', // Posición en la parte superior
+      panelClass: panelClass, // Clase CSS para aplicar estilos personalizados
+    });
   }
 
   // Cerrar el modal

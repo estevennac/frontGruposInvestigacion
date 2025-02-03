@@ -16,14 +16,14 @@
             <form [formGroup]="form" (ngSubmit)="save()">
                 <mat-form-field appearance="outline" class="full-width">
                     <mat-label>Nombre del ODS</mat-label>
-                    <input matInput type="text" formControlName="ods" required>
+                    <input matInput type="text" formControlName="ods" minlength="10" maxlength="299"  required>
                     <mat-error *ngIf="form.get('ods').invalid && form.get('ods').touched">
                         El ods es obligatorio.
                     </mat-error>
                 </mat-form-field>
                 <mat-form-field appearance="outline" class="full-width">
                     <mat-label>Descripcion del ODS</mat-label>
-                    <textarea matInput type="text" formControlName="descripcion" required>   </textarea>
+                    <textarea matInput type="text" formControlName="descripcion" rows="3" minlength="10" maxlength="1000" required>   </textarea>
                     <mat-error *ngIf="form.get('descripcion').invalid && form.get('descripcion').touched">
                         campo requerido
                     </mat-error>

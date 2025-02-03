@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { AcademicDomainService } from 'src/app/core/http/academic-domain/academic-domain.service';
 import { AuthService } from 'src/app/core/auth/services/auth.service';
 import { AcademicDomain } from 'src/app/types/academicDomain.types';
+import { MatSnackBar } from '@angular/material/snack-bar'; // Importar MatSnackBar
 
 @Component({
     selector: 'app-academic-domain',
@@ -24,6 +25,7 @@ export class AcademicDomainsControl implements OnInit {
         private authService: AuthService,
         public dialogRef: MatDialogRef<AcademicDomainsControl>,
         private academicDomainService: AcademicDomainService,
+        private snackBar: MatSnackBar, // Inyectar MatSnackBar
         @Inject(MAT_DIALOG_DATA) public data: any, // Datos que vienen del componente de la tabla
     ) {}
 
@@ -72,14 +74,14 @@ export class AcademicDomainsControl implements OnInit {
 
         this.academicDomainService.createAcademicDomainForm(academicDomainData).subscribe(
             () => {
-                console.log('Dominio académico creado correctamente');
                 this.isSaved = true;
                 this.isLoading = false; // Ocultar el spinner
+                this.showToast('Dominio académico creado correctamente', 'cerrar'); // Mostrar toast
                 this.dialogRef.close(true); // Cerrar el modal y retornar éxito
             },
             (error) => {
-                console.error('Error al crear el dominio académico', error);
                 this.isLoading = false; // Ocultar el spinner
+                this.showToast('Error al crear el dominio académico. Intenta más tarde', 'cerrar', 'error-toast'); // Mostrar toast de error
             }
         );
     }
@@ -92,16 +94,25 @@ export class AcademicDomainsControl implements OnInit {
 
         this.academicDomainService.update(this.data.dominio.idDomimioAcademico, updatedData).subscribe(
             () => {
-                console.log('Dominio académico actualizado correctamente');
                 this.isSaved = true;
                 this.isLoading = false; // Ocultar el spinner
+                this.showToast('Dominio académico actualizado correctamente', 'cerrar'); // Mostrar toast
                 this.dialogRef.close(true); // Cerrar el modal y retornar éxito
             },
             (error) => {
-                console.error('Error al actualizar el dominio académico', error);
                 this.isLoading = false; // Ocultar el spinner
+                this.showToast('Error al actualizar el dominio académico. Intenta más tarde', 'cerrar', 'error-toast'); // Mostrar toast de error
             }
         );
+    }
+
+    // Mostrar el toast
+    private showToast(message: string, action: string, panelClass: string = '') {
+        this.snackBar.open(message, action, {
+            duration: 3000, // Duración del toast
+            verticalPosition: 'top', // Posición en la parte superior
+            panelClass: panelClass, // Clase CSS para aplicar estilos personalizados
+        });
     }
 
     onClickClose(): void {

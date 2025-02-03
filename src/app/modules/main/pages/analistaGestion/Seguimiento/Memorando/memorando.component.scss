@@ -125,4 +125,21 @@
     opacity: 0; 
     cursor: pointer; 
   }
+  .drag-drop i {
+    margin-right: 8px;
+    color: #d9534f; /* Rojo para PDF */
+    font-size: 5rem;
+  }
   
+.loading-spinner-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.5); /* Fondo semitransparente */
+  z-index: 1000; /* Asegurarse de que esté sobre otros elementos */
+}

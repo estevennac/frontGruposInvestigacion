@@ -41,6 +41,9 @@ export class ExternMembersGroup implements OnInit {
             correo: ['', [Validators.required, Validators.email]],
             cedula: ['', Validators.required],
             institucion: ['', Validators.required],
+            grado: ['', Validators.required],
+            nacionalidad: ['', Validators.required],
+            genero: ['', Validators.required],
         });
     }
 
@@ -50,15 +53,10 @@ export class ExternMembersGroup implements OnInit {
 
     guardarmiembro(): void {
         this.isLoading = true;
-
-        // Obtén el valor del apellido y combina con el nombre
-        const apellido = this.apellidoInput.nativeElement.value;
-        const nombreCompleto = `${apellido}, ${this.miembro.get('nombre').value}`;
-
-        // Actualiza el FormControl de nombre con el nombre completo
+        const apellido = this.apellidoInput.nativeElement.value.toUpperCase();
+        const nombre = this.miembro.get('nombre').value.toUpperCase();
+        const nombreCompleto = `${apellido}, ${nombre}`;
         this.miembro.patchValue({ nombre: nombreCompleto });
-
-        // Crea el objeto con los datos completos
         const userData: Usuario = this.miembro.value;
         userData.fechaCreacion = this.currentDate;
         userData.usuarioCreacion = this.currentUser;
@@ -67,12 +65,11 @@ export class ExternMembersGroup implements OnInit {
             (response) => {
                 this.isSaved = true;
                 this.isLoading = false;
-                userData.id=response;
+                userData.id = response;
                 this.memberCreated.emit(userData); // Emitir el usuario creado
                 this.dialogRef.close(); // Cierra solo este modal
             },
             (error) => {
-                console.error('Error al crear el usuario', error);
                 this.isLoading = false;
             }
         );

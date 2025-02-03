@@ -401,10 +401,11 @@ export class CrearGIComponent implements OnInit {
     if (this.selectedFile) {
       //this.loading = true;
       const fileToUpload = this.selectedFile;
-      const sistema = 'publicaciones'
+      const sistema = 'GruposInv'
       this.documentService.saveDocument(this.token, fileToUpload, sistema).subscribe(response => {
       const annexesData: Annexes = {
         idAnexo: 0, 
+        idDocumento:1,
         usuarioCreacionAnexo: this.currentUser, 
         fechaCreacionAnexo: this.currentDate, 
         usuarioModificacionAnexo: '', 

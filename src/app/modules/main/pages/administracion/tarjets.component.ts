@@ -24,8 +24,8 @@ export class TarjetasComponent implements OnInit {
     { titulo: 'Plan de Nivel Superior', imagen: '../../../../assets/img/icons/logos/plan-de-negocios.png', ruta: 'main/upper-plan' },
     { titulo: '   Plan Nacional', imagen: '../../../../assets/img/icons/logos/plan-estrategico.png', ruta: 'main/national-plan' },
     { titulo: '   Marco Legal', imagen: '../../../../assets/img/icons/logos/documento-legal.png', ruta: 'main/legal' },
-    { titulo: 'Objetivos Insitucionales', imagen: '../../../../assets/img/icons/logos/objetivos.png', ruta: 'main/obj_institucionales' },
-    { titulo: 'Estrategias Insitucionales', imagen: '../../../../assets/img/icons/logos/estrategias.png', ruta: 'main/strategiesInst' },
+    { titulo: 'Objetivos Institucionales', imagen: '../../../../assets/img/icons/logos/objetivos.png', ruta: 'main/obj_institucionales' },
+    { titulo: 'Estrategias Institucionales', imagen: '../../../../assets/img/icons/logos/estrategias.png', ruta: 'main/strategiesInst' },
     { titulo: 'ODS', imagen: '../../../../assets/img/icons/logos/ods.png', ruta: 'main/ods' },
 
   ];

@@ -16,7 +16,7 @@
             <form [formGroup]="dominioAcademico" (ngSubmit)="saveAcademicDomain()">
                 <mat-form-field appearance="outline" class="full-width">
                     <mat-label>Nombre del Dominio Académico</mat-label>
-                    <input matInput type="text" formControlName="nombreDominioAcademico" required>
+                    <input matInput type="text" formControlName="nombreDominioAcademico"  minlength="5" maxlength="99" required>
                     <mat-error *ngIf="dominioAcademico.get('nombreDominioAcademico').invalid && dominioAcademico.get('nombreDominioAcademico').touched">
                         El nombre del dominio académico es obligatorio.
                     </mat-error>

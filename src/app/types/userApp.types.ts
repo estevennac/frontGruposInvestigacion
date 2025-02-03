@@ -12,6 +12,9 @@ export interface UserApp {
   idBd?: number;
   //roles: UserRole[]; 
   escalafon:string;
+  grado:string;
+  nacionalidad:string;
+  genero:string;
 }
 export interface UserRole {
   idRol: number;

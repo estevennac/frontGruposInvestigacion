@@ -11,6 +11,7 @@ export interface Usuario{
     nacionalidad?:string;
     foto?:string;
     genero?:string;
+    grado?:string;
     fechaCreacion:Date;
     fechaModificacion:Date;
     usuarioCreacion:string;

@@ -1,10 +1,15 @@
-import { Component, OnInit } from '@angular/core';
-import { LineService } from '../../../../../core/http/line/line.service';
-import { Line } from '../../../../../types/line.types';
+import { Component, OnInit ,ViewChild} from '@angular/core';
+import { LineService } from 'src/app/core/http/line/line.service';
+import { Line } from 'src/app/types/line.types';
 import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { LineaControl } from './modal_line.component';
 import { AreaService } from 'src/app/core/http/area/area.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { FormControl } from '@angular/forms';
+import { MatTableDataSource } from '@angular/material/table';
+import { MatSort } from '@angular/material/sort';
+import { AuthService } from 'src/app/core/auth/services/auth.service';
 
 @Component({
   selector: 'app-line-list',
@@ -12,36 +17,51 @@ import { AreaService } from 'src/app/core/http/area/area.service';
   styleUrls: ['../modulos.component.scss']
 })
 export class LineComponent implements OnInit {
-  line: Line[] = [];
+  displayedColumns: string[] = ['nombreLinea', 'nombreArea', 'estado', 'acciones'];
+  dataSource = new MatTableDataSource<Line>(); // Fuente de datos para la tabla
   areas: any[] = []; // Array para almacenar las áreas
+  isLoading: boolean = true; // Control para mostrar el spinner
+  searchControl = new FormControl(); // Control de búsqueda
+  currentUser: string;
+  currentDate: Date = new Date();
+  
+  @ViewChild(MatSort) sort!: MatSort;
 
   constructor(
     private router: Router,
     private lineService: LineService,
     private areaService: AreaService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private snackBar: MatSnackBar,
+        private authService: AuthService,
+    
   ) {}
 
   ngOnInit() {
     this.getLine();
+    this.currentUser = this.authService.getUserName();
+    this.searchControl.valueChanges.subscribe(value => {
+      this.dataSource.filter = value.trim().toLowerCase();
+    });
   }
 
   // Método para obtener líneas y áreas, y combinar la información
   getLine() {
-    // Obtener todas las áreas
     this.areaService.getAll().subscribe((areasData) => {
       this.areas = areasData;
 
-      // Obtener todas las líneas de investigación
-      this.lineService.getAll().subscribe((lineasData) => {
-        // Para cada línea, asignar el nombre del área correspondiente
-        this.line = lineasData.map((linea) => {
-          const area = this.areas.find(a => a.idArea === linea.idArea);
-          return {
-            ...linea,
-            nombreArea: area ? area.nombreArea : 'Área no encontrada'
-          };
-        });
+      this.lineService.getAll().subscribe((linesData) => {
+        this.dataSource = new MatTableDataSource(
+          linesData.map((line) => {
+            const area = this.areas.find(a => a.idArea === line.idArea);
+            return {
+              ...line,
+              nombreArea: area ? area.nombreArea : 'Área no encontrada'
+            };
+          })
+        );
+        this.dataSource.sort = this.sort;
+        this.isLoading = false; // Desactivar el spinner una vez cargados los datos
       });
     });
   }
@@ -63,36 +83,50 @@ export class LineComponent implements OnInit {
   editLine(id: number) {
     this.lineService.getById(id).subscribe(
       (linea: Line) => {
-        this.openDialog(linea); // Abrir el modal con los datos para editar
+        this.openDialog(linea); // Abrir modal con datos para editar
       },
       (error) => {
-        console.error('Error al obtener los detalles de la línea', error);
+        this.showToast('Error al obtener los detalles de la línea', 'cerrar', 'error-toast');
       }
     );
   }
 
-  deleteLine(id: number,idArea:number) {
-    this.lineService.update(id, { idArea: idArea, estado: false }).subscribe(
+  deleteLine(id: number, idArea: number) {
+    this.isLoading = true;
+    this.lineService.update(id, { idArea: idArea, estado: false,fechaModificacionLinea: this.currentDate, usuarioModificacionLinea: this.currentUser }).subscribe(
       () => {
-        console.log(`Línea de investigación con ID ${id} eliminada correctamente`);
+        this.isLoading = false;
+        this.showToast('Línea de investigación eliminada correctamente', 'cerrar');
         this.getLine();
       },
       (error) => {
-        console.error('Error al eliminar la línea de investigación', error);
+        this.isLoading = false;
+        this.showToast('Lo siento, intenta más tarde', 'cerrar', 'error-toast');
       }
     );
   }
 
-  activateLine(id: number,idArea:number) {
-    this.lineService.update(id, { idArea: idArea,estado: true }).subscribe(
+  activateLine(id: number, idArea: number) {
+    this.isLoading = true;
+    this.lineService.update(id, { idArea: idArea, estado: true,fechaModificacionLinea: this.currentDate, usuarioModificacionLinea: this.currentUser }).subscribe(
       () => {
-        console.log(`Línea de investigación con ID ${id} activada correctamente`);
+        this.isLoading = false;
+        this.showToast('Línea de investigación activada correctamente', 'cerrar');
         this.getLine();
       },
       (error) => {
-        console.error('Error al activar la línea de investigación', error);
+        this.isLoading = false;
+        this.showToast('Lo siento, intenta más tarde', 'cerrar', 'error-toast');
       }
     );
+  }
+
+  showToast(message: string, action: string, panelClass: string = '') {
+    this.snackBar.open(message, action, {
+      duration: 3000,
+      verticalPosition: 'top',
+      panelClass: panelClass,
+    });
   }
 
   goBack() {

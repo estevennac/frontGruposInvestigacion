@@ -6,6 +6,7 @@ import { StrategiesService } from "src/app/core/http/strategies/strategies.servi
 import { Strategies } from "src/app/types/strategies.types";
 import { InstStrategicObjService } from "src/app/core/http/instStrategicObj/inst-strategic-obj.service";
 import { InstStrategicObj } from "src/app/types/InstStrategicObj.types";
+import { MatSnackBar } from "@angular/material/snack-bar";
 @Component({
     selector: 'app-strategies',
     templateUrl: './modal-strategies.component.html',
@@ -26,6 +27,7 @@ export class ModalStrategiesControl implements OnInit {
       public dialogRef: MatDialogRef<ModalStrategiesControl>,
       private strategiesService: StrategiesService,
       private instStrategicObjService: InstStrategicObjService,
+      private snackBar: MatSnackBar, // Inyectar MatSnackBar
       @Inject(MAT_DIALOG_DATA) public data: any // Datos que vienen del componente de la tabla
     ) {}
   
@@ -82,13 +84,13 @@ export class ModalStrategiesControl implements OnInit {
   
       this.strategiesService.createStrategiesForm(strategiesData).subscribe(
         () => {
-          //console.log('Línea creada correctamente');
+          this.showToast('Estrategia creada correctamente', 'cerrar');
           this.isSaved = true;
           this.isLoading = false;
           this.dialogRef.close(true); 
         },
         (error) => {
-          //console.error('Error al crear la línea', error);
+this.showToast('Error al crear la estrategia', 'cerrar', 'error-toast');
           this.isLoading = false;
         }
       );
@@ -102,18 +104,27 @@ export class ModalStrategiesControl implements OnInit {
   
       this.strategiesService.update(this.data.strategies.idEstrategia, updatedData).subscribe(
         () => {
-          //console.log('Línea actualizada correctamente');
+          this.showToast('Estrategia actualizada correctamente', 'cerrar');
           this.isSaved = true;
           this.isLoading = false;
           this.dialogRef.close(true); // Cerrar el modal y retornar éxito
         },
         (error) => {
-          //console.error('Error al actualizar la línea', error);
+          this.showToast('Error al actualizar la estrategia', 'cerrar', 'error-toast');
           this.isLoading = false;
         }
       );
     }
   
+      // Mostrar el toast
+  private showToast(message: string, action: string, panelClass: string = '') {
+    this.snackBar.open(message, action, {
+      duration: 3000, // Duración del toast
+      verticalPosition: 'top', // Posición en la parte superior
+      panelClass: panelClass, // Clase CSS para aplicar estilos personalizados
+    });
+  }
+
     // Cerrar el modal
     onClickClose(): void {
       this.dialogRef.close();

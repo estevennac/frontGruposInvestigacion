@@ -25,6 +25,9 @@ export class AreaService {
   createAreaForm(formData: Area): Observable<any> {
     return this.http.post(`${this.URL}/create`, formData);
   }
+  getAreasByDominio(id: number): Observable<Area[]> {
+    return this.http.get<Area[]>(`${this.URL}/getAreaByDominio/${id}`);
+  }
 
   update(id: number, formData: Area): Observable<Area> {
     return this.http.put<Area>(`${this.URL}/update/${id}`, formData);

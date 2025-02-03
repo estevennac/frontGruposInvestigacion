@@ -1,43 +1,63 @@
+<div *ngIf="isLoading" class="loading-spinner-overlay">
+  <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
+</div>
+
 <div class="cont">
   <div class="container-fluid">
     <div class="card">
       <header>
         <h1>Lista de Dominios Académicos</h1>
-    </header>
+      </header>
 
-    <button type="button" mat-mini-fab  color="successful" (click)="goBack()" style="margin: 20px;">
-      <i class="fas fa-arrow-left" ></i></button> 
-      <button class="create" (click)="openDialog()">
-        <i class="fas fa-plus"></i> Agregar
+      <button class="back-button" mat-mini-fab color="primary" (click)="goBack()" matTooltip="Regresar">
+        <i class="fas fa-arrow-left"></i>
+      </button>
+      <button class="create" mat-raised-button color="primary" (click)="openDialog()" matTooltip="Agregar un nuevo dominio">
+        <i class="fas fa-plus" style="margin-right: 8px;"></i> Nuevo Registro
       </button>
 
-    <table>
-      <thead style="position: sticky; top: 0;">
-        <tr>
-          <th>Nombre</th>
-          <th>Estado</th>
-          <th>Acciones</th>
-        </tr>
-      </thead>
-      <tbody>
-        <!-- Filas de la tabla -->
-        <tr *ngFor="let acadDom of academicDomain">
-          <td>{{ acadDom.nombreDominioAcademico }}</td>
-          <td> {{acadDom.estado ? 'Activo' : 'Inactivo'}}</td>
+      <!-- Campo de búsqueda -->
+      <div class="search-container">
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Buscar por nombre de dominio</mat-label>
+          <input matInput [formControl]="searchControl">
+        </mat-form-field>
+      </div>
 
-          <td>
-            <button class="edit" mat-mini-fab  (click)="editAcademicDomain(acadDom.idDomimioAcademico)">
-              <i class="fas fa-edit"></i> 
+      <!-- Tabla -->
+      <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
+
+        <!-- Nombre -->
+        <ng-container matColumnDef="nombreDominioAcademico">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Nombre</th>
+          <td mat-cell *matCellDef="let a">{{ a.nombreDominioAcademico }}</td>
+        </ng-container>
+
+        <!-- Estado -->
+        <ng-container matColumnDef="estado">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Estado</th>
+          <td mat-cell *matCellDef="let a">{{ a.estado ? 'Activo' : 'Inactivo' }}</td>
+        </ng-container>
+
+        <!-- Acciones -->
+        <ng-container matColumnDef="acciones">
+          <th mat-header-cell *matHeaderCellDef>Acciones</th>
+          <td mat-cell *matCellDef="let a">
+            <button class="edit" mat-mini-fab color="primary" (click)="editAcademicDomain(a.idDomimioAcademico)" matTooltip="Editar dominio">
+              <i class="fas fa-edit"></i>
             </button>
-            <button  *ngIf="acadDom.estado" class="delete" mat-mini-fab  (click)="deleteAcademicDomain(acadDom.idDomimioAcademico)">
-              <i class="fas fa-trash-alt"></i> 
+            <button class="delete" *ngIf="a.estado" mat-mini-fab color="warn" (click)="deleteAcademicDomain(a.idDomimioAcademico)" matTooltip="Desactivar dominio">
+              <i class="fas fa-trash-alt"></i>
             </button>
-            <button *ngIf="!acadDom.estado" class="activar"  mat-mini-fab (click)="activateAcademicDomain(acadDom.idDomimioAcademico)">
-              <i class="fas fa-check"></i> 
+            <button class="activar" *ngIf="!a.estado" mat-mini-fab color="accent" (click)="activateAcademicDomain(a.idDomimioAcademico)" matTooltip="Activar dominio">
+              <i class="fas fa-check"></i>
             </button>
           </td>
-        </tr>
-      </tbody>
-    </table>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+    </div>
   </div>
 </div>

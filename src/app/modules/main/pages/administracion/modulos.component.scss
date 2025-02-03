@@ -50,46 +50,60 @@ h2 {
 }
 
 .create {
-  background-color: #2e8041;
+  background-color: blue !important;
   color: white;
   border: solid 1px #fff;
   border-radius: 5px;
-  width: 100px;
   height: 35px;
-  margin-left: 35%;
-  margin-bottom: 10px;
-}
-
-.edit {
-  background-color: #3498db;
-  color: white;
-}
-
-.delete {
-  background-color: #e74c3c;
-  color: white;
 }
 
 table {
   margin-left: 5%;
   width: 90%;
   border-collapse: collapse;
-  text-align: center;
+  text-align: left; 
+  //table-layout: fixed; /* Mantiene las columnas del mismo tamaño */
+ // word-wrap: break-word; /* Permite que el texto largo se divida */
+  //overflow-wrap: break-word; /* Permite que el texto largo se divida */
 }
 
-thead{
+thead {
   background-color: #2e8041;
-}
-th {
-  padding: 12px;
-  background-color: #f2f2f2;
-  border-bottom: 1px solid #ddd;
+  /* Si también no deseas que los encabezados se centren, elimina este texto */
+  text-align: left; /* Puedes cambiarlo a left también */
 }
 
-td {
-  padding: 12px;
-  border-bottom: 1px solid #ddd;
+th, td {
+  text-align: left;
+  vertical-align: middle;
+  //white-space: normal; /* Permite saltos de línea */
+  //word-break: break-word;
+  overflow: hidden;
+  //text-overflow: ellipsis;
 }
+
+/* Estilos para las columnas específicas */
+th.mat-header-cell, td.mat-cell {
+  width: auto;
+  max-width: 200px; /* Ajusta según necesidad */
+}
+
+/* Responsividad para pantallas pequeñas */
+@media (max-width: 768px) {
+  .card {
+    padding: 15px;
+  }
+
+  table {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+
+  th, td {
+    max-width: 150px;
+  }
+}  
 
 tr:nth-child(odd) {
   background-color: #f9f9f9;
@@ -133,6 +147,12 @@ tr:nth-child(odd) {
   margin-top: 40px;
 }
 
+.search-container{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
 
 .label-container {
   width: 100%;
@@ -181,42 +201,35 @@ tr:nth-child(odd) {
 }
 
 .back-button {
-  background-color: #CCCCCC;
-  color: #FFFFFF;
-  border: none;
-  padding: 10px;
-  border-radius: 50%;
+  background-color: #ffffff !important;
+  color: #000000  !important;
+  border: none  !important ;
+ // padding: 10px  !important;
   cursor: pointer;
+  margin-left: 20px;
+  margin-top: 2px; 
+  margin-right: 10px;
 }
 
 .back-button:hover {
   background-color: #AAAAAA;
 }
 
-.back-button i {
-  margin-right: 5px;
-}
+
 
 .label {
   display: block;
   text-align: left;
   margin-bottom: 5px;
-  /* Agrega un margen inferior opcional para separarla del campo de entrada */
 }
 
 .error-message {
   color: #dc3545;
-  /* Color rojo */
   margin-top: 5px;
-  /* Margen superior */
   font-size: 14px;
-  /* Tamaño de fuente */
 }
 
-.activar {
-  color: white;
-  background-color: #2e8041;
-}
+
 
 .info-container {
   display: flex;
@@ -225,7 +238,6 @@ tr:nth-child(odd) {
 
 .column {
   width: 48%;
-  /* Ajusta el ancho de las columnas */
 }
 
 p {
@@ -258,4 +270,37 @@ p {
   align-items: center;
   background-color: rgba(0, 0, 0, 0.5); /* Fondo semitransparente */
   z-index: 1000; /* Asegurarse de que esté sobre otros elementos */
+}
+.success-toast {
+  background-color: #4caf50 !important; /* Verde */
+  color: white !important;
+}
+
+.error-toast {
+  background-color: #f44336 !important; /* Rojo */
+  color: white !important;
+}
+
+ .edit {
+  background-color: rgb(29, 143, 236) !important;
+  color: white;
+  margin-right: 10px !important; 
+}
+
+ .delete {
+ background-color: red !important;
+  color: white;
+  margin-right: 10px; 
+}
+
+.activar {
+  background-color: green !important;
+  color: white;
+  margin-right: 10px !important;
+}
+.btn-container{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
 }

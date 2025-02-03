@@ -1,3 +1,6 @@
+import { SpecificObjetives } from "./specificObjetives.types";
+import { Usuario } from "./usuario.types";
+
 export interface ControlPanelForm {
     idPanelControl: number;
     idPlanDesarrollo: number;
@@ -19,4 +22,10 @@ export interface ControlPanelForm {
     fechaCreacion: Date;
     usuarioModificacion: string;
     fechaModificacion: Date;
+}
+
+export interface ControlPanelComplete{
+    panelControl:ControlPanelForm;
+    responsable:Usuario;
+    objetivoEspecífico:SpecificObjetives;
 }

@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { CreationReqService } from 'src/app/core/http/creation-req/creation-req.service'; 
 import { Router } from '@angular/router';
-import { CreationReqForm } from 'src/app/types/creationReq.types'; 
 import { InvGroupForm } from 'src/app/types/invGroup.types';
 import { InvGroupService } from 'src/app/core/http/inv-group/inv-group.service';
 import { UsuarioService } from 'src/app/core/http/usuario/usuario.service';
 import { Usuario } from 'src/app/types/usuario.types';
+import { group } from 'console';
 
 @Component({
     selector: 'app-solicitud-list',
@@ -23,7 +23,6 @@ export class GruposForAnalistaComponent implements OnInit {
 
     constructor(
         private router: Router,
-        private solicitudService: CreationReqService,
         private invGroupService: InvGroupService,
         private userService: UsuarioService
     ) {}
@@ -41,7 +40,7 @@ export class GruposForAnalistaComponent implements OnInit {
     }
 
     filtrarGrupos() {
-        this.gruposFiltrados = this.grupos.filter(group => group.estadoGrupoInv === 'Activo');
+        this.gruposFiltrados = this.grupos.filter(group => group.estadoGrupoInv === 'Activo' && group.proceso !== 'SolicitaPlanAnual');
         this.noGruposPendientes = this.gruposFiltrados.length === 0;
         this.loadingData = false;
     }
@@ -68,6 +67,7 @@ export class GruposForAnalistaComponent implements OnInit {
         console.log("grupo seleccionado", id);
         this.invGroupService.getById(id).subscribe(
             (invGroup: InvGroupForm) => {
+                sessionStorage.setItem("idSelectGroup",""+id);
                 this.router.navigate(['main/sol-informe'], { state: { invGroup } });
             },
             (error) => {

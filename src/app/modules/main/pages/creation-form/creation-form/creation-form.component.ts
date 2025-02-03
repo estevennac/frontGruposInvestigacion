@@ -29,6 +29,7 @@ import { ChecklistService } from 'src/app/core/http/checklist/checklist.service'
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { DocumentsService } from 'src/app/core/http/documentos/documents.service';
 import { Usuario } from 'src/app/types/usuario.types';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 @Component({
   selector: 'vex-creation-form',
   templateUrl: './creation-form.component.html',
@@ -69,6 +70,8 @@ export class CreationFormComponent implements OnInit {
   isSaved: boolean = false;
   public isLoading: boolean = true; // Inicializar como true para que el spinner aparezca al inicio
   idGrupo: number;
+  pdfUrl: SafeResourceUrl | undefined;
+  
   constructor(
     private builder: FormBuilder,
     private snackBar: MatSnackBar,
@@ -88,7 +91,9 @@ export class CreationFormComponent implements OnInit {
     private invGroup_linesService: InvGroup_linesService,
     private userRolService: UserRolService,
     private annexesServices: AnnexesService, private checklistService: ChecklistService,
-    private documentService: DocumentsService
+    private documentService: DocumentsService,
+        private sanitizer: DomSanitizer,
+    
   ) { this.usuarios = []; }
 
   ngOnInit(): void {
@@ -100,6 +105,25 @@ export class CreationFormComponent implements OnInit {
     this.areasControl.valueChanges.subscribe((selectedAreas: any[]) => {
       this.updateLineasByAreas(selectedAreas);
     });
+    this.dominiosControl.valueChanges.subscribe((selectedDominios: any[])=>{
+this.updateAreasByDominios(selectedDominios);
+    })
+  }
+
+  updateAreasByDominios(selectedDominios: any[]) {
+    this.areas = []; // Limpia las areas actuales
+    if (selectedDominios.length > 0) {
+      selectedDominios.forEach((idDomimioAcademico) => {
+        this.areaService.getAreasByDominio(idDomimioAcademico).subscribe((areasDominio: any[]) => {
+          this.areas = [
+            ...this.areas,
+            ...areasDominio.filter(
+              (area) => !this.areas.some((a) => a.idArea === area.idArea)
+            ),
+          ];
+        });
+      });
+    }
   }
   updateLineasByAreas(selectedAreas: any[]) {
     this.lineas = []; // Limpia las líneas actuales
@@ -155,9 +179,9 @@ export class CreationFormComponent implements OnInit {
         areas: this.areasControl,
         lineas: this.lineasControl,
       }),
-      grupoInv2_1: this.builder.group({
+      /*grupoInv2_1: this.builder.group({
         alineacionEstrategica: ['', Validators.required]
-      }),
+      }),*/
       grupoInv3: this.builder.group({
         cvsCoordinador: new FormControl(''),
         meritosCoordinador: new FormControl(''),
@@ -215,9 +239,31 @@ export class CreationFormComponent implements OnInit {
     this.apiInvGroupService.getById(id).subscribe(data => {
       this.grupo = data;
       this.loadingData = false;
+      if(this.grupo.proceso==='SolicitaPlanAnual'){
+this.loadMemo(id);
+      }
     })
   }
+  token:string;
 
+loadMemo(id:number){
+  this.token=sessionStorage.getItem('access_token');
+this.annexesServices.getByGroupType(id,'emo_Sol').subscribe((data)=>{
+  console.log('data',data);
+  this.documentService.getDocument(this.token, data[0].rutaAnexo, data[0].nombreAnexo).subscribe({
+    next: (blob) => {
+      const pdfBlob = new Blob([blob], { type: 'application/pdf' });
+      const url = window.URL.createObjectURL(pdfBlob);
+      this.pdfUrl = this.sanitizer.bypassSecurityTrustResourceUrl(url); // Marcar la URL como segura
+      this.loadingData = false;
+    },
+    error: (err) => {
+      console.error('Error al cargar el documento:', err);
+      this.loadingData = false;
+    }
+  })
+})
+}
   loadDominios(): void {
     this.academicDomainService.getAll().subscribe(data => {
       this.dominios = data.filter(dominio => dominio.estado === true);
@@ -429,7 +475,16 @@ selectedImage:File|undefined;
         (response) => {
           this.reqFormResponse = response;
           const idGrupoCreado = this.reqFormResponse;
-          const reqFormData: CreationReqForm = {
+          this.saveCurriculums(idGrupoCreado, this.currentUser, this.currentDate); 
+              this.saveAcademicDomain(idGrupoCreado);
+              this.saveArea(idGrupoCreado);
+              this.saveLine(idGrupoCreado);
+              this.saveMember(idGrupoCreado);
+              this.loadingData = false;
+              this.snackBar.open('Enviado con éxito', 'Cerrar', {
+                duration: 4000, // Duración del toast en milisegundos
+              });
+        /*   const reqFormData: CreationReqForm = {
             idPeticionCreacion: null,
             idGrupoInv: idGrupoCreado,
             alineacionEstrategica: this.myForm.value.grupoInv2_1.alineacionEstrategica,
@@ -439,19 +494,8 @@ selectedImage:File|undefined;
             usuarioModificacionPeticion: null,
             fechaModificacionPeticion: null,
           };
-          this.creationReqService.createCreationRequestForm(reqFormData).subscribe(
+         this.creationReqService.createCreationRequestForm(reqFormData).subscribe(
             (reqFormResponse) => {
-              this.saveCurriculums(idGrupoCreado, this.currentUser, this.currentDate); 
-              this.saveAcademicDomain(idGrupoCreado);
-              this.saveArea(idGrupoCreado);
-              this.saveLine(idGrupoCreado);
-              this.saveMember(idGrupoCreado);
-              localStorage.setItem('reqFormResponse', JSON.stringify(reqFormResponse));
-              this.loadingData = false;
-              this.snackBar.open('Enviado con éxito', 'Cerrar', {
-                duration: 4000, // Duración del toast en milisegundos
-              });
-
               setTimeout(() => {
                 window.location.reload();
               }, 8000);
@@ -459,7 +503,7 @@ selectedImage:File|undefined;
             (reqFormError) => {
               console.error('Error al crear el registro en CreationReqForm:', reqFormError);
             }
-          );
+          );*/
         },
         (error) => {
           this.savedMessage = 'Error al guardar el formulario';
@@ -621,6 +665,7 @@ selectedImage:File|undefined;
         this.documentService.saveDocument(token, archivo, sistema).subscribe(response => {
           const annexes: Annexes = {
             idAnexo: null,
+            idDocumento:1,
             idGrupo: idGrupo,
             nombreAnexo: response.fileName,
             rutaAnexo: response.uuid,
@@ -649,6 +694,7 @@ selectedImage:File|undefined;
         this.documentService.saveDocument(token, archivo, sistema).subscribe(response => {
           const annexes: Annexes = {
             idAnexo: null,
+            idDocumento:1,
             idGrupo: idGrupo,
             nombreAnexo: response.fileName,
             rutaAnexo: response.uuid,
@@ -669,109 +715,14 @@ selectedImage:File|undefined;
     }
 
   }
-
-  //Cargamos Información respectiva de un  checklist de verificacion de documentos, 
-  /* cargarChecklist(id: number) {
-     this.checklistService.getByGroup(id).subscribe(data => {
-       this.checkList = data;
-       this.revisadoPor(data.recibidoPor);
-       this.checklistForm = this.builder.group({
-         peticionMemorando: [data.peticionMemorando],
-         formularioGrInv: [data.formularioGrInv],
-         planDevGr: [data.planDevGr],
-         planEconomico: [data.planEconomico],
-         hojaVida: [data.hojaVida],
-         certificado: [data.certificado],
-         usuarioCreacionChecklist: [data.usuarioCreacionChecklist],
-         fechaCreacionChecklist: [data.fechaCreacionChecklist],
-         usuarioModificacionChecklist: [null],
-         fechaModificacionChecklist: [null],
-         fechaChecklist: [data.fechaChecklist],
-         recibidoPor: [data.recibidoPor],
-         enviadoPor: [null]
-       });
-       this.loadingData = false;
-       const requiredFields = ['peticionMemorando', 'formularioGrInv', 'planDevGr', 'planEconomico', 'hojaVida', 'certificado'];
-     const allTrue = requiredFields.every(field => this.checklistForm.get(field).value === true);
-     if (allTrue) {
-       //this.todosTrueFunction();
-     } else {
-       this.check = true;
-     }
-     })
- 
-     
-   }*/
-
   revisadoPor(user: string): void {
     this.usuarioService.getByUserName(user).subscribe(data => {
       this.revisado = data
     })
   }
 
-
-  /* enviarAnexos(){
- 
-     const invGroup = Number(sessionStorage.getItem('invGroup'));
-     const currentUser = this.authService.getUserName();
-     const currentDate = new Date();
-     this.creationReqService.getByGroup(invGroup).subscribe(data=>{
-       const formData:any={
-         idGrupoInv:invGroup,
-         estado:'E'
-       }
-       this.creationReqService.update(data.idPeticionCreacion,formData).subscribe(response=>{
-         console.log(response)
-       })
-     })
-     this.saveAnexos(invGroup, currentUser,currentDate)
-     
-     
-   }
-   */
-  /*postInvestigador(data: any) {
-    this.apiInvMemberService.createInvMemberFormForm(data).subscribe((item) => {
-      alert("Guardado correctamente")
-    }, (error) => {
-      alert("Error al enviar informacion de Grupo de investigación")
-    })
-  }*/
-
-
-  /* private saveAnexos(idGrupo: number, user: string, date: Date) {
-     this.selectedFiles.forEach((data) => {
-       const annexes: Annexes = {
-         idAnexo: null,
-         idGrupo: idGrupo,
-         rutaAnexo: "https://docs.google.com/document/d/137T7f6j_lvQzt99db-TvlpktpWMWKS1a/edit?usp=drive_link&ouid=106867232357735510933&rtpof=true&sd=true",
-         nombreAnexo: data.name,
-         usuarioCreacionAnexo: user,
-         fechaCreacionAnexo: date,
-         usuarioModificacionAnexo: null,
-         fechaModificacionAnexo: null
-       }
-       
-       this.annexesServices.createAnnexesForm(annexes).subscribe((response) => {
-         setTimeout(() => {
-           this.router.navigateByUrl('main/developPlan/${idGrupo}');
-         }, 100);
-       })
-     })
-   }
-  
- */
-
-
   enlace(plan: string) {
     this.router.navigateByUrl(`main/${plan}`);
 
   }
 }
-
-/*  postInvGropuService(data: InvGroupForm) {
-    this.apiInvGroupService.createInvGroupForm(data).subscribe((item) => {
-      alert("Guardado correctamente")
-    }, (error) => {
-      alert("Error al enviar informacion de Grupo de investigación")
-    })
-  }*/

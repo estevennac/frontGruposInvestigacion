@@ -99,6 +99,7 @@ export class InformeDePertinenciaComponent implements OnInit {
             this.documentService.saveDocument(this.token, fileToUpload, sistema).subscribe(response => {
                 const annexes: Annexes = {
                     idAnexo: null,
+                    idDocumento:1,
                     idGrupo: this.groupId,
                     nombreAnexo: response.fileName,
                     rutaAnexo: response.uuid,

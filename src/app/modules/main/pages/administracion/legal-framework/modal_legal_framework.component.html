@@ -16,7 +16,7 @@
             <form [formGroup]="marcoLegal" (ngSubmit)="saveLegalFramework()">
                 <mat-form-field appearance="outline" class="full-width">
                     <mat-label>Nombre del Marco Legal</mat-label>
-                    <input matInput type="text" formControlName="nombre" required>
+                    <input matInput type="text" formControlName="nombre" minlength="3" maxlength="299" required>
                     <mat-error *ngIf="marcoLegal.get('nombre').invalid && marcoLegal.get('nombre').touched">
                         El nombre del marco legal es obligatorio.
                     </mat-error>

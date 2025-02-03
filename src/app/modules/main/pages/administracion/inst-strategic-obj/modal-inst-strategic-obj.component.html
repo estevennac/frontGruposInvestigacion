@@ -16,7 +16,7 @@
             <form [formGroup]="instStrategicForm" (ngSubmit)="saveInstStrategocObj()">
                 <mat-form-field appearance="outline" class="full-width">
                     <mat-label>Objetivo</mat-label>
-                    <input matInput type="text" formControlName="objetivo" required>
+                    <textarea matInput type="text" formControlName="objetivo" rows="3" minlength="10" maxlength="999" required></textarea>
                     <mat-error *ngIf="instStrategicForm.get('objetivo').invalid && instStrategicForm.get('objetivo').touched">
                         El nombre del area es obligatorio.
                     </mat-error>

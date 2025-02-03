@@ -17,7 +17,7 @@
           <!-- Campo de nombre de la línea -->
           <mat-form-field appearance="outline" class="full-width">
             <mat-label>Nombre de la Linea de Investigación</mat-label>
-            <input matInput type="text" formControlName="nombreLinea" required>
+            <input matInput type="text" formControlName="nombreLinea" minlength="5" maxlength="99" required>
             <mat-error *ngIf="lineForm.get('nombreLinea').invalid && lineForm.get('nombreLinea').touched">
               El nombre de la Linea de Investigación es obligatorio.
             </mat-error>

@@ -14,19 +14,12 @@
       <!-- Formulario -->
       <div class="form-container" *ngIf="!isLoading">
         <form [formGroup]="planNationalForm" (ngSubmit)="saveNationalPlan()">
-          <!-- Campo de nombre de la Plan nacional -->
-          <!-- <mat-form-field appearance="outline" class="full-width">
-            <mat-label>Nombre del Plan Nacional</mat-label>
-            <input matInput type="text" formControlName="nombre" required>
-            <mat-error *ngIf="planNationalForm.get('nombre').invalid && planNationalForm.get('nombre').touched">
-              El nombre del Plan Nacional es obligatorio.
-            </mat-error>
-          </mat-form-field> -->
+          
 
             <!--Campo de Numero Politica-->
           <mat-form-field appearance="outline" class="full-width">
             <mat-label>Numero de Politica</mat-label>
-            <input matInput type="text" formControlName="numeroPolitica" required>
+            <input matInput type="text" formControlName="numeroPolitica" minlength="2" maxlength="99" required>
             <mat-error *ngIf="planNationalForm.get('numeroPolitica').invalid && planNationalForm.get('numeroPolitica').touched">
               El numero de politica es obligatorio.
             </mat-error>
@@ -34,12 +27,13 @@
 
           <!--Campo de descripcion-->
           <mat-form-field appearance="outline" class="full-width">
-            <mat-label>Descripcion del Plan Nacional</mat-label>
-            <input matInput type="text" formControlName="descripcion" required>
+            <mat-label>Descripción del Plan Nacional</mat-label>
+            <textarea matInput formControlName="descripcion" rows="3" minlength="10" maxlength="299" required></textarea>
             <mat-error *ngIf="planNationalForm.get('descripcion').invalid && planNationalForm.get('descripcion').touched">
-              La descripcioon es obligatorio.
+              La descripción es obligatoria.
             </mat-error>
           </mat-form-field>
+          
   
           <!-- Botón de guardar -->
           <div class="button-container">

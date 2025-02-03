@@ -42,7 +42,7 @@ import { UsuarioService } from 'src/app/core/http/usuario/usuario.service';
 import { SpecificObjetives } from 'src/app/types/specificObjetives.types';
 import { SpecificObjetivesService } from 'src/app/core/http/specific-objetives/specific-objetives.service';
 @Component({
-  selector: 'vex-creation-form',
+  selector: 'vex-development-plan-form',
   templateUrl: './development-plan.html',
   styleUrls: ['../creation-form.component.scss'],
 })

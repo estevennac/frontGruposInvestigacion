@@ -1,8 +1,8 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subject, forkJoin } from 'rxjs';
 import { map, switchMap, takeUntil, tap } from 'rxjs/operators';
-import { Chart } from 'chart.js';
-import 'chartjs-plugin-labels';
+import Chart from 'chart.js/auto';
+import ChartDataLabels from 'chartjs-plugin-datalabels';
 import { InvGroupForm } from 'src/app/types/invGroup.types';
 import { SolCreaGiService } from 'src/app/core/http/sol-crea-gi/sol-crea-gi.service';
 import { InvgActiService } from 'src/app/core/http/invg-acti/invg-acti.service';
