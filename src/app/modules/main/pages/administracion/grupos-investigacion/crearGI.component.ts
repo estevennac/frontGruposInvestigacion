@@ -508,6 +508,7 @@ export class CrearGIComponent implements OnInit {
           const member: InvMemberForm = {
             idGrupoInv: idGrupo,
             idUsuario: data.id,
+            estado: true, tipo: 'Externo',
             usuarioCreacion: this.currentUser,
             fechaCreacion: this.currentDate,
             usuarioModificacion: null,
@@ -544,6 +545,7 @@ export class CrearGIComponent implements OnInit {
         const member: InvMemberForm = {
           idGrupoInv: idGrupo,
           idUsuario: user.id,
+          estado: true, tipo: 'Externo',
           usuarioCreacion: this.currentUser,
           fechaCreacion: this.currentDate,
           usuarioModificacion: null,

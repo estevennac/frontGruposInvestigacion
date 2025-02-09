@@ -152,8 +152,12 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatTableModule } from '@angular/material/table';
 import { MatSortModule } from '@angular/material/sort';
 import { MatPaginatorModule } from '@angular/material/paginator';
+import { SeleccionRolDialogComponent } from './pages/creation-form/SeleccionRolDialogComponent';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
+
 @NgModule({
   declarations: [
+    SeleccionRolDialogComponent,
     ProgressComponent,
     GroupModalEdit,
     MembersModalEdit,
@@ -272,6 +276,8 @@ import { MatPaginatorModule } from '@angular/material/paginator';
    
   ],
   imports: [
+    MatButtonToggleModule,  
+
     CommonModule,
     MainRoutingModule,
     FormsModule, 

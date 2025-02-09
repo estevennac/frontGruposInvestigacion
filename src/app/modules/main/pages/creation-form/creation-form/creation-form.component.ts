@@ -30,6 +30,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { DocumentsService } from 'src/app/core/http/documentos/documents.service';
 import { Usuario } from 'src/app/types/usuario.types';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import { SeleccionRolDialogComponent } from '../SeleccionRolDialogComponent';
 @Component({
   selector: 'vex-creation-form',
   templateUrl: './creation-form.component.html',
@@ -71,7 +72,7 @@ export class CreationFormComponent implements OnInit {
   public isLoading: boolean = true; // Inicializar como true para que el spinner aparezca al inicio
   idGrupo: number;
   pdfUrl: SafeResourceUrl | undefined;
-  
+  CvNameOriginal:string;
   constructor(
     private builder: FormBuilder,
     private snackBar: MatSnackBar,
@@ -157,7 +158,6 @@ this.updateAreasByDominios(selectedDominios);
     this.usuarioService.getByUserName(this.currentUser).subscribe((data: Usuario) => {
       this.userCoordinador = data;
     }, error => {
-      console.error("Error al cargar el usuario del coordinador:", error);
     });
   }
   cargarFormularios(invGroup) {
@@ -197,6 +197,9 @@ this.updateAreasByDominios(selectedDominios);
       }),
       grupoInv4: this.builder.group({
 
+      }),
+      grupoInv5: this.builder.group({
+
       })
     });
   }
@@ -216,6 +219,9 @@ this.updateAreasByDominios(selectedDominios);
   }
   get grupoInv4() {
     return this.myForm.get('grupoInv4') as FormGroup;
+  }
+  get grupoInv5() {
+    return this.myForm.get('grupoInv5') as FormGroup;
   }
   private crearFormGroupInvestigador() {
     return new FormGroup({
@@ -284,23 +290,64 @@ this.annexesServices.getByGroupType(id,'emo_Sol').subscribe((data)=>{
     });
 
     dialogRef.componentInstance.usuarioExternoCreado.subscribe((usuarioCreado: Usuario) => {
-      console.log('Usuario creado recibido en openDialog:', usuarioCreado);
-      this.selectedUsersExterns.push(usuarioCreado); // Agregar el usuario a la lista de usuarios en el componente padre
-      this.snackBar.open('Investigador agregado exitosamente', 'Cerrar', {
-        duration: 3000,          // Duración en milisegundos
-        horizontalPosition: 'right',
-        verticalPosition: 'top', // Posición del toast
+      const dialogRefRol = this.dialog.open(SeleccionRolDialogComponent, {
+        width: '30%',
+      });
+    
+      dialogRefRol.afterClosed().subscribe((rolSeleccionado: string) => {
+        dialogRef.close();
+        if (rolSeleccionado) {
+          usuarioCreado.rol = rolSeleccionado; // Agregar el rol seleccionado al usuario
+          this.selectedUsersExterns.push(usuarioCreado);
+    
+          this.snackBar.open(
+            `Investigador agregado exitosamente como ${rolSeleccionado}`,
+            'Cerrar',
+            {
+              duration: 3000,
+              horizontalPosition: 'right',
+              verticalPosition: 'top',
+            }
+          );
+        }
       });
     });
+    
 
     dialogRef.afterClosed().subscribe((data: { user: any, usuarioValue: any }) => {
       if (data?.usuarioValue) {
-        this.userIdSelect.push(data.usuarioValue);
-      }
-      if (data?.user) {
-        this.selectedUsers.push({ user: data.user, userId: data.usuarioValue });
+        const idUsuarioSeleccionado = data.usuarioValue;
+        if (idUsuarioSeleccionado === this.currentUser) {
+          this.snackBar.open('No puedes agregarte a ti mismo', 'Cerrar', { duration: 3000 });
+          return;
+        }
+  
+        const usuarioYaExiste = this.selectedUsers.some(user => user.userId === idUsuarioSeleccionado);
+        if (usuarioYaExiste) {
+          this.snackBar.open('El usuario ya ha sido agregado', 'Cerrar', { duration: 3000 });
+          return;
+        }
+  
+        // **Abrir diálogo para seleccionar el rol antes de agregar el usuario**
+        const dialogRolRef = this.dialog.open(SeleccionRolDialogComponent, {
+          width: '300px',
+          data: { user: data.user }
+        });
+  
+        dialogRolRef.afterClosed().subscribe(rolSeleccionado => {
+          if (rolSeleccionado) {
+            this.selectedUsers.push({ 
+              user: data.user, 
+              userId: idUsuarioSeleccionado, 
+              rol: rolSeleccionado  // Almacenar el rol junto con el usuario
+            });
+  
+            this.snackBar.open(`Usuario agregado como ${rolSeleccionado}`, 'Cerrar', { duration: 3000 });
+          }
+        });
       }
     });
+    console.log(this.selectedUsers);
   }
 
   borrarInvestigador(index: number) {
@@ -308,14 +355,11 @@ this.annexesServices.getByGroupType(id,'emo_Sol').subscribe((data)=>{
     this.investigadores.splice(index, 1);
     this.userIdSelect.splice(index, 1);
     delete this.selectedFileByUser[index];
-    console.log(this.userIdSelect);
   }
   borrarInvestigadorExtern(index: number) {
     this.selectedUsersExterns.splice(index, 1);
     this.investigadoresExterns.splice(index, 1);
     this.userIdSelect.splice(index, 1);
-    console.log(this.userIdSelect);
-
     delete this.selectedFileByUserExtern[index];
   }
   agregarInvestigador() {
@@ -394,28 +438,6 @@ this.annexesServices.getByGroupType(id,'emo_Sol').subscribe((data)=>{
   }
   documentosCompletosCargados = false;
 selectedImage:File|undefined;
-  imageSelected(event: Event): void {
-    const input = event.target as HTMLInputElement;
-    const files = input.files;
-    if (files && files.length > 0) {
-      const file = files[0];
-        const allowedTypes = ['image/png', 'image/jpeg', 'image/jpg', 'image/gif'];
-      if (allowedTypes.includes(file.type)) {
-        const year = this.currentDate.getFullYear();
-        const month = ('0' + (this.currentDate.getMonth() + 1)).slice(-2);
-        const day = ('0' + this.currentDate.getDate()).slice(-2);
-        const customFileName = `imagen_GI_${year}-${month}-${day}`;
-          const archivoRenombrado = new File([file], customFileName, { type: file.type });
-        this.selectedImage = archivoRenombrado;
-        console.log('Archivo seleccionado y renombrado:', archivoRenombrado);
-      } else {
-        alert('Por favor, seleccione un archivo de imagen válido (PNG, JPEG, JPG, GIF).');
-        input.value = ''; // Limpiar el input en caso de error
-      }
-    } else {
-      alert('No se seleccionó ningún archivo.');
-    }
-  }
   
   verificarDocumentosCargados(): void {
     const usuariosInternosCompletos = this.selectedUsers.every(user => this.documentosCargados[user.user.idBd]);
@@ -464,7 +486,7 @@ selectedImage:File|undefined;
         estadoGrupoInv: "inicialpp",
         acronimoGrupoinv: this.myForm.value.grupoInv1.acronimoGrupoinv,
         departamento: departamento,
-        proceso:"",
+        proceso:"1",
         usuarioCreacion: this.currentUser,
         fechaCreacion: this.currentDate,
         usuarioModificacion: null,
@@ -480,10 +502,14 @@ selectedImage:File|undefined;
               this.saveArea(idGrupoCreado);
               this.saveLine(idGrupoCreado);
               this.saveMember(idGrupoCreado);
-              this.loadingData = false;
               this.snackBar.open('Enviado con éxito', 'Cerrar', {
                 duration: 4000, // Duración del toast en milisegundos
               });
+              setTimeout(() => {
+                window.location.reload();
+              }, 4000);
+              this.loadingData = false;
+
         /*   const reqFormData: CreationReqForm = {
             idPeticionCreacion: null,
             idGrupoInv: idGrupoCreado,
@@ -581,14 +607,15 @@ selectedImage:File|undefined;
 
   //Guarda información de los miembros del grupo y se les asiga al rol de miembro
   private saveMember(idGrupo: number) {
-    console.log(this.selectedUsersExterns);
-
     if (this.userIdSelect && this.userIdSelect.length > 0) {
-      this.userIdSelect.forEach((user: string) => {
-        this.usuarioService.getByUserName(user).subscribe((data) => {
+      this.selectedUsers.forEach((user: {userId:string,rol:string}) => {
+        console.log(this.selectedUsers);
+        this.usuarioService.getByUserName(user.userId).subscribe((data) => {
           const member: InvMemberForm = {
             idGrupoInv: idGrupo,
             idUsuario: data.id,
+            estado: true,
+            tipo: user.rol+"I",
             usuarioCreacion: this.currentUser,
             fechaCreacion: this.currentDate,
             usuarioModificacion: null,
@@ -596,8 +623,8 @@ selectedImage:File|undefined;
           }
           this.apiInvMemberService.createInvMemberFormForm(member).subscribe(
             (response) => {
+              console.log(response );
             }, (error) => {
-              console.log(error);
             }
           )
           const userRol: UserRoles = {
@@ -617,14 +644,18 @@ selectedImage:File|undefined;
           )
         })
       })
+    }else{
+      console.log('error no se guardo nada')
     }
 
 
     if (this.selectedUsersExterns && this.selectedUsersExterns.length > 0) {
-      this.selectedUsersExterns.forEach((user: { id: number }) => {
+      this.selectedUsersExterns.forEach((user: { id: number,rol: string }) => {
         const member: InvMemberForm = {
           idGrupoInv: idGrupo,
           idUsuario: user.id,
+          estado: true,
+          tipo: user.rol+'_E',
           usuarioCreacion: this.currentUser,
           fechaCreacion: this.currentDate,
           usuarioModificacion: null,
@@ -656,16 +687,53 @@ selectedImage:File|undefined;
     }
   }
   private saveCurriculums(idGrupo: number, user: string, date: Date) {
+   
+    const sistema = 'GruposInv'
+    const token = sessionStorage.getItem('access_token');
+
+    const cv=this.selectedCv;
+    const img=this.selectedImg;
+    this.documentService.saveDocument(token, img, sistema).subscribe(response => {
+      const annexes: Annexes = {
+        idAnexo: null,
+        idDocumento:3,
+        idGrupo: idGrupo,
+        nombreAnexo: response.fileName,
+        rutaAnexo: response.uuid,
+        usuarioCreacionAnexo: user,
+        fechaCreacionAnexo: date,
+        usuarioModificacionAnexo: null,
+        fechaModificacionAnexo: null
+      }
+      this.annexesServices.createAnnexesForm(annexes).subscribe((response) => {
+
+      })
+    })
+
+    this.documentService.saveDocument(token, cv, sistema).subscribe(response => {
+      const annexes: Annexes = {
+        idAnexo: null,
+        idDocumento:2,
+        idGrupo: idGrupo,
+        nombreAnexo: response.fileName,
+        rutaAnexo: response.uuid,
+        usuarioCreacionAnexo: user,
+        fechaCreacionAnexo: date,
+        usuarioModificacionAnexo: null,
+        fechaModificacionAnexo: null
+      }
+      this.annexesServices.createAnnexesForm(annexes).subscribe((response) => {
+
+      })
+    })
     for (let index in this.selectedFileByUser) {
       if (this.selectedFileByUser.hasOwnProperty(index)) {
         const archivo = this.selectedFileByUser[index];
         console.log(`Archivo para el usuario despues ${index}:`, archivo);
-        const token = sessionStorage.getItem('access_token');
-        const sistema = 'publicaciones'
         this.documentService.saveDocument(token, archivo, sistema).subscribe(response => {
           const annexes: Annexes = {
             idAnexo: null,
-            idDocumento:1,
+            idDocumento:2,
             idGrupo: idGrupo,
             nombreAnexo: response.fileName,
             rutaAnexo: response.uuid,
@@ -688,9 +756,7 @@ selectedImage:File|undefined;
     for (let index in this.selectedFileByUserExtern) {
       if (this.selectedFileByUserExtern.hasOwnProperty(index)) {
         const archivo = this.selectedFileByUserExtern[index];
-        console.log(`Archivo para el usuario despues ${index}:`, archivo);
-        const token = sessionStorage.getItem('access_token');
-        const sistema = 'publicaciones'
+        console.log(`Archivo para el usuario despues ${index}:`, archivo);       
         this.documentService.saveDocument(token, archivo, sistema).subscribe(response => {
           const annexes: Annexes = {
             idAnexo: null,
@@ -713,6 +779,7 @@ selectedImage:File|undefined;
 
       }
     }
+    
 
   }
   revisadoPor(user: string): void {
@@ -724,5 +791,158 @@ selectedImage:File|undefined;
   enlace(plan: string) {
     this.router.navigateByUrl(`main/${plan}`);
 
+  }
+  selectedCv: File | undefined;
+  selectedImg: File | undefined;
+filePreview: string | null = null;
+fileIcon: string = 'far fa-file'; // Ícono predeterminado
+isImageFile: boolean = false;
+imageNameOriginal: string = '';
+
+
+  //ANEXOS
+  onDrop(event: any, t: string) {
+    event.preventDefault();
+    
+    const files = event.dataTransfer.files;
+    if (files.length === 0) return;
+    
+    const file = files[0];
+    
+    if (t === 'h') {
+      const fileExtension = file.name.split('.').pop()?.toLowerCase();
+      if (fileExtension !== 'pdf') {
+        alert('Solo se permiten archivos PDF.');
+        return;
+      }
+      this.selectedCv = file;
+      const customFileName = `Hoja_de_Vida_Coordinador${this.currentUserId}.pdf`;
+      this.setFileName(customFileName);
+    } else if (t === 'i') {
+      this.processImageFile(file);
+    }
+  }
+  
+  onImgSelected(event: any) {
+    const file = event.target.files[0];
+    if (file) {
+      this.processImageFile(file);
+    }
+  }
+  
+  processImageFile(file: File) {
+    const allowedTypes = ['image/png', 'image/jpeg', 'image/jpg', 'image/gif', 'image/bmp', 'image/webp', 'image/tiff', 'image/svg+xml'];
+    
+    if (!allowedTypes.includes(file.type)) {
+      alert('Solo se permiten archivos de imagen (JPG, JPEG, PNG, GIF, BMP, WEBP, TIFF, SVG).');
+      this.clearImageInput();
+      return;
+    }
+  
+    this.isImageFile = true;
+    this.selectedImg = file;
+    this.imageNameOriginal = file.name;
+    
+    const customFileName = `imagen_GI_${this.currentUserId}.png`;
+    const renamedFile = new File([file], customFileName, { type: file.type });
+    this.selectedImg = renamedFile;
+    
+    this.previewImage(file);
+  }
+  previewImage(file: File) {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      this.filePreview = e.target?.result as string;
+    };
+    reader.readAsDataURL(file);
+  }
+  clearImageInput() {
+    this.selectedImg = undefined;
+    this.imageNameOriginal = '';
+    this.filePreview = null;
+    const fileInput = document.getElementById('imageInput') as HTMLInputElement;
+    if (fileInput) {
+      fileInput.value = '';
+    }
+  }
+    
+   onDragOver(event: any) {
+    event.preventDefault();
+    event.stopPropagation();
+    event.target.classList.add('drag-over');
+
+  }
+  fileNameOriginal:string;
+  setFileName(name: string) {
+    if (!this.selectedCv) {
+      console.error("Error: No hay archivo seleccionado.");
+      return;
+    }
+this.CvNameOriginal = this.selectedCv.name;
+    const modifiedFile = new File([this.selectedCv], name, { type: this.selectedCv.type });
+    this.selectedCv = modifiedFile;
+  }
+  setImageName(name: string) {
+    if (!this.selectedImg) {
+      console.error("Error: No hay archivo seleccionado.");
+      return;
+    }
+this.imageNameOriginal = this.selectedImg.name;
+    const modifiedFile = new File([this.selectedImg], name, { type: this.selectedImg.type });
+    this.selectedImg = modifiedFile;
+  }
+
+  onCVCoordSelected(event: any) {
+    this.selectedCv = event.target.files[0];
+    const customFileName = `Hoja_de_Vida_Coordinador${this.currentUserId}.pdf`;
+    this.validateFileType();
+    this.setFileName(customFileName);
+  }
+
+
+  validateFileType() {
+    if (this.selectedCv) {
+      const fileExtension = this.selectedCv.name.split('.').pop().toLowerCase();
+      if (fileExtension !== 'pdf') {
+        alert('Solo se permiten archivos PDF.');
+        this.clearFileInput();
+      }
+    }
+  }
+
+  validateImageType() {
+    if (this.selectedImg) {
+        const allowedExtensions = ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'webp', 'tiff', 'svg'];
+        const fileExtension = this.selectedImg.name.split('.').pop().toLowerCase();
+
+        if (!allowedExtensions.includes(fileExtension)) {
+            alert('Solo se permiten archivos de imagen (JPG, JPEG, PNG, GIF, BMP, WEBP, TIFF, SVG).');
+            this.clearImageInput();
+        }
+    }
+}
+
+  clearFileInput() {
+    const fileInput = document.getElementById('fileInput') as HTMLInputElement;
+    if (fileInput) {
+      fileInput.value = '';
+    }
+  }
+
+
+  getFileIcon(fileType: string | undefined): string {
+    if (!fileType) return 'far fa-file'; // Ícono genérico si no hay tipo de archivo
+    const fileIcons: { [key: string]: string } = {
+      'application/pdf': 'far fa-file-pdf', // Ícono para PDF
+      'image/png': 'far fa-file-image',
+      'image/jpeg': 'far fa-file-image',
+      'image/jpg': 'far fa-file-image',
+      'image/gif': 'far fa-file-image',
+      'image/bmp': 'far fa-file-image',
+      'image/webp': 'far fa-file-image',
+      'image/tiff': 'far fa-file-image',
+      'image/svg+xml': 'far fa-file-image',
+    };
+    return fileIcons[fileType] || 'far fa-file';
   }
 }

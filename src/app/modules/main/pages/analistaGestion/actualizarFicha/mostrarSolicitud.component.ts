@@ -89,6 +89,8 @@ export class ActualizacionAnaVic implements OnInit {
     const invMemberData:InvMemberForm={
       idGrupoInv:this.link.idGrupoInv,
        idUsuario:this.link.idUser,
+       estado:true,
+       tipo:'Externo',
        usuarioCreacion:currentUser
         , fechaCreacion:currentDate,
         usuarioModificacion:null,

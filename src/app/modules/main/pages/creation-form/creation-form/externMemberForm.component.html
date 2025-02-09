@@ -55,8 +55,38 @@
                         </mat-error>
                     </mat-form-field>
 
-                    
+                    <mat-form-field appearance="outline" class="full-width">
+                        <mat-label>Nacionalidad</mat-label>
+                        <input matInput type="text" formControlName="nacionalidad" required>
+                        <mat-error *ngIf="miembro.get('nacionalidad').invalid && miembro.get('nacionalidad').touched">
+                            La nacionalidad es obligatoria
+                        </mat-error>
+                    </mat-form-field>
 
+                    <mat-form-field appearance="outline" class="full-width">
+                        <mat-label>Género</mat-label>
+                        <mat-select formControlName="genero" required>
+                            <mat-option value="H">Hombre</mat-option>
+                            <mat-option value="M">Mujer</mat-option>
+                        </mat-select>
+                        <mat-error *ngIf="miembro.get('genero').invalid && miembro.get('genero').touched">
+                            El género es obligatorio
+                        </mat-error>
+                    </mat-form-field>
+                    
+                    <mat-form-field appearance="outline" class="full-width">
+                        <mat-label>Grado</mat-label>
+                        <mat-select formControlName="grado" required>
+                            <mat-option value="BACH">Bachiller</mat-option>
+                            <mat-option value="LIC.">Licenciado</mat-option>
+                            <mat-option value="ING.">Ingeniero</mat-option>
+                            <mat-option value="MAG">Magíster</mat-option>
+                            <mat-option value="PHD.">PHD.</mat-option>
+                        </mat-select>
+                        <mat-error *ngIf="miembro.get('grado').invalid && miembro.get('grado').touched">
+                            El grado es obligatorio
+                        </mat-error>
+                    </mat-form-field>
                 </div>
             </div>
         </form>

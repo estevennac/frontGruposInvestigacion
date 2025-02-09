@@ -12,6 +12,7 @@ export interface Usuario{
     foto?:string;
     genero?:string;
     grado?:string;
+    rol?: string;
     fechaCreacion:Date;
     fechaModificacion:Date;
     usuarioCreacion:string;

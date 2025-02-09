@@ -217,7 +217,10 @@
                                             type="text"
                                             formControlName="nombreGrupoInv"
                                             class="form-control"
-                                            placeholder="Ingrese el nombre del grupo">
+                                            placeholder="Ingrese el nombre del grupo"
+                                            minlength="5"
+                                            maxlength="99"
+                                           >
                                     </mat-form-field>
                                 </div>
 
@@ -229,7 +232,10 @@
                                             id="acronimo"
                                             formControlName="acronimoGrupoinv"
                                             class="form-control"
-                                            placeholder="Ingrese el acronimo">
+                                            placeholder="Ingrese el acronimo"
+                                            minlength="1"
+                                            maxlength="10"
+                                           >
                                     </mat-form-field>
                                 </div><div class="grid-item"></div>
                                 <div class="grid-item">
@@ -323,7 +329,43 @@
                             </div>
                         </div>
                     </mat-step>
+                    <mat-step [stepControl]="grupoInv5"
+                    class="centrado-y-mayusculas"
+                    label="Hoja de Vida">
+                    <ng-template matStepLabel>Hoja de Vida del Coordinador</ng-template>
 
+                    <div formGroupName="grupoInv5"
+                        class="centrado-form-group">
+
+
+                        <h1>Hojas de vida y Certificados de Talento humano para el personal académico un solo PDF  </h1>
+                        <div class="drag-drop" (drop)="onDrop($event,'h')" (dragover)="onDragOver($event)">
+                            <i *ngIf="selectedCv" class="{{ getFileIcon(selectedCv.type) }}"></i>
+                            <p *ngIf="!selectedCv">Arrastra y suelta el documento aquí o haz clic para seleccionarlo.</p>
+                            <p *ngIf="selectedCv">{{ CvNameOriginal }} </p>
+                            <div class="custom-file-input">
+                              <label *ngIf="!selectedCv" for="fileInput">Seleccionar archivo</label>
+                              <label *ngIf="selectedCv" for="fileInput">Cambiar archivo</label>
+
+                              <input id="fileInput" type="file" (change)="onCVCoordSelected($event)" accept=".pdf" />
+                            </div>
+                          </div>
+                        <div class="grid-container">
+                            <div class="grid-item">
+                                <button type="button" mat-raised-button
+                                    color="primary"
+                                    matStepperPrevious>Regresar</button>
+                                <button type="button" mat-raised-button
+                                    color="primary"
+                                    [disabled]="!selectedCv"
+                                    matStepperNext>
+                                    Siguiente
+                                </button>
+                            </div>
+                        </div>
+
+                    </div>
+                </mat-step>
                <!--     <mat-step [stepControl]="grupoInv2_1"
                         class="centrado-y-mayusculas"
                         label="Alineación Estratégica">
@@ -468,7 +510,7 @@
                                     <!-- Deshabilitar el botón Enviar hasta que documentosCompletosCargados sea true -->
                                     <button type="button" mat-raised-button
                                         color="primary" matStepperNext
-                                        [disabled]="selectedUsers.length <4 || !documentosCompletosCargados">Enviar</button>
+                                        [disabled]="selectedUsers.length <4 || !documentosCompletosCargados">Siguiente</button>
 
                                 </div>
                             </div>
@@ -479,15 +521,27 @@
                         label="Imagen del Grupo">
                         <div class="creacion-grupo-investigacion">
                             <div formGroupName="grupoInv4">
-                                <div>
-                                    <div class="custom-file-input">
-                                        <label for="fileInput">Seleccione la
-                                            Imagen del Grupo</label>
-                                        <input id="fileInput" type="file"
-                                            (change)="imageSelected($event)"
-                                            accept=".png" />
+                                <h1>Hojas de vida y Certificados de Talento humano para el personal académico un solo PDF  </h1>
+
+                                <div class="drag-drop" (drop)="onDrop($event,'i')" (dragover)="onDragOver($event)">
+                                    <!-- Contenedor para previsualización o ícono -->
+                                    <div *ngIf="filePreview">
+                                      <img *ngIf="isImageFile" [src]="filePreview" alt="Vista previa" width="100">
+                                      <i *ngIf="!isImageFile" [class]="fileIcon"></i>
                                     </div>
-                                </div>
+                                  
+                                    <i *ngIf="selectedImg && !isImageFile" [class]="getFileIcon(selectedImg.type)"></i>
+                                    <p *ngIf="!selectedImg">Arrastra y suelta la imagen aquí o haz clic para seleccionarla.</p>
+                                    <p *ngIf="selectedImg">{{ imageNameOriginal }}</p>
+                                  
+                                    <div class="custom-file-input">
+                                      <label for="imageInput">{{ selectedImg ? 'Cambiar imagen' : 'Seleccionar imagen' }}</label>
+                                      <input id="imageInput" type="file" (change)="onImgSelected($event)" 
+                                             accept=".jpg, .jpeg, .png, .gif, .bmp, .webp, .tiff, .svg" />
+                                    </div>
+                                  </div>
+                                  
+                              
                             </div>
                             <div class="grid-item">
                                 <div>

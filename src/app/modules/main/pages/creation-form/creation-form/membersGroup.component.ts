@@ -37,7 +37,8 @@ export class MembersGroup implements OnInit {
 
   ngOnInit(): void {
     this.miembro = this.fb.group({
-      usuario: ['', Validators.required]
+      usuario: ['', Validators.required],
+      tipo: ['', Validators.required]
     });
   }
 
@@ -61,7 +62,6 @@ export class MembersGroup implements OnInit {
         }
       },
       (error) => {
-        console.error('Error fetching user:', error);
         this.userNotFound = true; 
         this.user = null;
         this.isSearchClicked = false; 
@@ -88,7 +88,6 @@ export class MembersGroup implements OnInit {
           console.log("El usuario ya existe en la bd");
           this.user.idBd = userData.id;
         } else {
-
           const usuario: Usuario = {
             id: null,
             usuario: userName,
