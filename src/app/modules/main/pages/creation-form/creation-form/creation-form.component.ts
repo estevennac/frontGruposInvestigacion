@@ -348,6 +348,15 @@ this.annexesServices.getByGroupType(id,'emo_Sol').subscribe((data)=>{
       }
     });
     console.log(this.selectedUsers);
+    if (this.selectedUsers && this.selectedUsers.length > 0) {
+      console.log(this.selectedUsers[0].userId)
+    }
+    this.selectedUsers.forEach((user:any) => {
+      console.log("recorre");
+      console.log(user.userId);
+      //console.log(user.rol);
+    });
+    console.log(this.userIdSelect);
   }
 
   borrarInvestigador(index: number) {
@@ -367,6 +376,7 @@ this.annexesServices.getByGroupType(id,'emo_Sol').subscribe((data)=>{
       this.crearFormGroupInvestigador()
     );
     this.investigadores.push(this.investigadores.length + 1);
+  
   }
   agregarInvestigadorExtern() {
     (this.myForm.get('grupoInv3').get('investigadoresExterns') as FormArray).push(
@@ -448,10 +458,6 @@ selectedImage:File|undefined;
   onFileSelectedExtern(event: Event, index: number, userId: number) {
     const input = event.target as HTMLInputElement;
     const files = input.files;
-    console.log(files);
-    console.log(this.selectedUsersExterns);
-    console.log(this.selectedUsers);
-
     if (input?.files?.length) {
       this.documentosCargados[userId] = true;
     } else {
@@ -502,13 +508,11 @@ selectedImage:File|undefined;
               this.saveArea(idGrupoCreado);
               this.saveLine(idGrupoCreado);
               this.saveMember(idGrupoCreado);
-              this.snackBar.open('Enviado con éxito', 'Cerrar', {
-                duration: 4000, // Duración del toast en milisegundos
-              });
+              
               setTimeout(() => {
-                window.location.reload();
+                this.router.navigateByUrl('main/principal');
+                this.loadingData = false;
               }, 4000);
-              this.loadingData = false;
 
         /*   const reqFormData: CreationReqForm = {
             idPeticionCreacion: null,
@@ -607,15 +611,14 @@ selectedImage:File|undefined;
 
   //Guarda información de los miembros del grupo y se les asiga al rol de miembro
   private saveMember(idGrupo: number) {
-    if (this.userIdSelect && this.userIdSelect.length > 0) {
-      this.selectedUsers.forEach((user: {userId:string,rol:string}) => {
+    if (this.selectedUsers && this.selectedUsers.length > 0) {
+      this.selectedUsers.forEach((user:any) => {
         console.log(this.selectedUsers);
-        this.usuarioService.getByUserName(user.userId).subscribe((data) => {
           const member: InvMemberForm = {
             idGrupoInv: idGrupo,
-            idUsuario: data.id,
+            idUsuario: user.user.idBd,
             estado: true,
-            tipo: user.rol+"I",
+            tipo: user.rol+"_I",
             usuarioCreacion: this.currentUser,
             fechaCreacion: this.currentDate,
             usuarioModificacion: null,
@@ -628,7 +631,7 @@ selectedImage:File|undefined;
             }
           )
           const userRol: UserRoles = {
-            idUsuario: data.id,
+            idUsuario: user.user.idBd,
             idRoles: 8,
             usuarioCreacion: this.currentUser,
             fechaCreacion: this.currentDate,
@@ -642,7 +645,7 @@ selectedImage:File|undefined;
               console.error('El usuario ya tiene el rol:', error);
             }
           )
-        })
+      
       })
     }else{
       console.log('error no se guardo nada')
@@ -685,6 +688,9 @@ selectedImage:File|undefined;
 
       })
     }
+    this.snackBar.open('Enviado con éxito', 'Cerrar', {
+      duration: 4000, // Duración del toast en milisegundos
+    });
   }
   private saveCurriculums(idGrupo: number, user: string, date: Date) {
    
@@ -705,10 +711,14 @@ selectedImage:File|undefined;
         usuarioModificacionAnexo: null,
         fechaModificacionAnexo: null
       }
-      this.annexesServices.createAnnexesForm(annexes).subscribe((response) => {
+      console.log("guardando LOGO")
 
+      this.annexesServices.createAnnexesForm(annexes).subscribe((response) => {
+console.log(response);
       })
-    })
+    }),(error)=>{
+      console.log(error);
+    }
 
     this.documentService.saveDocument(token, cv, sistema).subscribe(response => {
       const annexes: Annexes = {
@@ -722,10 +732,13 @@ selectedImage:File|undefined;
         usuarioModificacionAnexo: null,
         fechaModificacionAnexo: null
       }
+      console.log("guardando CV COORDINADOR")
       this.annexesServices.createAnnexesForm(annexes).subscribe((response) => {
 
       })
-    })
+    }),(error)=>{
+      console.log(error);
+    }
     for (let index in this.selectedFileByUser) {
       if (this.selectedFileByUser.hasOwnProperty(index)) {
         const archivo = this.selectedFileByUser[index];
@@ -742,6 +755,8 @@ selectedImage:File|undefined;
             usuarioModificacionAnexo: null,
             fechaModificacionAnexo: null
           }
+          console.log("guardando CV",archivo)
+
           this.annexesServices.createAnnexesForm(annexes).subscribe((response) => {
 
           })
@@ -768,7 +783,10 @@ selectedImage:File|undefined;
             fechaCreacionAnexo: date,
             usuarioModificacionAnexo: null,
             fechaModificacionAnexo: null
-          }
+          }          
+          console.log("guardando CV",archivo)
+
+
           this.annexesServices.createAnnexesForm(annexes).subscribe((response) => {
 
           })
