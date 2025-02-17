@@ -23,6 +23,8 @@ export class DetalleGIComponent implements OnInit {
 invGroup:InvGroupCompleteForm;
 coordinador:Usuario;
 isLoading:boolean = true;
+displayedColumns: string[] = ['pais', 'nombreDocente', 'funcion', 'sede', 'universidadCentro'];
+
   constructor(private router: Router, private giService: InvGroupService,
     private usuarioService: UsuarioService,
     private annexesService:AnnexesService,

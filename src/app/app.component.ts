@@ -201,7 +201,7 @@ export class AppComponent implements OnInit {
                 {
                   type: 'link',
                   label: 'Grupo de Investigación',
-                  route: 'main/crea',
+                  route: 'main/dashboard',
                   icon: 'mat:groups'
                 },
                 {

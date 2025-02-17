@@ -9,7 +9,7 @@ import { AuthService } from 'src/app/core/auth/services/auth.service';
 @Component({
     selector: 'app-members',
     templateUrl: './externMemberForm.component.html',
-    styleUrls: ['./creation-form.component.scss']
+    styleUrls: ['../../coordinadorGI/sol-creacion/sol-creacion.component.scss']
 })
 export class ExternMembersGroup implements OnInit {
     @ViewChild('apellidoInput') apellidoInput: ElementRef;  // Referencia al campo de apellido

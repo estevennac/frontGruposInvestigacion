@@ -21,7 +21,7 @@ import { NationalPlanComponent } from './pages/administracion/national-plan/nati
 import { LegalFrameworkComponent } from './pages/administracion/legal-framework/legal-framework.component';
 
 import { OdsComponent } from './pages/administracion/ods/ods.component';
-import { CreationFormComponent } from './pages/creation-form/creation-form/creation-form.component';
+import { DashboardCoordinadorComponent } from './pages/coordinadorGI/dashboard/dashboard.component';
 import { EjecucionComponent } from './pages/ejecucion/ejecucion.component';
 import { TarjetSeguimientoComponent } from './pages/coordinadorGI/seguimiento/seguimiento.component';
 import { CargaBaremoComponent } from './pages/coordinadorGI/seguimiento/baremo/baremo.component';
@@ -89,7 +89,7 @@ import { GruposControlComponent } from './pages/administracion/grupos-investigac
 import { DetalleGIComponent } from './pages/administracion/grupos-investigacion/detalle-gi.component';
 import { CrearGIComponent } from './pages/administracion/grupos-investigacion/crearGI.component';
 import { AnnualPlanComponent } from './pages/coordinadorGI/seguimiento/PlanAnual/planAnual.component';
-
+import { SolCreacionComponent } from './pages/coordinadorGI/sol-creacion/sol-creacion.component';
 const routes: Routes = [
   {
     path: 'principal',
@@ -118,8 +118,11 @@ const routes: Routes = [
   {
     path: 'degree',
     component: DegreeComponent
-  },
-
+  },{
+    path: 'creation_request',
+    component: SolCreacionComponent
+  }
+,
 
 
   {
@@ -188,8 +191,8 @@ const routes: Routes = [
   },
 
   {
-    path: 'crea',
-    component: CreationFormComponent
+    path: 'dashboard',
+    component: DashboardCoordinadorComponent
   },
 
   {

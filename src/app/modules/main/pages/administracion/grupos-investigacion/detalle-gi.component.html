@@ -1,4 +1,6 @@
-
+<div *ngIf="isLoading" class="loading-spinner-overlay">
+    <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
+  </div>
 <div class="cont">
     <div class="container-fluid">
         <div class="card">
@@ -46,37 +48,37 @@
                     </button>
                   </div>
                   
-                <table mat-table class="mat-table" matSort>
-                    <thead>
-                        <tr>
-                            <th>País</th>
-                            <th>Nombre del Docente</th>
-                            <th>Función</th>
-                            <th>Sede</th>
-                            <th>Universidad/Centro</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr *ngFor="let users of invGroup.users">
-                            <td>{{ users.nacionalidad }}</td>
-                            <td>{{ users.nombre }}</td>
-                            <td>Miembro</td>
-                            <td>{{ users.departamento ? users.departamento :
-                                'Externo' }}</td>
-                            <td>{{ users.institucion }}</td>
-
-                        </tr>
-                        <tr>
-                            <td>{{invGroup.coordinador.nacionalidad}}</td>
-                            <td>{{invGroup.coordinador.nombre}}</td>
-                            <td>Coordinador</td>
-                            <td>{{invGroup.coordinador.departamento ?
-                                invGroup.coordinador.departamento :
-                                'Externo'}}</td>
-                            <td>{{invGroup.coordinador.institucion}}</td>
-                        </tr>
-                    </tbody>
-                </table>
+                  <table mat-table [dataSource]="invGroup.users" matSort>
+                    <ng-container matColumnDef="pais">
+                      <th mat-header-cell *matHeaderCellDef> País </th>
+                      <td mat-cell *matCellDef="let users"> {{ users.nacionalidad }} </td>
+                    </ng-container>
+                  
+                    <ng-container matColumnDef="nombreDocente">
+                      <th mat-header-cell *matHeaderCellDef> Nombre del Docente </th>
+                      <td mat-cell *matCellDef="let users"> {{ users.nombre }} </td>
+                    </ng-container>
+                  
+                    <ng-container matColumnDef="funcion">
+                      <th mat-header-cell *matHeaderCellDef> Función </th>
+                      <td mat-cell *matCellDef="let users"> Miembro </td>
+                    </ng-container>
+                  
+                    <ng-container matColumnDef="sede">
+                      <th mat-header-cell *matHeaderCellDef> Sede </th>
+                      <td mat-cell *matCellDef="let users"> {{ users.departamento ? users.departamento : 'Externo' }} </td>
+                    </ng-container>
+                  
+                    <ng-container matColumnDef="universidadCentro">
+                      <th mat-header-cell *matHeaderCellDef> Universidad/Centro </th>
+                      <td mat-cell *matCellDef="let users"> {{ users.institucion }} </td>
+                    </ng-container>
+                  
+                    <!-- Header and row definitions -->
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                  </table>
+                  
 
             </mat-card>
         </div>

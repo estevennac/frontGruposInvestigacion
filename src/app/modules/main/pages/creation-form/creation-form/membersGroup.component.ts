@@ -12,7 +12,7 @@ import { environment } from 'src/environments/environment';
 @Component({
   selector: 'app-members',
   templateUrl: './membersGroup.component.html',
-  styleUrls: ['./creation-form.component.scss']
+  styleUrls: ['../../coordinadorGI/sol-creacion/sol-creacion.component.scss']
 })
 export class MembersGroup implements OnInit {
   user: UserApp;

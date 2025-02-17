@@ -20,10 +20,8 @@ import { DeveLegaForm } from 'src/app/types/deveLega.types';
 import { ObjectivesService } from 'src/app/core/http/objectives/objectives.service';
 import { StrategiesService } from 'src/app/core/http/strategies/strategies.service';
 import { ControlPanelService } from 'src/app/core/http/control-panel/control-panel.service';
-import { Objectives } from 'src/app/types/specificobjectives.types';
 import { Strategies } from 'src/app/types/strategies.types';
 import { ControlPanelForm } from 'src/app/types/controlPanel.types';
-import { fadeInUpAnimation } from 'src/@vex/animations/fade-in-up.animation';
 import { CreationReqService } from 'src/app/core/http/creation-req/creation-req.service';
 import { InvGroupService } from 'src/app/core/http/inv-group/inv-group.service';
 import { CreationReqForm } from 'src/app/types/creationReq.types';
@@ -61,6 +59,7 @@ export class DevelopmentPlanFormComponent implements OnInit {
   contextoControl = new FormControl("", Validators.required);
   objGeneralControl = new FormControl("", Validators.required);
   objEstrategicoControl = new FormControl("", Validators.required);
+  alineacionEstrategicaControl = new FormControl("", Validators.required);
   marcoControl = new FormControl<any>(0, Validators.required);
   planNacionalControl = new FormControl<any>(0, Validators.required);
   objetivoInstitucionalControl = new FormControl<any>(0, Validators.required);
@@ -88,8 +87,6 @@ export class DevelopmentPlanFormComponent implements OnInit {
     private deveNationalService: DeveNationalService,
     private developmentPlanService: DevelopmentPlanService,
     private datePipe: DatePipe,
-    private objService: ObjectivesService,
-    private strategieService: StrategiesService,
     private controlPanelService: ControlPanelService,
     private creationReqService: CreationReqService,
     private invGroupService: InvGroupService,
@@ -97,10 +94,9 @@ export class DevelopmentPlanFormComponent implements OnInit {
     private odsService: OdsService,
     private strategiesService: StrategiesService,
     private dialog: MatDialog,
-    private cdr: ChangeDetectorRef,
     private usuarioService: UsuarioService,
     private specificObjetivesService: SpecificObjetivesService,
-    private objStrategiesODSService: ObjStrategiesODSService
+    private objStrategiesODSService: ObjStrategiesODSService,
   ) { this.obj = []; }
   public formReady: boolean = false; // Bandera para indicar si el formulario está listo
   public isLoading: boolean = true; // Inicializar como true para que el spinner aparezca al inicio
@@ -136,6 +132,8 @@ export class DevelopmentPlanFormComponent implements OnInit {
       planDesarrolloForm3: this.fb.array([
         this.crearObjetivo()
       ]),
+      grupoInv2_1:this.fb.group({
+        alineacionEstrategica: this.alineacionEstrategicaControl,}),
       planDesarrolloForm4: this.fb.array([]),
     });
     this.planSuperiorControl.setValue([this.planSuperior[0].idPlanNivelSuperior]);
@@ -166,6 +164,9 @@ export class DevelopmentPlanFormComponent implements OnInit {
   }
   get marco(): FormArray {
     return this.myForm.get('planDesarrolloForm4') as FormArray;
+  }
+  get grupoInv2_1() {
+    return this.myForm.get('grupoInv2_1') as FormGroup;
   }
 
   trackByFn(index: number, item: any): number {
@@ -377,13 +378,10 @@ export class DevelopmentPlanFormComponent implements OnInit {
     this.formReady = true;
     if (this.myForm.valid) {
       this.guardarPlanBase();
-      console.log('Objetivos:', this.myForm.value.planDesarrolloForm3.objetivos);
-      console.log('Cuadro de Mando Actividades:', this.myForm.value.planDesarrolloForm4.actividades);
       this.snackBar.open('Solicitudes Enviados correctamente.', 'Cerrar', {
         duration: 3000,
       });
     } else {
-      console.log('Objetivos:', this.myForm.value);
       this.formReady = false;
       this.snackBar.open('Por favor, complete todos los campos requeridos.', 'Cerrar', {
         duration: 3000,
@@ -621,8 +619,8 @@ export class DevelopmentPlanFormComponent implements OnInit {
       const creationReq: CreationReqForm = {
         idPeticionCreacion: data.idPeticionCreacion,
         idGrupoInv: data.idGrupoInv,
-        alineacionEstrategica: data.alineacionEstrategica,
-        estado: "3",
+        alineacionEstrategica: this.myForm.value.grupoInv2_1.alineacionEstrategica,
+        estado: "p",
         usuarioCreacionPeticion: data.usuarioCreacionPeticion,
         fechaCreacionPeticion: data.fechaCreacionPeticion,
         usuarioModificacionPeticion: this.currentUser,
@@ -637,7 +635,7 @@ export class DevelopmentPlanFormComponent implements OnInit {
         idGrupoInv: this.idGroup,
         idCoordinador: data.idCoordinador,
         nombreGrupoInv: data.nombreGrupoInv,
-        estadoGrupoInv: "ppropuesta",
+        estadoGrupoInv: "2",
         acronimoGrupoinv: data.acronimoGrupoinv,
         usuarioCreacion: data.usuarioCreacion,
         fechaCreacion: data.fechaCreacion,

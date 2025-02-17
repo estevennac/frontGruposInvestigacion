@@ -33,7 +33,7 @@ import { AreaComponent } from './pages/administracion/area/area.component';
 import { UpperPlanComponent } from './pages/administracion/upper-plan/upper-plan.component';
 import { NationalPlanComponent } from './pages/administracion/national-plan/national-plan.component';
 import { LegalFrameworkComponent } from './pages/administracion/legal-framework/legal-framework.component';
-import { CreationFormComponent } from './pages/creation-form/creation-form/creation-form.component';
+import { DashboardCoordinadorComponent } from './pages/coordinadorGI/dashboard/dashboard.component';
 import { EjecucionComponent } from './pages/ejecucion/ejecucion.component';
 import { TarjetSeguimientoComponent } from './pages/coordinadorGI/seguimiento/seguimiento.component';
 import { CargaBaremoComponent } from './pages/coordinadorGI/seguimiento/baremo/baremo.component';
@@ -154,6 +154,7 @@ import { MatSortModule } from '@angular/material/sort';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { SeleccionRolDialogComponent } from './pages/creation-form/SeleccionRolDialogComponent';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { SolCreacionComponent } from './pages/coordinadorGI/sol-creacion/sol-creacion.component';
 
 @NgModule({
   declarations: [
@@ -190,7 +191,7 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
     UpperPlanComponent,
     NationalPlanComponent,
     LegalFrameworkComponent,
-    CreationFormComponent,
+    DashboardCoordinadorComponent,
     TarjetSeguimientoComponent,
     CargaBaremoComponent,
     SolicitudesComponent,
@@ -273,6 +274,7 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
     InfPertinenciaComponent,
     infBienesEquiposComponent,
     AnnualPlanComponent,
+    SolCreacionComponent,
    
   ],
   imports: [

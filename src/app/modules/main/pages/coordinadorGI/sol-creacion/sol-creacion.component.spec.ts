@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { CreationFormComponent } from './creation-form.component';
+import { SolCreacionComponent } from './sol-creacion.component';
 
-describe('CreationFormComponent', () => {
-  let component: CreationFormComponent;
-  let fixture: ComponentFixture<CreationFormComponent>;
+describe('SolCreacionComponent', () => {
+  let component: SolCreacionComponent;
+  let fixture: ComponentFixture<SolCreacionComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ CreationFormComponent ]
+      declarations: [ SolCreacionComponent ]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(CreationFormComponent);
+    fixture = TestBed.createComponent(SolCreacionComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

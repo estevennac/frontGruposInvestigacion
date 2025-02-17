@@ -7,45 +7,64 @@
           <i class="fa fa-plus"></i> Nuevo Grupo
         </button>
       </header>
-   
+
       <div *ngIf="isLoading" class="loading-spinner-overlay">
         <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
       </div>
-    </div>
 
-    <div class="tab">
-         <!-- Campo de búsqueda -->
-         <mat-form-field appearance="outline">
-          <mat-label>Buscar grupo por nombre</mat-label>
-          <input matInput type="text" [(ngModel)]="searchTerm" (input)="filterGroups()">
+      <!-- Campo de búsqueda -->
+      <div class="search-container">
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Buscar por nombre del grupo</mat-label>
+          <input matInput [formControl]="searchControl">
         </mat-form-field>
-  
-      <table>
-        <thead style="position: sticky; top: 0;">
-          <tr>
-            <th (click)="sortBy('index')">#</th>
-            <th (click)="sortBy('nombreGrupoInv')">Nombre del Grupo de Investigación</th>
-            <th (click)="sortBy('acronimoGrupoinv')">Acrónimo</th>
-            <th (click)="sortBy('departamento')">Departamento</th>
-            <th (click)="sortBy('coordinador')">Coordinador</th>
-            <th>Abrir</th>
-          </tr>
-        </thead>
-        <tbody>
-          <!-- Filas de la tabla filtradas -->
-          <tr *ngFor="let g of filteredGroups, let i = index">
-            <td>{{ i + 1 }}</td>
-            <td>{{ g.nombreGrupoInv }}</td>
-            <td>{{ g.acronimoGrupoinv }}</td>
-            <td>{{ g.departamento }}</td>
-            <td>{{ getCoordinador(g.idCoordinador) | async }}</td>
-            <td>
-              <button mat-mini-fab color="primary" (click)="open(g.idGrupoInv)">
-                <i class="fa fa-folder-open"></i>
-              </button>
-            </td>
-          </tr>
-        </tbody>
+      </div>
+
+      <!-- Tabla -->
+      <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
+
+        <!-- Índice -->
+        <ng-container matColumnDef="index">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>#</th>
+          <td mat-cell *matCellDef="let g; let i = index">{{ i + 1 }}</td>
+        </ng-container>
+
+        <!-- Nombre del Grupo -->
+        <ng-container matColumnDef="nombreGrupoInv">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Nombre del Grupo</th>
+          <td mat-cell *matCellDef="let g">{{ g.nombreGrupoInv }}</td>
+        </ng-container>
+
+        <!-- Acrónimo -->
+        <ng-container matColumnDef="acronimoGrupoinv">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Acrónimo</th>
+          <td mat-cell *matCellDef="let g">{{ g.acronimoGrupoinv }}</td>
+        </ng-container>
+
+        <!-- Departamento -->
+        <ng-container matColumnDef="departamento">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Departamento</th>
+          <td mat-cell *matCellDef="let g">{{ g.departamento }}</td>
+        </ng-container>
+
+        <!-- Coordinador -->
+        <ng-container matColumnDef="coordinador">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Coordinador</th>
+          <td mat-cell *matCellDef="let g">{{ g.nombreCoordinador }}</td>
+        </ng-container>
+
+        <!-- Botón Abrir -->
+        <ng-container matColumnDef="abrir">
+          <th mat-header-cell *matHeaderCellDef>Abrir</th>
+          <td mat-cell *matCellDef="let g">
+            <button mat-mini-fab color="primary" (click)="open(g.idGrupoInv)">
+              <i class="fa fa-folder-open"></i>            </button>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
       </table>
     </div>
   </div>
