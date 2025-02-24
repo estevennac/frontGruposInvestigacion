@@ -90,14 +90,15 @@ import { DetalleGIComponent } from './pages/administracion/grupos-investigacion/
 import { CrearGIComponent } from './pages/administracion/grupos-investigacion/crearGI.component';
 import { AnnualPlanComponent } from './pages/coordinadorGI/seguimiento/PlanAnual/planAnual.component';
 import { SolCreacionComponent } from './pages/coordinadorGI/sol-creacion/sol-creacion.component';
+import { ReportesGIComponent } from './pages/administracion/grupos-investigacion/reportes-gi/reportes-gi.component';
 const routes: Routes = [
   {
     path: 'principal',
     component: MainComponent
-  },{
+  }, {
     path: 'crearGI',
     component: CrearGIComponent
-  } ,{
+  }, {
     path: 'grupos-investigacion',
     component: GruposControlComponent
   }, { path: 'detalleGrupo', component: DetalleGIComponent }, {
@@ -118,11 +119,14 @@ const routes: Routes = [
   {
     path: 'degree',
     component: DegreeComponent
-  },{
+  }, {
     path: 'creation_request',
     component: SolCreacionComponent
   }
-,
+  , {
+    path: 'reportesGI',
+    component: ReportesGIComponent
+  },
 
 
   {

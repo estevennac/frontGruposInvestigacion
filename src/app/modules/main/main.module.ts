@@ -155,6 +155,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { SeleccionRolDialogComponent } from './pages/creation-form/SeleccionRolDialogComponent';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { SolCreacionComponent } from './pages/coordinadorGI/sol-creacion/sol-creacion.component';
+import { ReportesGIComponent } from './pages/administracion/grupos-investigacion/reportes-gi/reportes-gi.component';
 
 @NgModule({
   declarations: [
@@ -275,6 +276,7 @@ import { SolCreacionComponent } from './pages/coordinadorGI/sol-creacion/sol-cre
     infBienesEquiposComponent,
     AnnualPlanComponent,
     SolCreacionComponent,
+    ReportesGIComponent,
    
   ],
   imports: [

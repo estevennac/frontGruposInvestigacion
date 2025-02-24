@@ -1,0 +1,32 @@
+<h2>Investigadores por País</h2>
+<canvas id="usuariosPorPaisChart"></canvas>
+
+<h2>Resumen de Investigadores</h2>
+
+<h3>Por Grado Académico</h3>
+<ul>
+  <li *ngFor="let item of usuariosPorGrado | keyvalue">
+    {{ item.key }}: {{ item.value }}
+  </li>
+</ul>
+
+<h3>Por Departamento</h3>
+<ul>
+  <li *ngFor="let item of usuariosPorDepartamento | keyvalue">
+    {{ item.key }}: {{ item.value }}
+  </li>
+</ul>
+
+<h3>Por Sede</h3>
+<ul>
+  <li *ngFor="let item of usuariosPorSede | keyvalue">
+    {{ item.key }}: {{ item.value }}
+  </li>
+</ul>
+
+<h3>Por Género</h3>
+<ul>
+  <li *ngFor="let item of usuariosPorGenero | keyvalue">
+    {{ item.key }}: {{ item.value }}
+  </li>
+</ul>
