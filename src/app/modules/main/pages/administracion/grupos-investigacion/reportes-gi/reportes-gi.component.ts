@@ -13,7 +13,9 @@ export class ReportesGIComponent implements OnInit {
   usuariosPorDepartamento: { [key: string]: number } = {};
   usuariosPorSede: { [key: string]: number } = {};
   usuariosPorGenero: { [key: string]: number } = {};
-
+  dataSourceGrado: { key: string, value: number }[] = [];
+  dataSourceDepartamento: { key: string, value: number }[] = [];
+  dataSourceGenero: { key: string, value: number }[] = [];
   constructor(private giService: InvGroupService) {
     Chart.register(...registerables);
   }
@@ -28,20 +30,31 @@ export class ReportesGIComponent implements OnInit {
     this.get(this.id);
   
   }
+  getTotal(data: { [key: string]: number }): number {
+    return Object.values(data).reduce((acc, value) => acc + value, 0);
+  }
+
+  
+
   get(id: number) {
     this.giService.getByIdAll(id).subscribe((data) => {
       const dataGroup = [
         ...data.users.map(user => ({ ...user, funcion: 'Miembro' })), 
         { ...data.coordinador, funcion: 'Coordinador' }
       ];
-
+  
       // Procesar datos
       this.usuariosPorPais = this.contarPorCategoria(dataGroup, 'nacionalidad');
       this.usuariosPorGrado = this.contarPorCategoria(dataGroup, 'gradoAcademico');
       this.usuariosPorDepartamento = this.contarPorCategoria(dataGroup, 'departamento');
       this.usuariosPorSede = this.contarPorCategoria(dataGroup, 'sede');
       this.usuariosPorGenero = this.contarPorCategoria(dataGroup, 'genero');
-
+  
+      // Asignar datos a cada dataSource
+      this.dataSourceGrado = Object.entries(this.usuariosPorGrado).map(([key, value]) => ({ key, value }));
+      this.dataSourceDepartamento = Object.entries(this.usuariosPorDepartamento).map(([key, value]) => ({ key, value }));
+      this.dataSourceGenero = Object.entries(this.usuariosPorGenero).map(([key, value]) => ({ key, value }));
+  
       this.crearGraficoUsuariosPorPais();
     });
   }
